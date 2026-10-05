@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Learn Cambodia’s driving rules, explore road signs, and practice your driving theory exam with confidence.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f3f7f5">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Driving Rules">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="brand.svg"/>
+
+  <title>Driving Rules · Learn. Practice. Drive.</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    html, body { margin: 0; background: #f3f7f5; }
+    #launch { position: fixed; inset: 0; display: grid; place-items: center;
+      background: #f3f7f5; color: #1b3029; font-family: system-ui, sans-serif; z-index: 10; }
+    .launch-content { text-align: center; padding: 24px; }
+    .launch-content img { width: 82px; height: 82px; }
+    .launch-content h1 { font-size: 34px; letter-spacing: -1px; margin: 24px 0 10px; font-weight: 600; }
+    .launch-content p { color: #4d655b; font-size: 14px; }
+    .launch-track { height: 3px; width: 100px; margin: 36px auto 0; background: #e4e8de; overflow: hidden; border-radius: 4px; }
+    .launch-track:after { content: ''; display: block; width: 40px; height: 3px;
+      background: #1f6d61; animation: loading 1.2s ease-in-out infinite alternate; border-radius: 4px; }
+    @keyframes loading { to { transform: translateX(60px); } }
+    @media (prefers-reduced-motion: reduce) { .launch-track:after { animation: none; width: 100%; } }
+  </style>
+</head>
+<body>
+  <div id="launch" role="status" aria-label="Loading Driving Rules">
+    <div class="launch-content">
+      <img src="brand.svg" alt="">
+      <h1>Driving Rules</h1>
+      <p>Your journey to confident driving.</p>
+      <div class="launch-track"></div>
+    </div>
+  </div>
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      document.getElementById('launch')?.remove();
+    });
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
