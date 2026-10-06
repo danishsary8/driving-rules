@@ -19,7 +19,7 @@
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="Learn Cambodia’s driving rules, explore road signs, and practice your driving theory exam with confidence.">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#f3f7f5">
 
   <!-- iOS meta tags & icons -->
@@ -34,7 +34,9 @@
   <title>Driving Rules · Learn. Practice. Drive.</title>
   <link rel="manifest" href="manifest.json">
   <style>
-    html, body { margin: 0; background: #f3f7f5; }
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden;
+      overscroll-behavior: none; background: #f3f7f5; }
+    flutter-view { overscroll-behavior: none; }
     #launch { position: fixed; inset: 0; display: grid; place-items: center;
       background: #f3f7f5; color: #1b3029; font-family: system-ui, sans-serif; z-index: 10; }
     .launch-content { text-align: center; padding: 24px; }
@@ -62,6 +64,7 @@
       document.getElementById('launch')?.remove();
     });
   </script>
+  <script src="mobile-scroll.js"></script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

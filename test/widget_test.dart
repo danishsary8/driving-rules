@@ -14,6 +14,7 @@ import 'package:driving_rule/modules/exam/widgets/answer_option.dart';
 import 'package:driving_rule/modules/study/study_controller.dart';
 import 'package:driving_rule/modules/study/widgets/lesson_card.dart';
 import 'package:driving_rule/shared/widgets/app_motion.dart';
+import 'package:driving_rule/shared/app_scroll_behavior.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -112,9 +113,14 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.byType(SelectableText), findsOneWidget);
+      expect(find.byType(SelectionArea), findsOneWidget);
       expect(
-        tester.widget<SelectableText>(find.byType(SelectableText)).data,
+        find.byType(Scrollable),
+        findsOneWidget,
+        reason: 'Answer text must not create a competing nested scroll view',
+      );
+      expect(
+        tester.widget<Text>(find.byKey(const ValueKey('lesson-answer'))).data,
         ['First answer', 'Second answer', 'Third answer'][correct],
       );
       expect(find.byType(AnswerOption), findsNothing);
@@ -141,6 +147,58 @@ void main() {
     expect(tester.hasRunningAnimations, isFalse);
   });
 
+  testWidgets('Phone swipes over answer text scroll in both directions', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final scroll = ScrollController(initialScrollOffset: 120);
+    const question = Question(
+      id: 'touch-answer',
+      prompt: 'How should you approach an intersection?',
+      options: [
+        'Slow down and watch for other traffic.',
+        'Speed up.',
+        'Stop looking.',
+      ],
+      correctIndex: 0,
+      category: Category.general,
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        scrollBehavior: const AppScrollBehavior(),
+        home: Scaffold(
+          body: SingleChildScrollView(
+            controller: scroll,
+            child: Column(
+              children: [
+                for (var i = 0; i < 8; i++)
+                  LessonCard(question: question, number: i + 1),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    final answer = find.byKey(const ValueKey('lesson-answer')).first;
+    var before = scroll.offset;
+    await tester.dragFrom(tester.getCenter(answer), const Offset(0, -80));
+    await tester.pumpAndSettle();
+    expect(scroll.offset, greaterThan(before));
+    before = scroll.offset;
+    await tester.dragFrom(tester.getCenter(answer), const Offset(0, 80));
+    await tester.pumpAndSettle();
+    expect(scroll.offset, lessThan(before));
+    expect(find.byType(Scrollable), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+    scroll.dispose();
+  });
+
   for (final variant in [
     (width: 320.0, locale: Locale('en', 'US'), theme: ThemeMode.light),
     (width: 390.0, locale: Locale('km', 'KH'), theme: ThemeMode.light),
@@ -156,6 +214,9 @@ void main() {
     testWidgets(
       'Learning flow at ${variant.width}px, ${variant.locale}, ${variant.theme}',
       (tester) async {
+        final semantics = variant.width == 320
+            ? tester.ensureSemantics()
+            : null;
         final height = switch (variant.width) {
           320 => 568.0,
           844 => 390.0,
@@ -187,6 +248,7 @@ void main() {
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
             themeMode: variant.theme,
+            scrollBehavior: const AppScrollBehavior(),
           ),
         );
         await tester.pump(const Duration(milliseconds: 1000));
@@ -215,10 +277,10 @@ void main() {
           reason: 'Learning shows answers directly; choices belong to practice',
         );
         final lesson = tester.widget<LessonCard>(find.byType(LessonCard).first);
-        final displayedAnswer = tester.widget<SelectableText>(
+        final displayedAnswer = tester.widget<Text>(
           find.descendant(
             of: find.byType(LessonCard).first,
-            matching: find.byType(SelectableText),
+            matching: find.byKey(const ValueKey('lesson-answer')),
           ),
         );
         expect(
@@ -234,9 +296,36 @@ void main() {
           -300,
           scrollable: _studyScrollable,
         );
+        if (variant.width == 320) {
+          expect(
+            tester.getSemantics(search).rect.height,
+            lessThan(100),
+            reason: 'The accessible search field must not cover the header',
+          );
+        }
+        semantics?.dispose();
         await tester.enterText(search, 'no-such-question-xyz');
         await tester.pumpAndSettle();
         expect(find.text('no_results'.tr), findsOneWidget);
+        if (variant.width == 390 && variant.locale.languageCode == 'en') {
+          tester.view.viewInsets = const FakeViewPadding(bottom: 300);
+          await tester.pumpAndSettle();
+          expect(find.byType(NavigationBar), findsNothing);
+          expect(tester.takeException(), isNull);
+          await tester.drag(_studyScrollable, const Offset(0, -100));
+          await tester.pumpAndSettle();
+          expect(
+            tester
+                .widget<EditableText>(find.byType(EditableText))
+                .focusNode
+                .hasFocus,
+            isFalse,
+            reason: 'Dragging dismisses the search keyboard',
+          );
+          tester.view.resetViewInsets();
+          await tester.pumpAndSettle();
+          expect(find.byType(NavigationBar), findsOneWidget);
+        }
         await tester.tap(find.byTooltip('clear_search'.tr));
         await tester.pumpAndSettle();
         expect(Get.find<StudyController>().searchTerm.value, isEmpty);

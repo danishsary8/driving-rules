@@ -27,6 +27,7 @@ class _StudyScreenState extends State<StudyScreen> {
   }
 
   void _change(Category category) {
+    FocusManager.instance.primaryFocus?.unfocus();
     _search.clear();
     controller.changeCategory(category);
     if (_scroll.hasClients) _scroll.jumpTo(0);
@@ -135,28 +136,36 @@ class _StudyScreenState extends State<StudyScreen> {
                           ),
                         ),
                         const SizedBox(height: 24),
-                        TextField(
-                          controller: _search,
-                          onChanged: controller.setSearch,
-                          decoration: InputDecoration(
-                            hintText: 'study_search_placeholder'.tr,
-                            prefixIcon: const Icon(
-                              Icons.search_rounded,
-                              size: 21,
-                            ),
-                            suffixIcon: _search.text.isEmpty
-                                ? null
-                                : IconButton(
-                                    tooltip: 'clear_search'.tr,
-                                    onPressed: () {
-                                      _search.clear();
-                                      controller.setSearch('');
-                                    },
-                                    icon: const Icon(
-                                      Icons.close_rounded,
-                                      size: 19,
+                        Semantics(
+                          container: true,
+                          child: TextField(
+                            controller: _search,
+                            onChanged: controller.setSearch,
+                            textInputAction: TextInputAction.search,
+                            onSubmitted: (_) =>
+                                FocusManager.instance.primaryFocus?.unfocus(),
+                            onTapOutside: (_) =>
+                                FocusManager.instance.primaryFocus?.unfocus(),
+                            decoration: InputDecoration(
+                              hintText: 'study_search_placeholder'.tr,
+                              prefixIcon: const Icon(
+                                Icons.search_rounded,
+                                size: 21,
+                              ),
+                              suffixIcon: _search.text.isEmpty
+                                  ? null
+                                  : IconButton(
+                                      tooltip: 'clear_search'.tr,
+                                      onPressed: () {
+                                        _search.clear();
+                                        controller.setSearch('');
+                                      },
+                                      icon: const Icon(
+                                        Icons.close_rounded,
+                                        size: 19,
+                                      ),
                                     ),
-                                  ),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 20),

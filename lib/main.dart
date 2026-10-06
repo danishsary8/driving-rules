@@ -9,6 +9,7 @@ import 'app/routes/app_pages.dart';
 import 'app/themes/app_theme.dart';
 import 'app/translations/app_translations.dart';
 import 'core/services/storage_service.dart';
+import 'shared/app_scroll_behavior.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,6 +52,7 @@ class DrivingRulesApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Driving Rules',
       debugShowCheckedModeBanner: false,
+      scrollBehavior: const AppScrollBehavior(),
       translations: AppTranslations(),
       locale: initialLocale,
       fallbackLocale: const Locale('en', 'US'),

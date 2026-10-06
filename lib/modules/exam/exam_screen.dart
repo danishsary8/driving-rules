@@ -30,6 +30,7 @@ class _ExamScreenState extends State<ExamScreen> {
   Future<void> _leave() async {
     final leave = await Get.dialog<bool>(
       AlertDialog(
+        scrollable: true,
         title: Text('exam_leave_confirm_title'.tr),
         content: Text('exam_leave_confirm_body'.tr),
         actions: [
@@ -55,6 +56,7 @@ class _ExamScreenState extends State<ExamScreen> {
     if (controller.isLast) {
       final submit = await Get.dialog<bool>(
         AlertDialog(
+          scrollable: true,
           title: Text('exam_submit_confirm_title'.tr),
           content: Text('exam_submit_confirm_body'.tr),
           actions: [

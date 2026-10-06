@@ -106,11 +106,7 @@ class AppPageTransition extends CustomTransition {
     Widget child,
   ) {
     if (MediaQuery.disableAnimationsOf(context)) return child;
-    final eased = CurvedAnimation(
-      parent: animation,
-      curve: Curves.easeOutCubic,
-      reverseCurve: Curves.easeInCubic,
-    );
+    final eased = animation.drive(CurveTween(curve: Curves.easeOutCubic));
     return FadeTransition(
       opacity: eased,
       child: SlideTransition(

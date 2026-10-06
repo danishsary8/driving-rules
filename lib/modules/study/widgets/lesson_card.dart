@@ -102,12 +102,15 @@ class _CorrectAnswer extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          SelectableText(
-            text,
-            style: AppTextStyles.body1.copyWith(
-              color: scheme.onPrimaryContainer,
-              fontSize: 18,
-              height: 1.85,
+          SelectionArea(
+            child: Text(
+              text,
+              key: const ValueKey('lesson-answer'),
+              style: AppTextStyles.body1.copyWith(
+                color: scheme.onPrimaryContainer,
+                fontSize: 18,
+                height: 1.85,
+              ),
             ),
           ),
         ],

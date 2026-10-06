@@ -144,7 +144,8 @@ class AppShell extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: desktop
+        bottomNavigationBar:
+            desktop || MediaQuery.viewInsetsOf(context).bottom > 0
             ? null
             : NavigationBar(
                 height: 72,
@@ -159,6 +160,7 @@ class AppShell extends StatelessWidget {
                     : 0,
                 labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
                 onDestinationSelected: (index) {
+                  FocusManager.instance.primaryFocus?.unfocus();
                   switch (index) {
                     case 0:
                       if (Get.currentRoute != AppRoutes.home) {
@@ -433,6 +435,7 @@ class PageContent extends StatelessWidget {
 }
 
 void showProgress(BuildContext context) {
+  FocusManager.instance.primaryFocus?.unfocus();
   final storage = Get.find<StorageService>();
   final last = storage.readLastResult();
   showModalBottomSheet<void>(
