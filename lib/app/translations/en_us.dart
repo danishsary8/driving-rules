@@ -271,4 +271,31 @@ const Map<String, String> enUS = {
       '15-second timer, combo streaks, 3 hearts, and instant feedback.',
   'quiz_correct_feedback': 'Correct! Well done.',
   'quiz_wrong_feedback': 'Incorrect. Learn from this answer.',
+
+  // Exam Readiness & History Analytics
+  'exam_readiness': 'Exam Readiness',
+  'readiness_gauge': 'Readiness Gauge',
+  'readiness_unrated': 'Not Tested Yet',
+  'readiness_unrated_tip':
+      'Take a mock exam simulation to measure your test readiness!',
+  'readiness_ready': 'Exam Ready',
+  'readiness_ready_tip':
+      'Outstanding! You consistently hit the passing mark with zero priority violations.',
+  'readiness_moderate': 'Moderate Progress',
+  'readiness_moderate_tip':
+      'Good foundation! Keep practicing Priority and Technique questions to secure your pass.',
+  'readiness_practice': 'Needs Practice',
+  'readiness_practice_tip':
+      'Focus on the 38+ passing threshold and memorize all priority right-of-way rules.',
+  'recent_attempts': 'Recent Attempts',
+  'category_mastery': 'Category Mastery',
+  'mastery_strong': 'Strong',
+  'mastery_moderate': 'Review',
+  'mastery_weak': 'Needs Work',
+  'no_attempts_yet': 'No mock exam attempts yet.',
+  'exam_status_pass': 'Passed',
+  'exam_status_fail': 'Failed',
+  'priority_error_penalty': 'Priority Violation Penalty',
+  'attempts_count': 'Attempts',
+  'pass_rate': 'Pass Rate',
 };

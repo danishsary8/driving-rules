@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../app/themes/app_theme.dart';
+import '../../core/models/exam_analytics_model.dart';
 import '../../core/models/question_model.dart';
 import '../../core/services/data_service.dart';
+import '../../core/utils/app_haptics.dart';
 import '../../shared/widgets/app_motion.dart';
 import '../../shared/widgets/app_shell.dart';
 import '../../shared/widgets/design_components.dart';
@@ -282,6 +284,7 @@ class _DashboardNotes extends StatelessWidget {
   const _DashboardNotes({required this.controller});
   @override
   Widget build(BuildContext context) {
+    final readiness = controller.readiness;
     final tip = _Note(
       icon: Icons.lightbulb_outline_rounded,
       eyebrow: 'learning_tip'.tr,
@@ -289,13 +292,24 @@ class _DashboardNotes extends StatelessWidget {
       description: 'tip_description'.tr,
     );
     final progress = _Note(
-      icon: Icons.insights_rounded,
-      eyebrow: 'your_progress'.tr,
-      title: controller.lastResult == null
-          ? 'progress_first_step'.tr
-          : '${'last_score'.tr}: ${controller.lastResult!.totalCorrect}/45',
-      description: 'progress_description'.tr,
-      onTap: () => showProgress(context),
+      icon: readiness.level == ReadinessLevel.ready
+          ? Icons.verified_rounded
+          : (readiness.level == ReadinessLevel.moderate
+              ? Icons.trending_up_rounded
+              : Icons.insights_rounded),
+      eyebrow: 'exam_readiness'.tr,
+      title: readiness.level == ReadinessLevel.unrated
+          ? (controller.lastResult == null
+              ? 'progress_first_step'.tr
+              : '${'last_score'.tr}: ${controller.lastResult!.totalCorrect}/45')
+          : '${readiness.score}% · ${readiness.level.labelKey.tr}',
+      description: readiness.level == ReadinessLevel.unrated
+          ? 'readiness_unrated_tip'.tr
+          : readiness.recommendationKey.tr,
+      onTap: () {
+        AppHaptics.light();
+        showProgress(context);
+      },
     );
     return LayoutBuilder(
       builder: (context, constraints) => constraints.maxWidth < 850

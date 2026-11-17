@@ -24,6 +24,7 @@ class StorageService extends GetxService {
   static const _kLocale = 'ui_locale'; // 'en_US' | 'km_KH'
   static const _kLastResult = 'last_result'; // JSON map
   static const _kBestScore = 'best_score'; // int
+  static const _kExamHistory = 'exam_history'; // List of JSON maps
 
   /// Reads the persisted [ThemeMode], or `null` when unset/unrecognized so the
   /// caller can apply its own default.
@@ -83,9 +84,43 @@ class StorageService extends GetxService {
     return ExamResult.fromJson(Map<String, dynamic>.from(stored));
   }
 
-  /// Persists [r] as its JSON map representation.
+  /// Reads up to the last 10 completed [ExamResult] records in chronological order.
+  List<ExamResult> readExamHistory() {
+    final stored = _box.read(_kExamHistory);
+    if (stored is List) {
+      final results = <ExamResult>[];
+      for (final item in stored) {
+        if (item is Map) {
+          try {
+            results.add(ExamResult.fromJson(Map<String, dynamic>.from(item)));
+          } catch (_) {}
+        }
+      }
+      if (results.isNotEmpty) return results;
+    }
+    // Fallback: if history is empty but lastResult exists, seed it
+    final last = readLastResult();
+    if (last != null) return [last];
+    return const [];
+  }
+
+  /// Appends [r] to the exam history, keeping at most [maxItems] (default 10) records.
+  Future<void> addExamToHistory(ExamResult r, {int maxItems = 10}) async {
+    final history = readExamHistory().toList();
+    history.add(r);
+    if (history.length > maxItems) {
+      history.removeRange(0, history.length - maxItems);
+    }
+    await _box.write(
+      _kExamHistory,
+      history.map((item) => item.toJson()).toList(),
+    );
+  }
+
+  /// Persists [r] as its JSON map representation and records it to [readExamHistory].
   Future<void> writeLastResult(ExamResult r) async {
     await _box.write(_kLastResult, r.toJson());
+    await addExamToHistory(r);
   }
 
   /// The best (highest) correct-answer count persisted so far; `0` if none.

@@ -258,4 +258,31 @@ const Map<String, String> kmKH = {
       'រាប់ថយក្រោយ ១៥ វិនាទី គុណពិន្ទុជាប់ៗគ្នា បេះដូង និងឆ្លើយដឹងភ្លាមៗ។',
   'quiz_correct_feedback': 'ត្រឹមត្រូវ! ធ្វើបានល្អណាស់។',
   'quiz_wrong_feedback': 'មិនត្រឹមត្រូវទេ។ រៀនពីចម្លើយនេះ។',
+
+  // Exam Readiness & History Analytics
+  'exam_readiness': 'កម្រិតត្រៀមប្រឡង',
+  'readiness_gauge': 'រង្វាស់ត្រៀមប្រឡង',
+  'readiness_unrated': 'មិនទាន់បានធ្វើតេស្ត',
+  'readiness_unrated_tip':
+      'សាកល្បងប្រឡងគំរូដើម្បីវាស់ស្ទង់សមត្ថភាពរបស់អ្នក!',
+  'readiness_ready': 'ត្រៀមខ្លួនរួចរាល់',
+  'readiness_ready_tip':
+      'ពូកែណាស់! អ្នកឆ្លងផុតជាប់លាប់ដោយគ្មានកំហុសអាទិភាព។',
+  'readiness_moderate': 'រីកចម្រើនមធ្យម',
+  'readiness_moderate_tip':
+      'មូលដ្ឋានល្អ! បន្តអនុវត្តសំណួរអាទិភាព និងបច្ចេកទេសដើម្បីធានាការជាប់។',
+  'readiness_practice': 'ត្រូវការការអនុវត្តបន្ថែម',
+  'readiness_practice_tip':
+      'ផ្តោតលើពិន្ទុជាប់ ៣៨+ និងចងចាំច្បាប់អាទិភាពទាំងអស់។',
+  'recent_attempts': 'ការប្រឡងថ្មីៗ',
+  'category_mastery': 'ភាពស្ទាត់ជំនាញតាមផ្នែក',
+  'mastery_strong': 'ស្ទាត់ជំនាញ',
+  'mastery_moderate': 'គួរពិនិត្យឡើងវិញ',
+  'mastery_weak': 'ត្រូវការហាត់បន្ថែម',
+  'no_attempts_yet': 'មិនទាន់មានប្រវត្តិប្រឡងនៅឡើយ។',
+  'exam_status_pass': 'ជាប់',
+  'exam_status_fail': 'ធ្លាក់',
+  'priority_error_penalty': 'ការពិន័យលើកំហុសអាទិភាព',
+  'attempts_count': 'ចំនួនលើក',
+  'pass_rate': 'អត្រាជាប់',
 };

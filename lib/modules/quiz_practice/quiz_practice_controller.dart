@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:get/get.dart';
 import '../../core/models/question_model.dart';
 import '../../core/services/data_service.dart';
+import '../../core/utils/app_haptics.dart';
 
 /// Game state controller for the interactive Speed Quiz Practice mode.
 class QuizPracticeController extends GetxController {
@@ -122,6 +123,7 @@ class QuizPracticeController extends GetxController {
   void _onTimeExpired() {
     if (isAnswerChecked.value) return;
 
+    AppHaptics.error();
     isAnswerChecked.value = true;
     isCorrect.value = false;
     streak.value = 0;
@@ -150,6 +152,12 @@ class QuizPracticeController extends GetxController {
         bestStreak.value = streak.value;
       }
 
+      if (streak.value >= 3) {
+        AppHaptics.warning();
+      } else {
+        AppHaptics.success();
+      }
+
       // Base 100 XP + up to 150 speed bonus + streak multiplier
       final speedMultiplier = (secondsLeft.value * 10).round();
       final streakMultiplier = streak.value > 1 ? (streak.value * 25) : 0;
@@ -158,6 +166,7 @@ class QuizPracticeController extends GetxController {
       latestBonus.value = bonus;
       score.value += bonus;
     } else {
+      AppHaptics.error();
       streak.value = 0;
       latestBonus.value = 0;
       hearts.value = max(0, hearts.value - 1);
@@ -171,6 +180,7 @@ class QuizPracticeController extends GetxController {
   /// Advance to the next question or complete the round.
   void nextQuestion() {
     if (isGameOver.value) return;
+    AppHaptics.light();
 
     if (currentIndex.value < questions.length - 1) {
       currentIndex.value++;
@@ -178,11 +188,13 @@ class QuizPracticeController extends GetxController {
       _startTimer();
     } else {
       isGameWon.value = true;
+      AppHaptics.success();
     }
   }
 
   /// Restart a brand new round.
   void restart() {
+    AppHaptics.light();
     _setupRound();
   }
 

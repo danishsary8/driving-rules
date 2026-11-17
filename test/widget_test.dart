@@ -34,13 +34,26 @@ class _MemoryStorage extends StorageService {
 
   @override
   Future<void> writeLocale(Locale locale) async {}
+  final List<ExamResult> history = [];
+
   @override
   ExamResult? readLastResult() => result;
   @override
   int get bestScore => best;
   @override
+  List<ExamResult> readExamHistory() =>
+      history.isNotEmpty ? history : (result != null ? [result!] : const []);
+  @override
+  Future<void> addExamToHistory(ExamResult r, {int maxItems = 10}) async {
+    history.add(r);
+    if (history.length > maxItems) {
+      history.removeRange(0, history.length - maxItems);
+    }
+  }
+  @override
   Future<void> writeLastResult(ExamResult r) async {
     result = r;
+    await addExamToHistory(r);
   }
 
   @override

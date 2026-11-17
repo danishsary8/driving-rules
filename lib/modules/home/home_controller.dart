@@ -10,6 +10,7 @@ library;
 import 'package:get/get.dart';
 
 import '../../app/routes/app_routes.dart';
+import '../../core/models/exam_analytics_model.dart';
 import '../../core/models/exam_result_model.dart';
 import '../../core/models/question_model.dart';
 import '../../core/services/data_service.dart';
@@ -38,6 +39,16 @@ class HomeController extends GetxController {
 
   /// The best (highest) correct-answer count persisted so far; `0` if none.
   int get bestScore => storage.bestScore;
+
+  /// Chronological exam simulation history.
+  List<ExamResult> get examHistory => storage.readExamHistory();
+
+  /// Real-time readiness evaluation derived from exam history.
+  ExamReadiness get readiness => ExamAnalytics.calculateReadiness(examHistory);
+
+  /// Breakdown of accuracy per category across all attempts.
+  Map<Category, CategoryMastery> get categoryMastery =>
+      ExamAnalytics.calculateCategoryMastery(examHistory);
 
   /// Opens the Study screen for [c], passing the category as the route
   /// argument. (Req 4.3)

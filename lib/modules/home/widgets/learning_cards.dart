@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../app/themes/app_theme.dart';
 import '../../../core/models/question_model.dart';
+import '../../../core/utils/app_haptics.dart';
 import '../../../shared/widgets/design_components.dart';
 import '../../../shared/widgets/premium_card.dart';
 import '../../exam/widgets/exam_rules_dialog.dart';
@@ -27,7 +28,10 @@ class LearningCategoryCard extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return PremiumCard(
-      onTap: onTap,
+      onTap: () {
+        AppHaptics.selection();
+        onTap();
+      },
       accentColor: category.color,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,6 +266,7 @@ class RealExamCard extends StatelessWidget {
               ),
               onPressed: enabled
                   ? () {
+                      AppHaptics.light();
                       ExamRulesDialog.show(
                         context,
                         onStart: onTap,

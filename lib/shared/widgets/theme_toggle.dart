@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 
 import '../../app/themes/app_theme.dart';
 import '../../app/themes/theme_controller.dart';
+import '../../core/utils/app_haptics.dart';
 
 /// A reactive theme-switching icon button.
 class ThemeToggle extends StatelessWidget {
@@ -32,7 +33,10 @@ class ThemeToggle extends StatelessWidget {
           color: iconColor,
         ),
         tooltip: 'theme_toggle_tooltip'.tr,
-        onPressed: controller.toggle,
+        onPressed: () {
+          AppHaptics.light();
+          controller.toggle();
+        },
       ),
     );
   }

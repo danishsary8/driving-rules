@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../app/routes/app_routes.dart';
 import '../../app/themes/app_theme.dart';
 import '../../core/models/question_model.dart';
+import '../../core/utils/app_haptics.dart';
 import '../../shared/widgets/design_components.dart';
 import '../../shared/widgets/premium_card.dart';
 import '../../shared/widgets/app_motion.dart';
@@ -36,6 +37,7 @@ class _ExamScreenState extends State<ExamScreen> {
   }
 
   void _showRules({bool isRevisit = true}) {
+    AppHaptics.light();
     ExamRulesDialog.show(
       context,
       onStart: () {},
@@ -75,6 +77,7 @@ class _ExamScreenState extends State<ExamScreen> {
   }
 
   Future<void> _next() async {
+    AppHaptics.light();
     if (controller.isLast) {
       final submit = await Get.dialog<bool>(
         AlertDialog(
@@ -96,6 +99,9 @@ class _ExamScreenState extends State<ExamScreen> {
       if (submit != true || !mounted) return;
     }
     controller.goNext();
+    if (controller.isPriorityIndex(controller.currentIndex.value)) {
+      AppHaptics.warning();
+    }
     if (_scroll.hasClients) _scroll.jumpTo(0);
   }
 
@@ -324,6 +330,7 @@ class _ExamScreenState extends State<ExamScreen> {
                               onPressed: controller.isFirst
                                   ? null
                                   : () {
+                                      AppHaptics.light();
                                       controller.goBack();
                                       if (_scroll.hasClients) _scroll.jumpTo(0);
                                     },
@@ -462,7 +469,10 @@ class _QuestionPanel extends StatelessWidget {
                 text: q.options[n],
                 index: n,
                 selected: controller.answerFor(i) == n,
-                onTap: () => controller.selectAnswer(n),
+                onTap: () {
+                  AppHaptics.selection();
+                  controller.selectAnswer(n);
+                },
               ),
             ),
           if (q.category == Category.priority) ...[

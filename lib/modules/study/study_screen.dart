@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../app/themes/app_theme.dart';
 import '../../core/models/question_model.dart';
 import '../../core/services/data_service.dart';
+import '../../core/utils/app_haptics.dart';
 import '../../shared/widgets/app_shell.dart';
 import '../../shared/widgets/design_components.dart';
 import '../../shared/widgets/premium_card.dart';
@@ -27,6 +28,7 @@ class _StudyScreenState extends State<StudyScreen> {
   }
 
   void _change(Category category) {
+    AppHaptics.selection();
     FocusManager.instance.primaryFocus?.unfocus();
     _search.clear();
     controller.changeCategory(category);

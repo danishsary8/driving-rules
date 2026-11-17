@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 
 import '../../app/themes/app_theme.dart';
 import '../../app/translations/app_translations.dart';
+import '../../core/utils/app_haptics.dart';
 
 /// A language-switching icon button with a current-locale label.
 class LanguageToggle extends StatelessWidget {
@@ -30,7 +31,10 @@ class LanguageToggle extends StatelessWidget {
 
     return IconButton(
       tooltip: 'language_toggle_tooltip'.tr,
-      onPressed: controller.toggle,
+      onPressed: () {
+        AppHaptics.light();
+        controller.toggle();
+      },
       icon: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

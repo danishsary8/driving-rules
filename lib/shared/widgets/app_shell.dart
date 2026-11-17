@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../app/routes/app_routes.dart';
 import '../../app/themes/app_theme.dart';
+import '../../core/models/exam_analytics_model.dart';
 import '../../core/models/question_model.dart';
 import '../../core/services/data_service.dart';
 import '../../core/services/storage_service.dart';
 import 'design_components.dart';
+import 'exam_readiness_card.dart';
 import 'language_toggle.dart';
 import 'theme_toggle.dart';
-import 'premium_card.dart';
 import 'app_motion.dart';
 
 class AppShell extends StatelessWidget {
@@ -437,67 +438,34 @@ class PageContent extends StatelessWidget {
 void showProgress(BuildContext context) {
   FocusManager.instance.primaryFocus?.unfocus();
   final storage = Get.find<StorageService>();
-  final last = storage.readLastResult();
+  final history = storage.readExamHistory();
+  final readiness = ExamAnalytics.calculateReadiness(history);
+  final mastery = ExamAnalytics.calculateCategoryMastery(history);
+
   showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
     showDragHandle: true,
     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-    constraints: const BoxConstraints(maxWidth: 600),
+    constraints: const BoxConstraints(maxWidth: 640),
     builder: (context) => SafeArea(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
             SectionHeading('my_progress'.tr, subtitle: 'progress_subtitle'.tr),
-            const SizedBox(height: 22),
-            PremiumCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Eyebrow('best_score'.tr),
-                  const SizedBox(height: 10),
-                  Text(
-                    '${storage.bestScore} / 45',
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                  const SizedBox(height: 12),
-                  LinearProgressIndicator(
-                    value: storage.bestScore / 45,
-                    minHeight: 6,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  const SizedBox(height: 18),
-                  Text(
-                    last == null
-                        ? 'progress_empty'.tr
-                        : '${'last_score'.tr}: ${last.totalCorrect} / ${last.total}',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: () {
+            const SizedBox(height: 18),
+            ExamReadinessCard(
+              readiness: readiness,
+              history: history,
+              mastery: mastery,
+              onTakeExam: () {
                 Navigator.pop(context);
                 startPractice();
               },
-              icon: const Icon(Icons.arrow_forward_rounded, size: 19),
-              label: Text('exam_start'.tr),
             ),
-            if (last != null) ...[
-              const SizedBox(height: 10),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Get.toNamed(AppRoutes.result, arguments: last);
-                },
-                child: Text('view_last_result'.tr),
-              ),
-            ],
           ],
         ),
       ),
