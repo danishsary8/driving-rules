@@ -60,7 +60,7 @@ An enterprise-grade, mobile-first driving theory exam simulation and learning pl
 
 ## 🏛️ Architecture Overview
 
-The application follows clean separation of concerns using reactive state management:
+The application follows clean separation of concerns using reactive state management. For a comprehensive deep-dive into design decisions, state machine flow, and performance trade-offs, read the **[Full Architecture & System Design Document (ARCHITECTURE.md)](ARCHITECTURE.md)**.
 
 ```mermaid
 flowchart TD

@@ -311,6 +311,11 @@ const Map<String, String> enUS = {
   'view_certificate': 'View Pass Certificate',
   'share_certificate': 'Share Credential',
   'certificate_copied': 'Credential ID copied to clipboard!',
+  'certificate_cambodia_header': 'KINGDOM OF CAMBODIA',
+  'certificate_cambodia_motto': 'Nation · Religion · King',
+  'certificate_theory_pass': 'Successfully Passed Road Traffic Theory Examination',
+  'download_certificate': 'Download Credential (PNG)',
+  'certificate_downloaded': 'Certificate image downloaded successfully!',
 
   // Smart Mistakes Bank
   'mistakes_bank': 'Mistakes Bank',
@@ -324,4 +329,7 @@ const Map<String, String> enUS = {
   'mistake_mastered': 'Mastered & Removed!',
   'questions_to_master': 'Questions to Master',
   'practice_mistakes': 'Practice Mistakes',
+  'review_priority': 'Priority Questions',
+  'add_to_mistakes': 'Save to Mistakes Bank',
+  'added_to_mistakes': 'Question saved to Mistakes Bank!',
 };

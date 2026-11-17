@@ -298,6 +298,11 @@ const Map<String, String> kmKH = {
   'view_certificate': 'មើលវិញ្ញាបនបត្រជាប់',
   'share_certificate': 'ចែករំលែកវិញ្ញាបនបត្រ',
   'certificate_copied': 'បានចម្លងលេខកូដវិញ្ញាបនបត្រ!',
+  'certificate_cambodia_header': 'ព្រះរាជាណាចក្រកម្ពុជា',
+  'certificate_cambodia_motto': 'ជាតិ សាសនា ព្រះមហាក្សត្រ',
+  'certificate_theory_pass': 'បានប្រឡងជាប់ជាស្ថាពរលើវិញ្ញាសាទ្រឹស្តីច្បាប់ចរាចរណ៍ផ្លូវគោក',
+  'download_certificate': 'ទាញយកវិញ្ញាបនបត្រ (PNG)',
+  'certificate_downloaded': 'វិញ្ញាបនបត្រត្រូវបានទាញយករួចរាល់!',
 
   // Smart Mistakes Bank
   'mistakes_bank': 'ធនាគារកំហុស',
@@ -311,4 +316,7 @@ const Map<String, String> kmKH = {
   'mistake_mastered': 'ស្ទាត់ជំនាញ និងបានលុបចេញ!',
   'questions_to_master': 'សំណួរដែលត្រូវកែលម្អ',
   'practice_mistakes': 'ហាត់សំណួរដែលខុស',
+  'review_priority': 'សំណួរអាទិភាព',
+  'add_to_mistakes': 'រក្សាទុកក្នុងធនាគារកំហុស',
+  'added_to_mistakes': 'បានរក្សាទុកសំណួរក្នុងធនាគារកំហុស!',
 };
