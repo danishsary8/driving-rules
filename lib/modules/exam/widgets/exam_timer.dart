@@ -13,22 +13,26 @@ class ExamTimer extends StatelessWidget {
       urgent ? AppColors.accentRed : AppColors.accentGreen,
       Theme.of(context).brightness,
     );
+    final isCompact = MediaQuery.sizeOf(context).width < 450;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+      padding: EdgeInsets.symmetric(
+        horizontal: isCompact ? 8 : 12,
+        vertical: 7,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: .09),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.timer_outlined, size: 19, color: color),
-          const SizedBox(width: 9),
+          Icon(Icons.timer_outlined, size: isCompact ? 16 : 18, color: color),
+          SizedBox(width: isCompact ? 5 : 7),
           Text(
             controller.formattedTime,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: color,
-              fontSize: 17,
+              fontSize: isCompact ? 14 : 16,
               fontFeatures: const [FontFeature.tabularFigures()],
             ),
           ),

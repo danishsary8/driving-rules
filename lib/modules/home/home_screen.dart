@@ -70,9 +70,14 @@ class HomeScreen extends GetView<HomeController> {
           order: 2,
           child: _DashboardStats(controller: controller),
         ),
-        const SizedBox(height: 34),
+        const SizedBox(height: 30),
         MotionEntrance(
           order: 3,
+          child: _ExamModesSection(controller: controller),
+        ),
+        const SizedBox(height: 34),
+        MotionEntrance(
+          order: 4,
           child: LearningJourney(controller: controller),
         ),
         const SizedBox(height: 36),
@@ -131,16 +136,6 @@ class HomeScreen extends GetView<HomeController> {
                         ),
                       ),
                     ),
-                  SizedBox(
-                    width: width,
-                    child: MotionEntrance(
-                      order: 5,
-                      child: PracticeExamCard(
-                        enabled: controller.canStartExam,
-                        onTap: controller.startExam,
-                      ),
-                    ),
-                  ),
                 ],
               );
             },
@@ -352,4 +347,46 @@ class _Note extends StatelessWidget {
       ],
     ),
   );
+}
+
+class _ExamModesSection extends StatelessWidget {
+  final HomeController controller;
+  const _ExamModesSection({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final wide = constraints.maxWidth >= 720;
+        final realExam = Obx(
+          () => RealExamCard(
+            enabled: controller.canStartExam,
+            onTap: controller.startExam,
+          ),
+        );
+        final practice = PracticeModeCard(
+          onTap: () => controller.openStudy(Category.general),
+        );
+
+        if (wide) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: realExam),
+              const SizedBox(width: 18),
+              Expanded(child: practice),
+            ],
+          );
+        }
+
+        return Column(
+          children: [
+            realExam,
+            const SizedBox(height: 16),
+            practice,
+          ],
+        );
+      },
+    );
+  }
 }

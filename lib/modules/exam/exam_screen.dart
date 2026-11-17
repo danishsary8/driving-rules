@@ -8,6 +8,7 @@ import '../../shared/widgets/premium_card.dart';
 import '../../shared/widgets/app_motion.dart';
 import 'exam_controller.dart';
 import 'widgets/answer_option.dart';
+import 'widgets/exam_rules_dialog.dart';
 import 'widgets/exam_timer.dart';
 import 'widgets/question_card.dart';
 
@@ -21,6 +22,27 @@ class _ExamScreenState extends State<ExamScreen> {
   ExamController get controller => Get.find<ExamController>();
   bool _allowPop = false;
   final _scroll = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (!Get.testMode) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _showRules(isRevisit: false);
+        }
+      });
+    }
+  }
+
+  void _showRules({bool isRevisit = true}) {
+    ExamRulesDialog.show(
+      context,
+      onStart: () {},
+      isRevisit: isRevisit,
+    );
+  }
+
   @override
   void dispose() {
     _scroll.dispose();
@@ -121,32 +143,94 @@ class _ExamScreenState extends State<ExamScreen> {
                 child: Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 1220),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 14,
-                      ),
-                      child: Row(
-                        children: [
-                          const BrandMark(size: 36),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              'practice_exam'.tr,
-                              style: Theme.of(
-                                context,
-                              ).textTheme.titleLarge?.copyWith(fontSize: 18),
-                            ),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final isCompact = constraints.maxWidth < 460;
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: isCompact ? 10 : 20,
+                            vertical: isCompact ? 10 : 12,
                           ),
-                          ExamTimer(controller: controller),
-                          const SizedBox(width: 8),
-                          IconButton(
-                            tooltip: 'exam_leave'.tr,
-                            onPressed: _leave,
-                            icon: const Icon(Icons.close_rounded, size: 21),
+                          child: Row(
+                            children: [
+                              BrandMark(size: isCompact ? 28 : 34),
+                              SizedBox(width: isCompact ? 8 : 12),
+                              Expanded(
+                                child: Text(
+                                  'practice_exam'.tr,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.copyWith(
+                                        fontSize: isCompact ? 15 : 18,
+                                      ),
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              ExamTimer(controller: controller),
+                              const SizedBox(width: 4),
+                              if (isCompact)
+                                IconButton(
+                                  tooltip: 'exam_rules_pill'.tr,
+                                  onPressed: () => _showRules(isRevisit: true),
+                                  icon: const Icon(
+                                    Icons.rule_rounded,
+                                    size: 20,
+                                    color: Color(0xFFB58316),
+                                  ),
+                                )
+                              else
+                                InkWell(
+                                  onTap: () => _showRules(isRevisit: true),
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 9,
+                                      vertical: 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.accentGold.withValues(
+                                        alpha: 0.16,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        color: AppColors.accentGold.withValues(
+                                          alpha: 0.5,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.rule_rounded,
+                                          size: 15,
+                                          color: Color(0xFFB58316),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          'exam_rules_pill'.tr,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            color: Color(0xFFB58316),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              IconButton(
+                                tooltip: 'exam_leave'.tr,
+                                onPressed: _leave,
+                                icon: const Icon(Icons.close_rounded, size: 20),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -325,6 +409,41 @@ class _QuestionPanel extends StatelessWidget {
             minHeight: 4,
             borderRadius: BorderRadius.circular(5),
           ),
+          if (controller.isPriorityIndex(i)) ...[
+            const SizedBox(height: 18),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              decoration: BoxDecoration(
+                color: AppColors.accentRed.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppColors.accentRed.withValues(alpha: 0.45),
+                  width: 1.2,
+                ),
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.warning_amber_rounded,
+                    color: AppColors.accentRed,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      'priority_warning_banner'.tr,
+                      style: const TextStyle(
+                        color: AppColors.accentRed,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12.5,
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
           const SizedBox(height: 30),
           MotionSwitcher(
             child: Align(

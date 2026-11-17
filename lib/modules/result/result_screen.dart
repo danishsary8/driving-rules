@@ -108,12 +108,55 @@ class ResultScreen extends GetView<ResultController> {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     if (controller.failReasonKey != null) ...[
-                      const SizedBox(height: 12),
-                      StatusChip(
-                        controller.failReasonKey!.tr,
-                        icon: Icons.info_outline_rounded,
-                        color: AppColors.accentRed,
-                      ),
+                      const SizedBox(height: 14),
+                      if (result.finishReason == FinishReason.priorityFail)
+                        Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: AppColors.accentRed.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: AppColors.accentRed.withValues(alpha: 0.45),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.error_outline_rounded,
+                                    color: AppColors.accentRed,
+                                    size: 19,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      'fail_reason_priority'.tr,
+                                      style: const TextStyle(
+                                        color: AppColors.accentRed,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                'fail_reason_priority_detail'.tr,
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(height: 1.5, fontSize: 12.5),
+                              ),
+                            ],
+                          ),
+                        )
+                      else
+                        StatusChip(
+                          controller.failReasonKey!.tr,
+                          icon: Icons.info_outline_rounded,
+                          color: AppColors.accentRed,
+                        ),
                     ],
                     const SizedBox(height: 24),
                     Divider(color: Theme.of(context).dividerColor),

@@ -202,4 +202,73 @@ const Map<String, String> enUS = {
   // Accessibility tooltips
   'theme_toggle_tooltip': 'Toggle theme',
   'language_toggle_tooltip': 'Toggle language',
+
+  // Exam modes: Practice vs Real Exam
+  'real_exam': 'Real Exam Simulation',
+  'real_exam_desc':
+      '45 questions · 45 mins · 38 to pass · Strict priority auto-fail',
+  'practice_mode': 'Practice Mode',
+  'practice_mode_desc':
+      'Self-paced category learning without timer pressure or auto-fail',
+  'official_simulation': 'Official Simulation',
+  'free_practice': 'Free Practice',
+  'start_real_exam': 'Start Real Exam',
+  'start_practice': 'Start Practice',
+  'journey_exam': 'Real Exam',
+  'journey_exam_hint': 'Pass with 38+ and 100% priority.',
+
+  // Exam Rules Modal & Reminders
+  'exam_rules_title': 'Official Theory Exam Rules',
+  'exam_rules_subtitle':
+      'Please read and remember the requirements before starting',
+  'rule_pass_title': 'Passing Score: 38 / 45 (84%)',
+  'rule_pass_desc':
+      'You must correctly answer at least 38 out of 45 questions to pass the exam.',
+  'rule_priority_title': 'CRITICAL: Priority Questions (Zero Tolerance)',
+  'rule_priority_desc':
+      'Questions 25 to 29 test Right-of-Way. You cannot fail even ONE! A wrong or unanswered priority question triggers IMMEDIATE AUTO-FAIL and routes directly to Results.',
+  'rule_time_title': 'Time Limit: 45 Minutes',
+  'rule_time_desc':
+      'Official 45-minute countdown. When time expires, your exam will be automatically submitted.',
+  'rule_nav_title': 'Navigation & Review',
+  'rule_nav_desc':
+      'You can review and change your answers, but priority questions must be answered correctly before moving forward.',
+  'exam_rules_confirm': 'I Understand the Rules • Start Exam',
+  'exam_rules_pill': 'Exam Rules',
+  'exam_rules_quick': 'Pass 38+ • Priority 0-Error',
+  'priority_warning_banner':
+      'PRIORITY QUESTION: Zero error allowed! 1 wrong answer = Immediate Auto-Fail.',
+  'fail_reason_priority_detail':
+      'Disqualified due to an incorrect or skipped Priority question (Q25–Q29 require 100% accuracy).',
+
+  // Quiz Game Mode
+  'quiz_game_title': 'Speed Quiz Challenge',
+  'quiz_game_subtitle':
+      'Answer before time runs out! Keep your hearts alive.',
+  'quiz_score': 'Score',
+  'quiz_streak': 'Streak',
+  'quiz_combo': 'Combo',
+  'quiz_hearts': 'Lives',
+  'quiz_game_over': 'Out of Lives!',
+  'quiz_game_over_desc':
+      "Don't worry, every mistake is a chance to learn.",
+  'quiz_victory': 'Round Complete!',
+  'quiz_victory_desc':
+      'Outstanding! You completed the challenge with flying colors.',
+  'quiz_play_again': 'Play Again',
+  'quiz_continue': 'Continue',
+  'quiz_time_up': "Time's up!",
+  'quiz_speed_bonus': 'Speed Bonus',
+  'quiz_mode_blitz': '10-Question Blitz',
+  'quiz_mode_survival': 'Survival Run',
+  'quiz_select_game_mode': 'Practice Options',
+  'quiz_choose_mode_hint': 'Choose how you want to learn today',
+  'quiz_mode_study_title': 'Study Mode (Direct Answers)',
+  'quiz_mode_study_desc':
+      'Browse questions and learn with correct answers directly revealed.',
+  'quiz_mode_game_title': 'Speed Quiz Game (Interactive)',
+  'quiz_mode_game_desc':
+      '15-second timer, combo streaks, 3 hearts, and instant feedback.',
+  'quiz_correct_feedback': 'Correct! Well done.',
+  'quiz_wrong_feedback': 'Incorrect. Learn from this answer.',
 };
