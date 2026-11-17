@@ -1,63 +1,147 @@
-# Driving Rules
+# 🚗 Cambodia Driving Rules & Theory Exam Platform
 
-A responsive Flutter learning app for Cambodia’s driving theory exam. Lessons, fonts and question illustrations are bundled with the app; preferences and exam summaries are saved locally.
+<p align="center">
+  <a href="https://github.com/danishsary8/driving-rules/actions"><img src="https://github.com/danishsary8/driving-rules/actions/workflows/ci.yml/badge.svg" alt="CI Status" /></a>
+  <a href="https://flutter.dev"><img src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter" alt="Flutter" /></a>
+  <a href="https://dart.dev"><img src="https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart" alt="Dart" /></a>
+  <img src="https://img.shields.io/badge/Tests-37%20Passed-10B981?logo=checkmarx" alt="Tests" />
+  <img src="https://img.shields.io/badge/Platform-Web%20%7C%20iOS%20%7C%20Android-4B5563" alt="Platform" />
+  <img src="https://img.shields.io/badge/License-MIT-F59E0B" alt="License" />
+</p>
 
-## Run in VS Code
+An enterprise-grade, mobile-first driving theory exam simulation and learning platform for Cambodia. Built with **Flutter**, **GetX**, and an **Offline-First Reactive Architecture**.
 
-Open this folder and install the Flutter extension (which also installs Dart).
+---
 
-```powershell
-flutter pub get
-flutter run -d edge
+## 🌟 Key Engineering & Product Features
+
+### 1. 🛡️ Official Exam Simulation (Strict Auto-Fail Priority Rules)
+- **45 Questions · 45-Minute Official Countdown**: Conforms to the standard Cambodian driving theory curriculum.
+- **Strict Passing Threshold (38 / 45)**: Requires an 84% benchmark to pass.
+- **Critical Priority Auto-Fail Rule (Q25–Q29)**: Questions 25 through 29 test Right-of-Way. Zero errors allowed—a single incorrect or skipped answer triggers an immediate auto-fail and routes directly to the detailed disqualification report.
+- **In-Exam Reminders**: Clickable `[ ℹ️ Exam Rules ]` reminder pill and high-visibility priority warning banners keep learners informed throughout the test.
+
+### 2. 🏆 Official Digital Pass Certificate & Shareable Credential
+- Unlocked when candidates score $\ge 38/45$ with zero priority violations.
+- Renders an official-style completion credential featuring a unique verification Serial ID, issue date, score breakdown, and security clearance seal.
+- One-tap credential ID copy and sharing actions.
+
+### 3. 🧠 Smart Mistakes Bank (Weak-Area Smart Retest)
+- Automatically captures questions missed across **Real Exams**, **Speed Quizzes**, or **Study Sessions**.
+- Dedicated drill mode allowing learners to train specifically on their personal blind spots.
+- Once answered correctly, questions graduate and clear from the bank with rewarding tactile feedback.
+
+### 4. ⚡ Gamified Speed Quiz Practice Challenge
+- **15-Second Timer per Question**: Fast-paced training for quick roadside decision-making.
+- **3 Hearts / Lives System**: Keeps players engaged while reinforcing accuracy.
+- **Combo Multipliers & Speed XP Bonuses**: Rewards rapid, correct streaks with dynamic score multipliers and pulse animations.
+
+### 5. 📊 Exam Readiness Score Engine (0–100%)
+- Predictive readiness score derived from the candidate's last 5 simulation attempts:
+  $$\text{Readiness} = 40\% \times \text{PassRate} + 35\% \times \text{ScoreRate} + 25\% \times \text{PriorityAccuracy} - \text{DisqualificationPenalty}$$
+- 4 qualitative readiness tiers (`Exam Ready`, `Moderate Progress`, `Needs Practice`, `Not Tested Yet`) paired with personalized coaching recommendations.
+- Category mastery breakdown for all 5 domains (*General, Signs, Priority, Technique, Emergency*).
+
+### 6. 📳 Tactile Haptic Vibration Feedback (`AppHaptics`)
+- Physics-based tactile sensation across option selections, warning zone transitions, speed combos, and error states.
+- Defensively engineered for cross-platform stability (Web, iOS, Android, Desktop).
+
+### 7. 🇰🇭 Full Bilingual Localization with Parity Enforcement
+- Complete English (`en_US`) and Khmer (`km_KH`) support with custom typography (`Kanit`, `NotoSansKhmer`).
+- Automated CI test enforces 100% key and translation parity.
+
+### 8. 📱 Responsive Adaptive UI (320px to 1920px)
+- Zero RenderFlex overflows across all device form factors:
+  - **Compact Phones** (320px–390px with 1.25x Khmer text scaling).
+  - **Tablets & Foldables** (768px–844px).
+  - **Desktop & Widescreen Displays** (1050px–1920px Bento Grid layout).
+
+---
+
+## 🏛️ Architecture Overview
+
+The application follows clean separation of concerns using reactive state management:
+
+```mermaid
+flowchart TD
+    subgraph UI_Layer ["Presentation Layer (UI/UX)"]
+        HomeScreen["HomeScreen & Bento Dashboard"]
+        ExamScreen["ExamScreen & Timer HUD"]
+        QuizScreen["SpeedQuiz Practice Mode"]
+        MistakesScreen["Smart Mistakes Bank"]
+        ResultScreen["ResultScreen & Pass Certificate"]
+    end
+
+    subgraph Controller_Layer ["Controllers & ViewModels (GetX)"]
+        HC["HomeController"]
+        EC["ExamController"]
+        QC["QuizPracticeController"]
+        MC["MistakesController"]
+        RC["ResultController"]
+    end
+
+    subgraph Service_Layer ["Core Services & Storage"]
+        DS["DataService (Bundled JSON Assets)"]
+        SS["StorageService (GetStorage Offline Cache)"]
+        EA["ExamAnalytics Engine"]
+        AH["AppHaptics Utility"]
+    end
+
+    HomeScreen --> HC
+    ExamScreen --> EC
+    QuizScreen --> QC
+    MistakesScreen --> MC
+    ResultScreen --> RC
+
+    HC & EC & QC & MC & RC --> DS & SS & EA & AH
 ```
 
-For Chrome, use `flutter run -d chrome`. Alternatively, select **Driving Rules · Edge** or **Driving Rules · Chrome** in VS Code’s Run and Debug panel and press **F5**.
+---
 
-## Frontend design
+## 🧪 Testing & Verification
 
-- Fresh neutral surfaces, teal navigation accents, warm amber actions and a high contrast hero with an animated road illustration.
-- Matching browser loading screen and Flutter splash, followed by the learning dashboard.
-- Desktop sidebar from 1050 px; bottom navigation on smaller screens. Content grids adapt to available space.
-- A guided learning path and searchable reading lessons with category switching. Each lesson shows only its correct answer, with no quiz options or reveal controls. Search matches the visible question and correct answer.
-- Enlarged road-sign illustrations with pinch, pan, wheel and button zoom controls.
-- Focused exam layout with a timer, fixed navigation controls and a desktop session overview.
-- Score breakdown, saved result summary and answer review with a mistakes filter.
-- Khmer and English interface controls; question content remains in its original Khmer.
-- Larger body text, stronger secondary text contrast, and complete category descriptions.
-- Light mode by default, with a persistent dark mode toggle and bundled Khmer fonts.
-- Reusable motion components for staggered entrances, route transitions, card hover/press feedback, answer feedback, score counters and the road illustration. Animations are finite and respect the system’s reduced-motion preference.
-
-Core exam composition, priority rules and scoring are retained. No account or backend is required.
-
-## Check and build
+The project enforces automated test coverage across business logic, models, controllers, and responsive layouts:
 
 ```powershell
+# Run static analysis (0 warnings)
 flutter analyze
+
+# Run all 37+ unit, property-based, and widget tests
 flutter test
+
+# Run Telegram / Mobile in-app browser gesture suite
 node --test test/web/mobile_scroll_test.cjs
-flutter build web
 ```
 
-The tests cover core question/scoring behavior and the splash → dashboard → lessons → exam → results → review flow at 320, 390, 768, 844, 1050, 1280, 1440 and 1920 px, across both languages and themes. They exercise short portrait and landscape screens, passing/failing results, enlarged Khmer text, image zoom, live theme changes and reduced motion. Learning checks verify that only the correct answer appears, search excludes hidden exam choices and image filenames, and reading text has strong contrast in both themes.
+### Test Suites Included:
+- `test/widget_test.dart`: Multi-device responsive flows (320px to 1920px), Khmer font scaling, and translation parity.
+- `test/exam_analytics_test.dart`: Readiness algorithm weights, priority disqualification penalties, and category mastery.
+- `test/mistakes_test.dart`: Smart Mistakes Bank persistence and Driver Certificate rendering.
+- `test/quiz_practice_test.dart`: Speed Quiz timer mechanics, lives decrement, and combo multipliers.
+- `test/core/`: Property-based serialization round-trips and exam composition guarantees.
 
-Browser screenshots are available in [design-preview](design-preview/), including desktop and mobile dashboard, lessons, exam, results and review screens.
+---
 
-## Mobile browser scrolling
+## 🚀 Getting Started
 
-The web page contains document overscroll and uses clamped Flutter scrolling.
-Answer text remains selectable without a nested editable scroll view. Search
-supports drag-to-dismiss, and bottom navigation hides while the keyboard is open.
-The search field has its own semantic boundary so screen readers expose only
-the input area as editable, rather than the whole lesson header.
+### Prerequisites
+- [Flutter SDK](https://flutter.dev/docs/get-started/install) (3.19+ recommended)
+- Dart SDK 3.x
 
-Telegram's ordinary in-app browser needs a native gesture bridge because Flutter
-scrolls its canvas rather than an HTML document. `web/mobile-scroll.js` uses the
-injected Telegram proxy: Android's `allowScroll` event keeps gestures in the page;
-iOS's `cancellingTouch` event cancels the browser sheet gesture. Both listeners
-are passive and scoped to the Flutter view, preserving taps, selection and pinch
-zoom. No Telegram SDK is required. See [Telegram's browser events](https://core.telegram.org/api/web-events)
-and its [iOS browser implementation](https://github.com/TelegramMessenger/Telegram-iOS/blob/master/submodules/BrowserUI/Sources/BrowserWebContent.swift).
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/danishsary8/driving-rules.git
+cd driving-rules
 
-After deploying, close and reopen the page in Telegram to load the updated host
-script. Browser emulation and automated checks cannot replace a physical iPhone
-check of Telegram's native sheet gestures; older host apps may need an update.
+# Install dependencies
+flutter pub get
+
+# Launch on Chrome / Edge
+flutter run -d chrome
+```
+
+---
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

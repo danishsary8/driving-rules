@@ -35,6 +35,7 @@ class _MemoryStorage extends StorageService {
   @override
   Future<void> writeLocale(Locale locale) async {}
   final List<ExamResult> history = [];
+  final Set<String> mistakes = {};
 
   @override
   ExamResult? readLastResult() => result;
@@ -55,6 +56,19 @@ class _MemoryStorage extends StorageService {
     result = r;
     await addExamToHistory(r);
   }
+
+  @override
+  Set<String> readMistakeIds() => Set.from(mistakes);
+  @override
+  Future<void> addMistakeId(String id) async => mistakes.add(id);
+  @override
+  Future<void> addMistakeIds(Iterable<String> ids) async => mistakes.addAll(ids);
+  @override
+  Future<void> removeMistakeId(String id) async => mistakes.remove(id);
+  @override
+  Future<void> clearAllMistakes() async => mistakes.clear();
+  @override
+  int get mistakeCount => mistakes.length;
 
   @override
   Future<void> updateBestScore(int score) async {

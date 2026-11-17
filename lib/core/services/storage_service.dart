@@ -18,13 +18,16 @@ import '../models/exam_result_model.dart';
 
 /// App-lifetime service wrapping GetStorage for preferences and results.
 class StorageService extends GetxService {
-  final GetStorage _box = GetStorage();
+  final GetStorage? _customBox;
+  StorageService({GetStorage? box}) : _customBox = box;
+  GetStorage get _box => _customBox ?? GetStorage();
 
   static const _kThemeMode = 'theme_mode'; // 'light' | 'dark'
   static const _kLocale = 'ui_locale'; // 'en_US' | 'km_KH'
   static const _kLastResult = 'last_result'; // JSON map
   static const _kBestScore = 'best_score'; // int
   static const _kExamHistory = 'exam_history'; // List of JSON maps
+  static const _kMistakes = 'mistake_question_ids'; // List of String IDs
 
   /// Reads the persisted [ThemeMode], or `null` when unset/unrecognized so the
   /// caller can apply its own default.
@@ -133,4 +136,38 @@ class StorageService extends GetxService {
       await _box.write(_kBestScore, score);
     }
   }
+
+  /// Reads all question IDs currently recorded in the Mistakes Bank.
+  Set<String> readMistakeIds() {
+    final list = _box.read<List>(_kMistakes);
+    if (list == null) return <String>{};
+    return list.map((e) => e.toString()).toSet();
+  }
+
+  /// Adds a single question ID to the Mistakes Bank.
+  Future<void> addMistakeId(String id) async {
+    final set = readMistakeIds()..add(id);
+    await _box.write(_kMistakes, set.toList());
+  }
+
+  /// Adds multiple question IDs to the Mistakes Bank in batch.
+  Future<void> addMistakeIds(Iterable<String> ids) async {
+    if (ids.isEmpty) return;
+    final set = readMistakeIds()..addAll(ids);
+    await _box.write(_kMistakes, set.toList());
+  }
+
+  /// Removes a question ID from the Mistakes Bank after user masters it.
+  Future<void> removeMistakeId(String id) async {
+    final set = readMistakeIds()..remove(id);
+    await _box.write(_kMistakes, set.toList());
+  }
+
+  /// Clears all recorded mistakes from the bank.
+  Future<void> clearAllMistakes() async {
+    await _box.remove(_kMistakes);
+  }
+
+  /// Total number of unique questions currently in the Mistakes Bank.
+  int get mistakeCount => readMistakeIds().length;
 }

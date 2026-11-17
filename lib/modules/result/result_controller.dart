@@ -13,10 +13,13 @@ import 'package:get/get.dart';
 import '../../app/routes/app_routes.dart';
 import '../../core/models/exam_result_model.dart';
 import '../../core/models/exam_review_model.dart';
+import '../../core/services/storage_service.dart';
 
 /// Reactive-free view-model for the result screen, scoped per route entry by
 /// [ResultBinding].
 class ResultController extends GetxController {
+  final StorageService storage = Get.find();
+
   /// The result being displayed. Populated from `Get.arguments` in [onInit],
   /// falling back to a safe empty result when no arguments were supplied.
   late final ExamResult result;
@@ -32,6 +35,7 @@ class ResultController extends GetxController {
     if (args is ExamReviewData) {
       reviewData = args;
       result = args.result;
+      _recordMistakes(args);
       return;
     }
     result = args is ExamResult
@@ -43,6 +47,20 @@ class ResultController extends GetxController {
             finishReason: FinishReason.completed,
             passed: false,
           );
+  }
+
+  void _recordMistakes(ExamReviewData data) {
+    final wrongIds = <String>[];
+    for (var i = 0; i < data.questions.length; i++) {
+      final q = data.questions[i];
+      final answer = data.selectedAnswers[i];
+      if (answer != q.correctIndex) {
+        wrongIds.add(q.id);
+      }
+    }
+    if (wrongIds.isNotEmpty) {
+      storage.addMistakeIds(wrongIds);
+    }
   }
 
   /// Whether the session is a pass (Req 12.2, 12.3).

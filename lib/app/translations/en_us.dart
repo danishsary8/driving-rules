@@ -298,4 +298,30 @@ const Map<String, String> enUS = {
   'priority_error_penalty': 'Priority Violation Penalty',
   'attempts_count': 'Attempts',
   'pass_rate': 'Pass Rate',
+
+  // Official Driver Pass Certificate
+  'certificate_title': 'Driver Theory Pass Credential',
+  'certificate_subtitle': 'Official Theory Test Competency Certificate',
+  'certificate_pass_badge': 'OFFICIAL PASS',
+  'certificate_score_label': 'Final Score',
+  'certificate_priority_cleared': '100% Priority Right-of-Way Cleared',
+  'certificate_certified': 'Certified Competent in Traffic Rules & Safety',
+  'certificate_serial': 'Credential ID',
+  'certificate_date': 'Issue Date',
+  'view_certificate': 'View Pass Certificate',
+  'share_certificate': 'Share Credential',
+  'certificate_copied': 'Credential ID copied to clipboard!',
+
+  // Smart Mistakes Bank
+  'mistakes_bank': 'Mistakes Bank',
+  'mistakes_bank_desc': 'Drill questions you missed until you reach 100% mastery',
+  'mistakes_empty_title': 'No Mistakes Recorded!',
+  'mistakes_empty_desc': 'Outstanding driving knowledge. Take an exam to test yourself!',
+  'drill_mistakes': 'Drill Mistakes',
+  'study_mistakes': 'Review Explanations',
+  'clear_all_mistakes': 'Clear Bank',
+  'clear_all_confirm': 'Are you sure you want to clear all questions from the Mistakes Bank?',
+  'mistake_mastered': 'Mastered & Removed!',
+  'questions_to_master': 'Questions to Master',
+  'practice_mistakes': 'Practice Mistakes',
 };

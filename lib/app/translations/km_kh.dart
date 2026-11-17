@@ -285,4 +285,30 @@ const Map<String, String> kmKH = {
   'priority_error_penalty': 'ការពិន័យលើកំហុសអាទិភាព',
   'attempts_count': 'ចំនួនលើក',
   'pass_rate': 'អត្រាជាប់',
+
+  // Official Driver Pass Certificate
+  'certificate_title': 'វិញ្ញាបនបត្រទ្រឹស្តីបើកបរផ្លូវការ',
+  'certificate_subtitle': 'វិញ្ញាបនបត្រសមត្ថភាពប្រឡងទ្រឹស្តីបើកបរផ្លូវការ',
+  'certificate_pass_badge': 'ប្រឡងជាប់ជាស្ថាពរ',
+  'certificate_score_label': 'ពិន្ទុសរុប',
+  'certificate_priority_cleared': 'ជាប់ច្បាប់អាទិភាព ១០០% ដោយគ្មានកំហុស',
+  'certificate_certified': 'បានបញ្ជាក់សមត្ថភាពលើច្បាប់ចរាចរណ៍ និងសុវត្ថិភាព',
+  'certificate_serial': 'លេខកូដវិញ្ញាបនបត្រ',
+  'certificate_date': 'កាលបរិច្ឆេទចេញ',
+  'view_certificate': 'មើលវិញ្ញាបនបត្រជាប់',
+  'share_certificate': 'ចែករំលែកវិញ្ញាបនបត្រ',
+  'certificate_copied': 'បានចម្លងលេខកូដវិញ្ញាបនបត្រ!',
+
+  // Smart Mistakes Bank
+  'mistakes_bank': 'ធនាគារកំហុស',
+  'mistakes_bank_desc': 'ហាត់សំណួរដែលអ្នកឆ្លើយខុសរហូតដល់ស្ទាត់ជំនាញ ១០០%',
+  'mistakes_empty_title': 'មិនមានកំហុសត្រូវបានកត់ត្រាទេ!',
+  'mistakes_empty_desc': 'ចំណេះដឹងបើកបរល្អឥតខ្ចោះ។ សាកល្បងប្រឡងដើម្បីវាស់សមត្ថភាព!',
+  'drill_mistakes': 'ហាត់សំណួរខុស',
+  'study_mistakes': 'ពិនិត្យការពន្យល់',
+  'clear_all_mistakes': 'លុបកំហុសទាំងអស់',
+  'clear_all_confirm': 'តើអ្នកពិតជាចង់លុបសំណួរទាំងអស់ចេញពីធនាគារកំហុសមែនទេ?',
+  'mistake_mastered': 'ស្ទាត់ជំនាញ និងបានលុបចេញ!',
+  'questions_to_master': 'សំណួរដែលត្រូវកែលម្អ',
+  'practice_mistakes': 'ហាត់សំណួរដែលខុស',
 };

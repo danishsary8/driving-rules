@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../app/routes/app_routes.dart';
 import '../../app/themes/app_theme.dart';
 import '../../core/models/exam_result_model.dart';
 import '../../core/models/question_model.dart';
+import '../../core/utils/app_haptics.dart';
 import '../../shared/widgets/app_shell.dart';
 import '../../shared/widgets/design_components.dart';
 import '../../shared/widgets/premium_card.dart';
 import '../../shared/widgets/app_motion.dart';
 import 'result_controller.dart';
+import 'widgets/driver_certificate_dialog.dart';
 
 class ResultScreen extends GetView<ResultController> {
   const ResultScreen({super.key});
@@ -278,19 +281,50 @@ class ResultScreen extends GetView<ResultController> {
                   spacing: 12,
                   runSpacing: 12,
                   children: [
+                    if (controller.passed)
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFC99726),
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () {
+                          AppHaptics.success();
+                          DriverCertificateDialog.show(context, result: result);
+                        },
+                        icon: const Icon(Icons.workspace_premium_rounded, size: 20),
+                        label: Text('view_certificate'.tr),
+                      ),
                     if (controller.reviewData?.canReview ?? false)
                       ElevatedButton.icon(
-                        onPressed: controller.reviewAnswers,
+                        onPressed: () {
+                          AppHaptics.light();
+                          controller.reviewAnswers();
+                        },
                         icon: const Icon(Icons.fact_check_outlined, size: 19),
                         label: Text('result_review_answers'.tr),
                       ),
+                    if (controller.storage.mistakeCount > 0)
+                      OutlinedButton.icon(
+                        onPressed: () {
+                          AppHaptics.light();
+                          Get.toNamed(AppRoutes.mistakes);
+                        },
+                        icon: const Icon(Icons.auto_fix_high_rounded, size: 19),
+                        label: Text('${'practice_mistakes'.tr} (${controller.storage.mistakeCount})'),
+                      ),
                     OutlinedButton.icon(
-                      onPressed: controller.tryAgain,
+                      onPressed: () {
+                        AppHaptics.light();
+                        controller.tryAgain();
+                      },
                       icon: const Icon(Icons.refresh_rounded, size: 19),
                       label: Text('result_try_again'.tr),
                     ),
                     TextButton(
-                      onPressed: controller.backToHome,
+                      onPressed: () {
+                        AppHaptics.light();
+                        controller.backToHome();
+                      },
                       child: Text('result_back_home'.tr),
                     ),
                   ],

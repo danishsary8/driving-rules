@@ -3,11 +3,13 @@ import 'dart:math';
 import 'package:get/get.dart';
 import '../../core/models/question_model.dart';
 import '../../core/services/data_service.dart';
+import '../../core/services/storage_service.dart';
 import '../../core/utils/app_haptics.dart';
 
 /// Game state controller for the interactive Speed Quiz Practice mode.
 class QuizPracticeController extends GetxController {
   final DataService dataService = Get.find();
+  final StorageService storageService = Get.find();
 
   /// 15 seconds per question for the speed challenge.
   static const double kQuestionDuration = 15.0;
@@ -124,6 +126,7 @@ class QuizPracticeController extends GetxController {
     if (isAnswerChecked.value) return;
 
     AppHaptics.error();
+    storageService.addMistakeId(currentQuestion.id);
     isAnswerChecked.value = true;
     isCorrect.value = false;
     streak.value = 0;
@@ -167,6 +170,7 @@ class QuizPracticeController extends GetxController {
       score.value += bonus;
     } else {
       AppHaptics.error();
+      storageService.addMistakeId(currentQuestion.id);
       streak.value = 0;
       latestBonus.value = 0;
       hearts.value = max(0, hearts.value - 1);

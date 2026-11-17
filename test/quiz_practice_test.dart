@@ -1,8 +1,17 @@
 import 'package:driving_rule/core/models/question_model.dart';
 import 'package:driving_rule/core/services/data_service.dart';
+import 'package:driving_rule/core/services/storage_service.dart';
 import 'package:driving_rule/modules/quiz_practice/quiz_practice_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
+
+class _MockStorageService extends StorageService {
+  final Set<String> _mistakes = {};
+  @override
+  Set<String> readMistakeIds() => Set.from(_mistakes);
+  @override
+  Future<void> addMistakeId(String id) async => _mistakes.add(id);
+}
 
 class _MockDataService extends DataService {
   @override
@@ -27,6 +36,7 @@ void main() {
   setUp(() {
     Get.reset();
     Get.put<DataService>(_MockDataService());
+    Get.put<StorageService>(_MockStorageService());
   });
 
   tearDown(() {

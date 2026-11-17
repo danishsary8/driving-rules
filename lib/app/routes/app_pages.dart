@@ -16,6 +16,8 @@ import '../../modules/exam/exam_binding.dart';
 import '../../modules/exam/exam_screen.dart';
 import '../../modules/home/home_binding.dart';
 import '../../modules/home/home_screen.dart';
+import '../../modules/mistakes/mistakes_binding.dart';
+import '../../modules/mistakes/mistakes_screen.dart';
 import '../../modules/quiz_practice/quiz_practice_binding.dart';
 import '../../modules/quiz_practice/quiz_practice_screen.dart';
 import '../../modules/result/result_binding.dart';
@@ -82,6 +84,13 @@ class AppPages {
       name: AppRoutes.quizPractice,
       page: () => const QuizPracticeScreen(),
       binding: QuizPracticeBinding(),
+      customTransition: AppPageTransition(),
+      transitionDuration: AppMotion.page,
+    ),
+    GetPage(
+      name: AppRoutes.mistakes,
+      page: () => const MistakesScreen(),
+      binding: MistakesBinding(),
       customTransition: AppPageTransition(),
       transitionDuration: AppMotion.page,
     ),
