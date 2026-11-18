@@ -16,6 +16,8 @@ import '../../modules/exam/exam_binding.dart';
 import '../../modules/exam/exam_screen.dart';
 import '../../modules/flashcards/flashcards_binding.dart';
 import '../../modules/flashcards/flashcards_screen.dart';
+import '../../modules/progress/progress_binding.dart';
+import '../../modules/progress/progress_screen.dart';
 import '../../modules/home/home_binding.dart';
 import '../../modules/home/home_screen.dart';
 import '../../modules/mistakes/mistakes_binding.dart';
@@ -100,6 +102,13 @@ class AppPages {
       name: AppRoutes.flashcards,
       page: () => const FlashcardsScreen(),
       binding: FlashcardsBinding(),
+      customTransition: AppPageTransition(),
+      transitionDuration: AppMotion.page,
+    ),
+    GetPage(
+      name: AppRoutes.progress,
+      page: () => const ProgressScreen(),
+      binding: ProgressBinding(),
       customTransition: AppPageTransition(),
       transitionDuration: AppMotion.page,
     ),

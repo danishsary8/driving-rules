@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../core/models/question_model.dart';
+import '../../core/models/sign_category.dart';
 import '../../core/services/data_service.dart';
 import '../../core/services/storage_service.dart';
 import '../../core/utils/app_haptics.dart';
@@ -11,7 +12,13 @@ class FlashcardsController extends GetxController {
   final StorageService storage = Get.find();
 
   /// All sign questions bundled in the app.
+  final allSignQuestions = <Question>[];
+
+  /// Filtered questions based on the active sign category.
   final questions = <Question>[].obs;
+
+  /// Active sign sub-category filter.
+  final selectedType = SignType.all.obs;
 
   /// Current zero-based index of the active card.
   final currentIndex = 0.obs;
@@ -32,8 +39,24 @@ class FlashcardsController extends GetxController {
   void onInit() {
     super.onInit();
     final signs = data.questionsFor(Category.sign);
+    allSignQuestions.addAll(signs);
     questions.assignAll(signs);
     bookmarkedIds.assignAll(storage.readBookmarkIds());
+  }
+
+  /// Filters flashcards by road sign sub-type.
+  void filterByType(SignType type) {
+    selectedType.value = type;
+    isFlipped.value = false;
+    currentIndex.value = 0;
+    if (type == SignType.all) {
+      questions.assignAll(allSignQuestions);
+    } else {
+      questions.assignAll(
+        allSignQuestions.where((q) => SignTypeMeta.classify(q) == type),
+      );
+    }
+    AppHaptics.selection();
   }
 
   /// The active [Question], or `null` if questions are empty.

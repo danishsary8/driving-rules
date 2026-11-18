@@ -343,4 +343,35 @@ const Map<String, String> kmKH = {
   'flashcards_progress': 'កាតទី',
   'flashcards_practice_button': 'ហាត់កាតសញ្ញា',
   'celebration_replay': 'អបអរសាទរម្តងទៀត',
+
+  // Social Story Card
+  'share_story_card': 'ចែករំលែក Story Card',
+  'share_story_download': 'ទាញយក Story (PNG)',
+  'story_download_title': 'ទាញយកជោគជ័យ!',
+  'story_download_desc': 'រូបភាព Story ត្រូវបានរក្សាទុកក្នុងទូរស័ព្ទរបស់អ្នក។',
+
+  // Progress Analytics Screen
+  'score_history_title': 'ប្រវត្តិពិន្ទុប្រឡង',
+  'score_history_desc': 'តាមដានការវិវត្តពិន្ទុនៃការប្រឡង ១០ លើកចុងក្រោយ',
+  'category_mastery_title': 'កម្រិតស្ទាត់ជំនាញតាមផ្នែក',
+  'category_mastery_desc': 'វាស់ស្ទង់ភាពត្រឹមត្រូវនៃចម្លើយតាមប្រភេទមេរៀននីមួយៗ',
+
+  // Road Sign Sub-Types
+  'sign_filter_all': 'ទាំងអស់ (១០០)',
+  'sign_filter_prohibitory': 'សញ្ញាហាមឃាត់',
+  'sign_filter_danger': 'សញ្ញាគ្រោះថ្នាក់',
+  'sign_filter_mandatory': 'សញ្ញាបញ្ជា',
+  'sign_filter_informative': 'សញ្ញាផ្តល់ដំណឹង',
+
+  // Exam Resume & Protection
+  'exam_resume_title': 'បន្តការប្រឡងមិនទាន់ចប់',
+  'exam_resume_desc': 'អ្នកមានវិញ្ញាសាកំពុងដំណើរការ',
+  'exam_resume_btn': 'បន្តការប្រឡង',
+  'exam_resume_discard': 'បោះបង់',
+
+  // Interactive Question Matrix & Explanations
+  'question_matrix_title': 'ផ្ទាំងរុករកសំណួរ (៤៥ សំណួរ)',
+  'explanation_title': 'ការពន្យល់ និងបទប្បញ្ញត្តិ',
+  'explanation_rule_tip': 'គន្លឹះច្បាប់ចរាចរណ៍',
+  'jump_to_question': 'រំលងទៅសំណួរទី',
 };

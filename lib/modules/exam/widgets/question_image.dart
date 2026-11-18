@@ -54,15 +54,19 @@ class _Artwork extends StatelessWidget {
   final double? height;
   const _Artwork({required this.filename, this.height});
   @override
-  Widget build(BuildContext context) => Image.asset(
-    AssetPaths.promptImage(filename),
-    width: double.infinity,
-    height: height,
-    fit: BoxFit.contain,
-    errorBuilder: (context, error, stack) => const Icon(
-      Icons.image_not_supported_outlined,
-      size: 70,
-      color: AppColors.textMutedLight,
+  Widget build(BuildContext context) => RepaintBoundary(
+    child: Image.asset(
+      AssetPaths.promptImage(filename),
+      width: double.infinity,
+      height: height,
+      fit: BoxFit.contain,
+      cacheHeight: height != null ? (height! * 2).toInt() : 400,
+      filterQuality: FilterQuality.medium,
+      errorBuilder: (context, error, stack) => const Icon(
+        Icons.image_not_supported_outlined,
+        size: 70,
+        color: AppColors.textMutedLight,
+      ),
     ),
   );
 }

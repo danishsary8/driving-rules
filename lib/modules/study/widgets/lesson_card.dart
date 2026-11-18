@@ -33,6 +33,7 @@ class LessonCard extends StatelessWidget {
         imageHint: 'study_image_read_hint'.tr,
       );
       final answer = _CorrectAnswer(
+        question: question,
         text: question.correctAnswer.replaceFirst(_optionPrefix, '').trim(),
       );
       return PremiumCard(
@@ -107,8 +108,9 @@ class LessonCard extends StatelessWidget {
 }
 
 class _CorrectAnswer extends StatelessWidget {
+  final Question question;
   final String text;
-  const _CorrectAnswer({required this.text});
+  const _CorrectAnswer({required this.question, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +150,37 @@ class _CorrectAnswer extends StatelessWidget {
                 fontSize: 18,
                 height: 1.85,
               ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: scheme.surface.withValues(alpha: 0.6),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.lightbulb_outline_rounded,
+                  size: 16,
+                  color: scheme.primary,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    Get.locale?.languageCode == 'en'
+                        ? question.explanationTipEn
+                        : question.explanationTipKh,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: scheme.onSurface.withValues(alpha: 0.8),
+                      height: 1.45,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

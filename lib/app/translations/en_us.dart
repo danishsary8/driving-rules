@@ -356,4 +356,35 @@ const Map<String, String> enUS = {
   'flashcards_progress': 'Card',
   'flashcards_practice_button': 'Practice Flashcards',
   'celebration_replay': 'Celebrate Again',
+
+  // Social Story Card
+  'share_story_card': 'Share Story Card',
+  'share_story_download': 'Download Story (PNG)',
+  'story_download_title': 'Downloaded Successfully!',
+  'story_download_desc': 'Story card has been saved to your downloads folder.',
+
+  // Progress Analytics Screen
+  'score_history_title': 'Score History',
+  'score_history_desc': 'Score trends over your last 10 mock exams',
+  'category_mastery_title': 'Category Mastery',
+  'category_mastery_desc': 'Accuracy and performance across categories',
+
+  // Road Sign Sub-Types
+  'sign_filter_all': 'All (100)',
+  'sign_filter_prohibitory': 'Prohibitory',
+  'sign_filter_danger': 'Warning',
+  'sign_filter_mandatory': 'Mandatory',
+  'sign_filter_informative': 'Informative',
+
+  // Exam Resume & Protection
+  'exam_resume_title': 'Resume In-Progress Exam',
+  'exam_resume_desc': 'Active exam session found',
+  'exam_resume_btn': 'Resume Exam',
+  'exam_resume_discard': 'Discard',
+
+  // Interactive Question Matrix & Explanations
+  'question_matrix_title': 'Question Matrix (45 Questions)',
+  'explanation_title': 'Explanation & Regulation',
+  'explanation_rule_tip': 'Traffic Rule Context',
+  'jump_to_question': 'Jump to Question #',
 };

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../app/themes/app_theme.dart';
 import '../../core/models/question_model.dart';
+import '../../core/models/sign_category.dart';
 import '../../core/utils/asset_paths.dart';
 import '../../shared/widgets/app_shell.dart';
 import '../../shared/widgets/design_components.dart';
@@ -169,7 +170,44 @@ class FlashcardsScreen extends GetView<FlashcardsController> {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
+
+            // Road Sign Sub-category Filter Chips
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (final type in SignType.values)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: ChoiceChip(
+                        avatar: Icon(
+                          type.icon,
+                          size: 15,
+                          color: controller.selectedType.value == type
+                              ? Colors.white
+                              : type.color,
+                        ),
+                        label: Text(type.labelKey.tr),
+                        selected: controller.selectedType.value == type,
+                        selectedColor: type.color,
+                        labelStyle: TextStyle(
+                          color: controller.selectedType.value == type
+                              ? Colors.white
+                              : theme.textTheme.bodyMedium?.color,
+                          fontWeight: controller.selectedType.value == type
+                              ? FontWeight.w700
+                              : FontWeight.w500,
+                          fontSize: 12,
+                        ),
+                        showCheckmark: false,
+                        onSelected: (_) => controller.filterByType(type),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
 
             // 3D Flip Card Container
             Center(
@@ -315,6 +353,7 @@ class _FrontCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final signType = SignTypeMeta.classify(question);
     return PremiumCard(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -325,8 +364,9 @@ class _FrontCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               StatusChip(
-                question.category.navKey.tr,
-                color: question.category.color,
+                signType.labelKey.tr,
+                icon: signType.icon,
+                color: signType.color,
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -368,13 +408,17 @@ class _FrontCard extends StatelessWidget {
                   color: theme.dividerColor.withValues(alpha: 0.5),
                 ),
               ),
-              child: Image.asset(
-                AssetPaths.promptImage(question.prompt),
-                fit: BoxFit.contain,
-                errorBuilder: (_, _, _) => const Icon(
-                  Icons.broken_image_rounded,
-                  size: 48,
-                  color: Colors.grey,
+              child: RepaintBoundary(
+                child: Image.asset(
+                  AssetPaths.promptImage(question.prompt),
+                  fit: BoxFit.contain,
+                  cacheHeight: 440,
+                  filterQuality: FilterQuality.medium,
+                  errorBuilder: (_, _, _) => const Icon(
+                    Icons.broken_image_rounded,
+                    size: 48,
+                    color: Colors.grey,
+                  ),
                 ),
               ),
             ),

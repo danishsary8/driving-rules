@@ -52,6 +52,8 @@ class DataService extends GetxService {
   final excludedIds = <Category, List<String>>{}.obs;
 
   final Map<Category, List<Question>> _byCategory = {};
+  final Map<String, Question> _byId = {};
+  List<Question>? _cachedAllQuestions;
 
   /// Questions loaded for [c] (empty when none/failed). Read-only.
   List<Question> questionsFor(Category c) =>
@@ -62,17 +64,10 @@ class DataService extends GetxService {
 
   /// Flat list of all loaded questions across all categories.
   List<Question> get allQuestions =>
-      _byCategory.values.expand((list) => list).toList();
+      _cachedAllQuestions ??= _byCategory.values.expand((list) => list).toList();
 
   /// Finds a question by its unique [id], or `null` if not found.
-  Question? findQuestionById(String id) {
-    for (final list in _byCategory.values) {
-      for (final q in list) {
-        if (q.id == id) return q;
-      }
-    }
-    return null;
-  }
+  Question? findQuestionById(String id) => _byId[id];
 
   /// Loads + parses all five files.
   ///
@@ -85,6 +80,8 @@ class DataService extends GetxService {
     errors.clear();
     excludedIds.clear();
     _byCategory.clear();
+    _byId.clear();
+    _cachedAllQuestions = null;
 
     for (final category in Category.values) {
       String raw;
@@ -108,6 +105,9 @@ class DataService extends GetxService {
         }
         final result = parseCategory(decoded, category);
         _byCategory[category] = result.questions;
+        for (final q in result.questions) {
+          _byId[q.id] = q;
+        }
         excludedIds[category] = result.excludedIds;
       } catch (e) {
         errors.add(

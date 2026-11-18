@@ -12,6 +12,7 @@ import '../../shared/widgets/app_motion.dart';
 import '../../shared/widgets/confetti_overlay.dart';
 import 'result_controller.dart';
 import 'widgets/driver_certificate_dialog.dart';
+import 'widgets/social_story_dialog.dart';
 
 class ResultScreen extends GetView<ResultController> {
   const ResultScreen({super.key});
@@ -284,7 +285,7 @@ class ResultScreen extends GetView<ResultController> {
                   spacing: 12,
                   runSpacing: 12,
                   children: [
-                    if (controller.passed)
+                    if (controller.passed) ...[
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFC99726),
@@ -294,9 +295,28 @@ class ResultScreen extends GetView<ResultController> {
                           AppHaptics.success();
                           DriverCertificateDialog.show(context, result: result);
                         },
-                        icon: const Icon(Icons.workspace_premium_rounded, size: 20),
+                        icon: const Icon(
+                          Icons.workspace_premium_rounded,
+                          size: 20,
+                        ),
                         label: Text('view_certificate'.tr),
                       ),
+                      OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: const Color(0xFF10B981),
+                          side: const BorderSide(
+                            color: Color(0xFF10B981),
+                            width: 1.5,
+                          ),
+                        ),
+                        onPressed: () {
+                          AppHaptics.success();
+                          SocialStoryDialog.show(context, result: result);
+                        },
+                        icon: const Icon(Icons.share_rounded, size: 19),
+                        label: Text('share_story_card'.tr),
+                      ),
+                    ],
                     if (controller.reviewData?.canReview ?? false)
                       ElevatedButton.icon(
                         onPressed: () {

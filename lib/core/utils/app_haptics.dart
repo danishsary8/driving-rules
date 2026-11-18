@@ -8,6 +8,7 @@ abstract final class AppHaptics {
   static Future<void> selection() async {
     try {
       await HapticFeedback.selectionClick();
+      await SystemSound.play(SystemSoundType.click);
     } catch (_) {}
   }
 

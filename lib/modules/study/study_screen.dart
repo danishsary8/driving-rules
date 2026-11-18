@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../app/routes/app_routes.dart';
 import '../../app/themes/app_theme.dart';
 import '../../core/models/question_model.dart';
+import '../../core/models/sign_category.dart';
 import '../../core/services/data_service.dart';
 import '../../core/utils/app_haptics.dart';
 import '../../shared/widgets/app_shell.dart';
@@ -239,6 +240,50 @@ class _StudyScreenState extends State<StudyScreen> {
                                   ),
                                 ],
                               ),
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                for (final type in SignType.values)
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 8),
+                                    child: ChoiceChip(
+                                      avatar: Icon(
+                                        type.icon,
+                                        size: 15,
+                                        color:
+                                            controller.selectedSignType.value ==
+                                                type
+                                            ? Colors.white
+                                            : type.color,
+                                      ),
+                                      label: Text(type.labelKey.tr),
+                                      selected:
+                                          controller.selectedSignType.value ==
+                                          type,
+                                      selectedColor: type.color,
+                                      labelStyle: TextStyle(
+                                        color:
+                                            controller.selectedSignType.value ==
+                                                type
+                                            ? Colors.white
+                                            : theme.textTheme.bodyMedium?.color,
+                                        fontWeight:
+                                            controller.selectedSignType.value ==
+                                                type
+                                            ? FontWeight.w700
+                                            : FontWeight.w500,
+                                        fontSize: 12,
+                                      ),
+                                      showCheckmark: false,
+                                      onSelected: (_) =>
+                                          controller.changeSignType(type),
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
                         ],

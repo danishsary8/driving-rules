@@ -61,6 +61,7 @@ class QuizPracticeController extends GetxController {
 
   /// Active category filter, or null for all categories.
   Category? filterCategory;
+  List<Question>? _customPool;
 
   Timer? _ticker;
 
@@ -74,16 +75,20 @@ class QuizPracticeController extends GetxController {
   void onInit() {
     super.onInit();
     final args = Get.arguments;
-    if (args is Category) {
+    if (args is List<Question>) {
+      _customPool = args;
+    } else if (args is Category) {
       filterCategory = args;
     }
     _setupRound();
   }
 
   void _setupRound() {
-    final pool = filterCategory != null
-        ? dataService.questionsFor(filterCategory!)
-        : dataService.all.values.expand((list) => list).toList();
+    final pool = _customPool != null && _customPool!.isNotEmpty
+        ? _customPool!
+        : (filterCategory != null
+            ? dataService.questionsFor(filterCategory!)
+            : dataService.all.values.expand((list) => list).toList());
 
     if (pool.isEmpty) return;
 

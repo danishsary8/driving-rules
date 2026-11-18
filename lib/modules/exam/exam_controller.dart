@@ -48,6 +48,9 @@ class ExamController extends GetxController {
   /// Seconds remaining in the 45-minute countdown (Req 10.1).
   final secondsLeft = 2700.obs;
 
+  /// Bookmarked question IDs tracked reactively in exam session.
+  final bookmarkedIds = <String>{}.obs;
+
   /// Records the build failure (too few questions) so the screen can show an
   /// error instead of crashing (Req 8.10). `null` when the exam built fine.
   final buildError = Rxn<InsufficientQuestionsException>();
@@ -61,14 +64,60 @@ class ExamController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    bookmarkedIds.addAll(storage.readBookmarkIds());
+
+    final args = Get.arguments;
+    final isResume = args is Map && args['resume'] == true;
+    if (isResume && storage.hasOngoingExam) {
+      final session = storage.readOngoingExam();
+      if (session != null) {
+        final qIds = (session['questionIds'] as List?)?.cast<String>() ?? [];
+        final restoredQuestions = <Question>[];
+        for (final id in qIds) {
+          final q = data.findQuestionById(id);
+          if (q != null) restoredQuestions.add(q);
+        }
+        if (restoredQuestions.length == 45) {
+          questions = restoredQuestions;
+          currentIndex.value =
+              (session['currentIndex'] as int? ?? 0).clamp(0, 44);
+          secondsLeft.value =
+              (session['remainingSeconds'] as int? ?? 2700).clamp(1, 2700);
+          final answers = session['selectedAnswers'];
+          if (answers is Map) {
+            for (final entry in answers.entries) {
+              final k = int.tryParse(entry.key.toString());
+              final v = entry.value as int?;
+              if (k != null && v != null) {
+                selectedAnswers[k] = v;
+              }
+            }
+          }
+          startTimer();
+          return;
+        }
+      }
+    }
+
     try {
       questions = ExamBuilder.buildExam(data.all);
+      _autoSaveOngoing();
       startTimer();
     } on InsufficientQuestionsException catch (e) {
       // Do not start the timer; the screen renders an error state (Req 8.10).
       questions = const [];
       buildError.value = e;
     }
+  }
+
+  void _autoSaveOngoing() {
+    if (_finished || questions.isEmpty) return;
+    storage.saveOngoingExam(
+      questionIds: questions.map((q) => q.id).toList(),
+      currentIndex: currentIndex.value,
+      remainingSeconds: secondsLeft.value,
+      selectedAnswers: selectedAnswers,
+    );
   }
 
   /// The question currently displayed.
@@ -103,14 +152,32 @@ class ExamController extends GetxController {
         finishExam(FinishReason.timeout);
       } else {
         secondsLeft.value--;
+        if (secondsLeft.value % 15 == 0) {
+          _autoSaveOngoing();
+        }
       }
     });
   }
 
   /// Records (or replaces) the selected option for the current question
   /// (Req 9.3, 9.4).
-  void selectAnswer(int optionIndex) =>
-      selectedAnswers[currentIndex.value] = optionIndex;
+  void selectAnswer(int optionIndex) {
+    selectedAnswers[currentIndex.value] = optionIndex;
+    _autoSaveOngoing();
+  }
+
+  /// Whether question with [id] is bookmarked.
+  bool isBookmarked(String id) => bookmarkedIds.contains(id);
+
+  /// Toggles bookmark status for question with [id].
+  Future<void> toggleBookmark(String id) async {
+    final added = await storage.toggleBookmark(id);
+    if (added) {
+      bookmarkedIds.add(id);
+    } else {
+      bookmarkedIds.remove(id);
+    }
+  }
 
   /// Forward navigation with the priority gate + last-question submission
   /// (Req 9.6, 9.7, 9.8, 11.1, 11.2).
@@ -128,11 +195,15 @@ class ExamController extends GetxController {
       return;
     }
     currentIndex.value = i + 1;
+    _autoSaveOngoing();
   }
 
   /// Moves back one question, unless already at the first (Req 9.9).
   void goBack() {
-    if (!isFirst) currentIndex.value -= 1;
+    if (!isFirst) {
+      currentIndex.value -= 1;
+      _autoSaveOngoing();
+    }
   }
 
   /// Stops the timer, scores the session, persists the result + best score, and
@@ -142,6 +213,7 @@ class ExamController extends GetxController {
     if (_finished) return;
     _finished = true;
     _ticker?.cancel();
+    storage.clearOngoingExam();
     final result = ExamScorer.score(questions, selectedAnswers, reason);
     // Fire-and-forget persistence: GetStorage writes complete promptly and
     // must not block navigation to the result screen.

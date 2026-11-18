@@ -10,6 +10,7 @@ library;
 import 'package:get/get.dart';
 
 import '../../core/models/question_model.dart';
+import '../../core/models/sign_category.dart';
 import '../../core/services/data_service.dart';
 import '../../core/services/storage_service.dart';
 import '../../core/utils/app_haptics.dart';
@@ -33,12 +34,22 @@ class StudyController extends GetxController {
 
   void changeCategory(Category value) {
     showOnlyBookmarks.value = false;
+    selectedSignType.value = SignType.all;
     _category.value = value;
     searchTerm.value = '';
   }
 
   /// Current search term; an empty/whitespace value means "no filter".
   final searchTerm = ''.obs;
+
+  /// Road sign sub-type filter (applicable when category == Category.sign).
+  final selectedSignType = SignType.all.obs;
+
+  void changeSignType(SignType type) {
+    selectedSignType.value = type;
+    searchTerm.value = '';
+    AppHaptics.selection();
+  }
 
   /// Reactive set of question IDs currently bookmarked by the user.
   final bookmarkedIds = <String>{}.obs;
@@ -95,7 +106,13 @@ class StudyController extends GetxController {
           .where((q) => bookmarkedIds.contains(q.id))
           .toList();
     }
-    return data.questionsFor(category);
+    final list = data.questionsFor(category);
+    if (category == Category.sign && selectedSignType.value != SignType.all) {
+      return list
+          .where((q) => SignTypeMeta.classify(q) == selectedSignType.value)
+          .toList();
+    }
+    return list;
   }
 
   /// Total number of questions in this category or bookmark view. (Req 5.4)

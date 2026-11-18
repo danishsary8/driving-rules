@@ -52,6 +52,6 @@ class MistakesController extends GetxController {
   void drillMistakes() {
     if (questions.isEmpty) return;
     AppHaptics.light();
-    Get.toNamed(AppRoutes.quizPractice);
+    Get.toNamed(AppRoutes.quizPractice, arguments: questions.toList());
   }
 }

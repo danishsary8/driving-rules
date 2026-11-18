@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../app/routes/app_routes.dart';
 import '../../app/themes/app_theme.dart';
-import '../../core/models/exam_analytics_model.dart';
 import '../../core/models/question_model.dart';
 import '../../core/services/data_service.dart';
-import '../../core/services/storage_service.dart';
+import '../../core/utils/app_haptics.dart';
 import 'design_components.dart';
-import 'exam_readiness_card.dart';
 import 'language_toggle.dart';
 import 'theme_toggle.dart';
 import 'app_motion.dart';
@@ -437,38 +435,6 @@ class PageContent extends StatelessWidget {
 
 void showProgress(BuildContext context) {
   FocusManager.instance.primaryFocus?.unfocus();
-  final storage = Get.find<StorageService>();
-  final history = storage.readExamHistory();
-  final readiness = ExamAnalytics.calculateReadiness(history);
-  final mastery = ExamAnalytics.calculateCategoryMastery(history);
-
-  showModalBottomSheet<void>(
-    context: context,
-    isScrollControlled: true,
-    showDragHandle: true,
-    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-    constraints: const BoxConstraints(maxWidth: 640),
-    builder: (context) => SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SectionHeading('my_progress'.tr, subtitle: 'progress_subtitle'.tr),
-            const SizedBox(height: 18),
-            ExamReadinessCard(
-              readiness: readiness,
-              history: history,
-              mastery: mastery,
-              onTakeExam: () {
-                Navigator.pop(context);
-                startPractice();
-              },
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
+  AppHaptics.selection();
+  Get.toNamed(AppRoutes.progress);
 }

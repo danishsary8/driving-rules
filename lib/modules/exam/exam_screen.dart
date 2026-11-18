@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../app/routes/app_routes.dart';
 import '../../app/themes/app_theme.dart';
@@ -74,6 +75,7 @@ class _ExamScreenState extends State<ExamScreen> {
       ),
     );
     if (leave != true || !mounted) return;
+    await controller.storage.clearOngoingExam();
     setState(() => _allowPop = true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) Get.offAllNamed(AppRoutes.home);
@@ -109,6 +111,59 @@ class _ExamScreenState extends State<ExamScreen> {
     if (_scroll.hasClients) _scroll.jumpTo(0);
   }
 
+  KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
+    if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
+    if (event.logicalKey == LogicalKeyboardKey.digit1 ||
+        event.logicalKey == LogicalKeyboardKey.numpad1 ||
+        event.logicalKey == LogicalKeyboardKey.keyA) {
+      if (controller.current.options.isNotEmpty) {
+        AppHaptics.selection();
+        controller.selectAnswer(0);
+        return KeyEventResult.handled;
+      }
+    } else if (event.logicalKey == LogicalKeyboardKey.digit2 ||
+        event.logicalKey == LogicalKeyboardKey.numpad2 ||
+        (event.logicalKey == LogicalKeyboardKey.keyB &&
+            !HardwareKeyboard.instance.isControlPressed)) {
+      if (controller.current.options.length > 1) {
+        AppHaptics.selection();
+        controller.selectAnswer(1);
+        return KeyEventResult.handled;
+      }
+    } else if (event.logicalKey == LogicalKeyboardKey.digit3 ||
+        event.logicalKey == LogicalKeyboardKey.numpad3 ||
+        event.logicalKey == LogicalKeyboardKey.keyC) {
+      if (controller.current.options.length > 2) {
+        AppHaptics.selection();
+        controller.selectAnswer(2);
+        return KeyEventResult.handled;
+      }
+    } else if (event.logicalKey == LogicalKeyboardKey.digit4 ||
+        event.logicalKey == LogicalKeyboardKey.numpad4 ||
+        event.logicalKey == LogicalKeyboardKey.keyD) {
+      if (controller.current.options.length > 3) {
+        AppHaptics.selection();
+        controller.selectAnswer(3);
+        return KeyEventResult.handled;
+      }
+    } else if (event.logicalKey == LogicalKeyboardKey.arrowRight ||
+        event.logicalKey == LogicalKeyboardKey.enter) {
+      if (controller.answerFor(controller.currentIndex.value) != null) {
+        _next();
+        return KeyEventResult.handled;
+      }
+    } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+      if (!controller.isFirst) {
+        AppHaptics.light();
+        controller.goBack();
+        if (_scroll.hasClients) _scroll.jumpTo(0);
+        return KeyEventResult.handled;
+      }
+    }
+    return KeyEventResult.ignored;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (controller.hasBuildError) {
@@ -140,8 +195,11 @@ class _ExamScreenState extends State<ExamScreen> {
         if (!didPop) _leave();
       },
       child: Scaffold(
-        body: SafeArea(
-          child: Column(
+        body: Focus(
+          autofocus: true,
+          onKeyEvent: _handleKeyEvent,
+          child: SafeArea(
+            child: Column(
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -384,7 +442,8 @@ class _ExamScreenState extends State<ExamScreen> {
           ),
         ),
       ),
-    );
+    ),
+  );
   }
 }
 
@@ -393,8 +452,10 @@ class _QuestionPanel extends StatelessWidget {
   const _QuestionPanel({required this.controller});
   @override
   Widget build(BuildContext context) => Obx(() {
+    final theme = Theme.of(context);
     final i = controller.currentIndex.value;
     final q = controller.current;
+    final isBookmarked = controller.isBookmarked(q.id);
     return PremiumCard(
       padding: EdgeInsets.all(MediaQuery.sizeOf(context).width < 600 ? 20 : 30),
       child: Column(
@@ -408,9 +469,29 @@ class _QuestionPanel extends StatelessWidget {
                 color: q.category.color,
               ),
               const Spacer(),
+              IconButton(
+                tooltip: isBookmarked ? 'bookmarked'.tr : 'bookmark'.tr,
+                visualDensity: VisualDensity.compact,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                icon: Icon(
+                  isBookmarked
+                      ? Icons.bookmark_rounded
+                      : Icons.bookmark_border_rounded,
+                  color: isBookmarked
+                      ? const Color(0xFFF59E0B)
+                      : theme.hintColor,
+                  size: 20,
+                ),
+                onPressed: () {
+                  AppHaptics.selection();
+                  controller.toggleBookmark(q.id);
+                },
+              ),
+              const SizedBox(width: 8),
               Text(
                 '${(i + 1).toString().padLeft(2, '0')} / ${controller.questions.length}',
-                style: Theme.of(context).textTheme.labelLarge,
+                style: theme.textTheme.labelLarge,
               ),
             ],
           ),

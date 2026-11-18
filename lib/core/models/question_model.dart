@@ -78,6 +78,40 @@ class Question {
   /// The validated correct answer, preserving the original source text.
   String get correctAnswer => options[correctIndex];
 
+  /// Educational contextual explanation in Khmer.
+  String get explanationTipKh {
+    final ans = correctAnswer;
+    switch (category) {
+      case Category.sign:
+        return 'ផ្លាកសញ្ញានេះមានអត្ថន័យផ្លូវការ៖ «$ans»។ អ្នកបើកបរត្រូវតែគោរពតាមការណែនាំនៃផ្លាកសញ្ញានេះជាដាច់ខាត។';
+      case Category.priority:
+        return 'យោងតាមច្បាប់ចរាចរណ៍ផ្លូវគោកកម្ពុជា លំដាប់សិទ្ធិអាទិភាពត្រឹមត្រូវគឺ៖ «$ans»។ ការមិនគោរពសិទ្ធិអាទិភាពអាចបង្កគ្រោះថ្នាក់ធ្ងន់ធ្ងរ។';
+      case Category.emergency:
+        return 'វិធានការសង្គ្រោះ និងសុវត្ថិភាពត្រឹមត្រូវក្នុងស្ថានភាពបន្ទាន់គឺ៖ «$ans»។';
+      case Category.technique:
+        return 'បច្ចេកទេសបើកបរ និងការត្រួតពិនិត្យយានយន្តត្រឹមត្រូវគឺ៖ «$ans»។';
+      case Category.general:
+        return 'បទប្បញ្ញត្តិទូទៅនៃច្បាប់ចរាចរណ៍ផ្លូវគោកចែងថា៖ «$ans»។';
+    }
+  }
+
+  /// Educational contextual explanation in English.
+  String get explanationTipEn {
+    final ans = correctAnswer;
+    switch (category) {
+      case Category.sign:
+        return 'Official traffic sign meaning: "$ans". Drivers must strictly adhere to this directive.';
+      case Category.priority:
+        return 'According to Cambodian road traffic law, the mandatory right-of-way order is: "$ans". Failing to yield is a fatal violation.';
+      case Category.emergency:
+        return 'Standard emergency and road safety procedure: "$ans".';
+      case Category.technique:
+        return 'Recommended driving technique and vehicle maintenance rule: "$ans".';
+      case Category.general:
+        return 'General road traffic regulations state: "$ans".';
+    }
+  }
+
   /// Originating category of this question.
   final Category category;
 
