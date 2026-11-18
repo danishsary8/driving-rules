@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../app/routes/app_routes.dart';
 import '../../app/themes/app_theme.dart';
 import '../../core/models/question_model.dart';
 import '../../core/services/data_service.dart';
@@ -127,16 +128,120 @@ class _StudyScreenState extends State<StudyScreen> {
                                   child: ChoiceChip(
                                     label: Text(c.navKey.tr),
                                     avatar: Icon(c.icon, size: 17),
-                                    selected: c == category,
+                                    selected:
+                                        !controller.showOnlyBookmarks.value &&
+                                        c == category,
                                     showCheckmark: false,
                                     selectedColor:
                                         theme.colorScheme.primaryContainer,
                                     onSelected: (_) => _change(c),
                                   ),
                                 ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8),
+                                child: ChoiceChip(
+                                  label: Text(
+                                    '${'study_bookmarks'.tr} (${controller.totalBookmarksCount})',
+                                  ),
+                                  avatar: Icon(
+                                    controller.showOnlyBookmarks.value
+                                        ? Icons.bookmark_rounded
+                                        : Icons.bookmark_border_rounded,
+                                    size: 17,
+                                    color: const Color(0xFFEAB308),
+                                  ),
+                                  selected: controller.showOnlyBookmarks.value,
+                                  showCheckmark: false,
+                                  selectedColor:
+                                      theme.colorScheme.primaryContainer,
+                                  onSelected: (_) =>
+                                      controller.toggleBookmarkFilter(),
+                                ),
+                              ),
                             ],
                           ),
                         ),
+                        if (category == Category.sign &&
+                            !controller.showOnlyBookmarks.value) ...[
+                          const SizedBox(height: 14),
+                          InkWell(
+                            onTap: () {
+                              AppHaptics.selection();
+                              Get.toNamed(AppRoutes.flashcards);
+                            },
+                            borderRadius: BorderRadius.circular(16),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    theme.colorScheme.primary.withValues(
+                                      alpha: 0.12,
+                                    ),
+                                    theme.colorScheme.secondary.withValues(
+                                      alpha: 0.08,
+                                    ),
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: theme.colorScheme.primary.withValues(
+                                    alpha: 0.25,
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: theme.colorScheme.primary,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.style_rounded,
+                                      color: Colors.white,
+                                      size: 18,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'flashcards_title'.tr,
+                                          style: theme.textTheme.titleSmall
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                        ),
+                                        Text(
+                                          'flashcards_subtitle'.tr,
+                                          style: theme.textTheme.bodySmall
+                                              ?.copyWith(
+                                                color: AppColors.mutedFor(
+                                                  theme.brightness,
+                                                ),
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    size: 14,
+                                    color: theme.colorScheme.primary,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                         const SizedBox(height: 24),
                         Semantics(
                           container: true,
@@ -236,9 +341,12 @@ class _StudyScreenState extends State<StudyScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 18),
                     child: LessonCard(
-                      key: ValueKey('${category.name}_${question.id}'),
+                      key: ValueKey('${question.category.name}_${question.id}'),
                       question: question,
                       number: index,
+                      isBookmarked: controller.isBookmarked(question.id),
+                      onToggleBookmark: () =>
+                          controller.toggleBookmark(question.id),
                     ),
                   );
                 },

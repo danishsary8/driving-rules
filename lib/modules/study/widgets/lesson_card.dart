@@ -11,7 +11,16 @@ import '../../exam/widgets/question_card.dart';
 class LessonCard extends StatelessWidget {
   final Question question;
   final int number;
-  const LessonCard({super.key, required this.question, required this.number});
+  final bool isBookmarked;
+  final VoidCallback? onToggleBookmark;
+
+  const LessonCard({
+    super.key,
+    required this.question,
+    required this.number,
+    this.isBookmarked = false,
+    this.onToggleBookmark,
+  });
 
   static final _optionPrefix = RegExp(r'^[កខគ]\s*[-–—]\s*');
 
@@ -37,14 +46,42 @@ class LessonCard extends StatelessWidget {
               spacing: 12,
               runSpacing: 8,
               children: [
-                StatusChip(
-                  '${'exam_question_progress'.tr} ${number.toString().padLeft(2, '0')}',
-                  color: question.category.color,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    StatusChip(
+                      '${'exam_question_progress'.tr} ${number.toString().padLeft(2, '0')}',
+                      color: question.category.color,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      question.category.navKey.tr,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
                 ),
-                Text(
-                  question.category.navKey.tr,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
+                if (onToggleBookmark != null)
+                  IconButton(
+                    icon: Icon(
+                      isBookmarked
+                          ? Icons.bookmark_rounded
+                          : Icons.bookmark_border_rounded,
+                      color: isBookmarked
+                          ? const Color(0xFFEAB308)
+                          : Theme.of(context).hintColor,
+                      size: 24,
+                    ),
+                    tooltip: isBookmarked
+                        ? 'bookmark_remove'.tr
+                        : 'bookmark_add'.tr,
+                    onPressed: onToggleBookmark,
+                    splashRadius: 20,
+                    constraints: const BoxConstraints(
+                      minWidth: 36,
+                      minHeight: 36,
+                    ),
+                    padding: EdgeInsets.zero,
+                  ),
               ],
             ),
             const SizedBox(height: 22),

@@ -339,4 +339,21 @@ const Map<String, String> enUS = {
   'review_priority': 'Priority Questions',
   'add_to_mistakes': 'Save to Mistakes Bank',
   'added_to_mistakes': 'Question saved to Mistakes Bank!',
+
+  // Bookmarks & Flashcards & Confetti
+  'study_bookmarks': 'Bookmarked',
+  'bookmark_add': 'Bookmark question',
+  'bookmark_remove': 'Remove bookmark',
+  'bookmark_empty_title': 'No Bookmarked Questions Yet',
+  'bookmark_empty_hint': 'Tap the star icon on any tricky question to review it here.',
+  'flashcards_title': 'Road Sign Flashcards',
+  'flashcards_subtitle': 'Master 100 Cambodian Road Signs',
+  'flashcards_flip_hint': 'Tap card to flip and view meaning',
+  'flashcards_mastered': 'Mastered',
+  'flashcards_needs_review': 'Needs Review',
+  'flashcards_shuffle': 'Shuffle',
+  'flashcards_reset': 'Reset',
+  'flashcards_progress': 'Card',
+  'flashcards_practice_button': 'Practice Flashcards',
+  'celebration_replay': 'Celebrate Again',
 };

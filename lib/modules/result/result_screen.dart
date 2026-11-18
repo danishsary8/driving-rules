@@ -9,6 +9,7 @@ import '../../shared/widgets/app_shell.dart';
 import '../../shared/widgets/design_components.dart';
 import '../../shared/widgets/premium_card.dart';
 import '../../shared/widgets/app_motion.dart';
+import '../../shared/widgets/confetti_overlay.dart';
 import 'result_controller.dart';
 import 'widgets/driver_certificate_dialog.dart';
 
@@ -20,9 +21,11 @@ class ResultScreen extends GetView<ResultController> {
     final color = controller.passed
         ? AppColors.accentGreen
         : const Color(0xFFAD822B);
-    return AppShell(
-      title: 'result_score'.tr,
-      child: PageContent(
+    return ConfettiOverlay(
+      autoTrigger: controller.passed,
+      child: AppShell(
+        title: 'result_score'.tr,
+        child: PageContent(
         maxWidth: 1040,
         children: [
           Eyebrow('result_eyebrow'.tr),
@@ -334,8 +337,9 @@ class ResultScreen extends GetView<ResultController> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }
 
 class _ResultMetric extends StatelessWidget {

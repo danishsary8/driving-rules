@@ -28,6 +28,7 @@ class StorageService extends GetxService {
   static const _kBestScore = 'best_score'; // int
   static const _kExamHistory = 'exam_history'; // List of JSON maps
   static const _kMistakes = 'mistake_question_ids'; // List of String IDs
+  static const _kBookmarks = 'bookmarked_question_ids'; // List of String IDs
 
   /// Reads the persisted [ThemeMode], or `null` when unset/unrecognized so the
   /// caller can apply its own default.
@@ -170,4 +171,39 @@ class StorageService extends GetxService {
 
   /// Total number of unique questions currently in the Mistakes Bank.
   int get mistakeCount => readMistakeIds().length;
+
+  // ---------------------------------------------------------------------------
+  // Bookmarks (Saved Questions)
+  // ---------------------------------------------------------------------------
+
+  /// Reads all question IDs currently bookmarked by the user.
+  Set<String> readBookmarkIds() {
+    final list = _box.read<List>(_kBookmarks);
+    if (list == null) return <String>{};
+    return list.map((e) => e.toString()).toSet();
+  }
+
+  /// Checks if [id] is in the user's bookmarks.
+  bool isBookmarked(String id) => readBookmarkIds().contains(id);
+
+  /// Toggles the bookmark status of [id] and returns the new status (`true` if saved).
+  Future<bool> toggleBookmark(String id) async {
+    final set = readBookmarkIds();
+    final wasBookmarked = set.contains(id);
+    if (wasBookmarked) {
+      set.remove(id);
+    } else {
+      set.add(id);
+    }
+    await _box.write(_kBookmarks, set.toList());
+    return !wasBookmarked;
+  }
+
+  /// Clears all saved bookmarks.
+  Future<void> clearAllBookmarks() async {
+    await _box.remove(_kBookmarks);
+  }
+
+  /// Total count of saved bookmarked questions.
+  int get bookmarkCount => readBookmarkIds().length;
 }

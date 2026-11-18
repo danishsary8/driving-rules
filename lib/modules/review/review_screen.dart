@@ -143,7 +143,37 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                 style: theme.textTheme.bodySmall,
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 8),
+                            IconButton(
+                              icon: Icon(
+                                Get.find<StorageService>().isBookmarked(
+                                      question.id,
+                                    )
+                                    ? Icons.bookmark_rounded
+                                    : Icons.bookmark_border_rounded,
+                                color: Get.find<StorageService>().isBookmarked(
+                                      question.id,
+                                    )
+                                    ? const Color(0xFFEAB308)
+                                    : theme.hintColor,
+                                size: 22,
+                              ),
+                              tooltip: 'bookmark_add'.tr,
+                              onPressed: () async {
+                                await Get.find<StorageService>().toggleBookmark(
+                                  question.id,
+                                );
+                                AppHaptics.selection();
+                                if (mounted) setState(() {});
+                              },
+                              splashRadius: 20,
+                              constraints: const BoxConstraints(
+                                minWidth: 36,
+                                minHeight: 36,
+                              ),
+                              padding: EdgeInsets.zero,
+                            ),
+                            const SizedBox(width: 8),
                             StatusChip(
                               (correct ? 'review_correct' : 'review_wrong').tr,
                               icon: correct

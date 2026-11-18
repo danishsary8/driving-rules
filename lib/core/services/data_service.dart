@@ -60,6 +60,20 @@ class DataService extends GetxService {
   /// All loaded questions grouped by category. Read-only.
   Map<Category, List<Question>> get all => Map.unmodifiable(_byCategory);
 
+  /// Flat list of all loaded questions across all categories.
+  List<Question> get allQuestions =>
+      _byCategory.values.expand((list) => list).toList();
+
+  /// Finds a question by its unique [id], or `null` if not found.
+  Question? findQuestionById(String id) {
+    for (final list in _byCategory.values) {
+      for (final q in list) {
+        if (q.id == id) return q;
+      }
+    }
+    return null;
+  }
+
   /// Loads + parses all five files.
   ///
   /// Sets [status] to [DataStatus.ready] when every category loads without

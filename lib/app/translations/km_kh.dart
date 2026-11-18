@@ -326,4 +326,21 @@ const Map<String, String> kmKH = {
   'review_priority': 'សំណួរអាទិភាព',
   'add_to_mistakes': 'រក្សាទុកក្នុងធនាគារកំហុស',
   'added_to_mistakes': 'បានរក្សាទុកសំណួរក្នុងធនាគារកំហុស!',
+
+  // Bookmarks & Flashcards & Confetti
+  'study_bookmarks': 'សំណួរបានចំណាំ',
+  'bookmark_add': 'ចំណាំសំណួរ',
+  'bookmark_remove': 'ដកការចំណាំ',
+  'bookmark_empty_title': 'មិនទាន់មានសំណួរបានចំណាំទេ',
+  'bookmark_empty_hint': 'ចុចលើរូបសញ្ញាផ្កាយនៅត្រង់សំណួរដែលពិបាក ដើម្បីរក្សាទុកមើលឡើងវិញនៅទីនេះ។',
+  'flashcards_title': 'កាតត្រឡប់ស្លាកសញ្ញា',
+  'flashcards_subtitle': 'ហាត់ចាំអត្ថន័យសញ្ញាចរាចរណ៍ ១០០ សញ្ញា',
+  'flashcards_flip_hint': 'ចុចលើកាតដើម្បីបង្វិលមើលអត្ថន័យ',
+  'flashcards_mastered': 'ចាំច្បាស់',
+  'flashcards_needs_review': 'នៅច្រឡំ',
+  'flashcards_shuffle': 'ក្រឡុកកាត',
+  'flashcards_reset': 'ចាប់ផ្ដើមឡើងវិញ',
+  'flashcards_progress': 'កាតទី',
+  'flashcards_practice_button': 'ហាត់កាតសញ្ញា',
+  'celebration_replay': 'អបអរសាទរម្តងទៀត',
 };

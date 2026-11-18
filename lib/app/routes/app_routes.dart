@@ -7,4 +7,5 @@ abstract class AppRoutes {
   static const review = '/review';
   static const quizPractice = '/quiz-practice';
   static const mistakes = '/mistakes';
+  static const flashcards = '/flashcards';
 }
