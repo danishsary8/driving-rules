@@ -236,6 +236,13 @@ const Map<String, String> enUS = {
   'exam_rules_confirm': 'I Understand the Rules • Start Exam',
   'exam_rules_pill': 'Exam Rules',
   'exam_rules_quick': 'Pass 38+ • Priority 0-Error',
+  'exam_rules_step': 'Rule',
+  'exam_rules_skip': 'Start Directly',
+  'exam_rules_tip': 'Key Tip:',
+  'exam_rules_tip_priority': 'Carefully inspect right-of-way signs before submitting.',
+  'exam_rules_tip_pass': 'Answer confident questions first and leave tough ones for review.',
+  'exam_rules_tip_time': 'Never leave any question blank before the timer expires.',
+  'exam_rules_tip_nav': 'You can navigate back and modify answers before final submission.',
   'priority_warning_banner':
       'PRIORITY QUESTION: Zero error allowed! 1 wrong answer = Immediate Auto-Fail.',
   'fail_reason_priority_detail':

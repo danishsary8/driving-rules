@@ -81,7 +81,7 @@ class ResultController extends GetxController {
   }
 
   /// Starts a fresh exam, replacing the result screen (Req 12.12).
-  void tryAgain() => Get.offNamed(AppRoutes.exam);
+  void tryAgain() => Get.offNamed(AppRoutes.exam, arguments: {'skipRules': true});
 
   /// Opens the question-by-question answer review when full review data exists.
   void reviewAnswers() {

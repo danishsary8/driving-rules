@@ -47,7 +47,7 @@ class LearningJourney extends StatelessWidget {
                     ? () {
                         ExamRulesDialog.show(
                           context,
-                          onStart: controller.startExam,
+                          onStart: () => controller.startExam(skipRules: true),
                           isRevisit: false,
                         );
                       }

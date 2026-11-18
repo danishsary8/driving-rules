@@ -376,7 +376,7 @@ class _ExamModesSection extends StatelessWidget {
         final realExam = Obx(
           () => RealExamCard(
             enabled: controller.canStartExam,
-            onTap: controller.startExam,
+            onTap: () => controller.startExam(skipRules: true),
           ),
         );
         final practice = PracticeModeCard(

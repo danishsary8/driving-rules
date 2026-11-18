@@ -28,11 +28,15 @@ class _ExamScreenState extends State<ExamScreen> {
   void initState() {
     super.initState();
     if (!Get.testMode) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          _showRules(isRevisit: false);
-        }
-      });
+      final args = Get.arguments;
+      final skipRules = (args is Map && args['skipRules'] == true);
+      if (!skipRules) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            _showRules(isRevisit: false);
+          }
+        });
+      }
     }
   }
 

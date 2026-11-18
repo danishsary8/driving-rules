@@ -57,8 +57,11 @@ class HomeController extends GetxController {
   /// Starts a fresh exam when data is ready, routing to the exam screen (the
   /// ExamController builds the session in its `onInit`). No-op while loading or
   /// on error. (Req 4.4)
-  void startExam() {
+  void startExam({bool skipRules = false}) {
     if (!canStartExam) return;
-    Get.toNamed(AppRoutes.exam);
+    Get.toNamed(
+      AppRoutes.exam,
+      arguments: skipRules ? {'skipRules': true} : null,
+    );
   }
 }
