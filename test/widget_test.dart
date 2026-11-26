@@ -1,6 +1,7 @@
 import 'package:driving_rule/app/routes/app_pages.dart';
 import 'package:driving_rule/app/routes/app_routes.dart';
 import 'package:driving_rule/app/themes/app_theme.dart';
+import 'package:driving_rule/app/themes/khmer_typography.dart';
 import 'package:driving_rule/app/themes/theme_controller.dart';
 import 'package:driving_rule/app/translations/app_translations.dart';
 import 'package:driving_rule/app/translations/en_us.dart';
@@ -276,6 +277,7 @@ void main() {
             darkTheme: AppTheme.dark,
             themeMode: variant.theme,
             scrollBehavior: const AppScrollBehavior(),
+            builder: KhmerTypography.builder,
           ),
         );
         await tester.pump(const Duration(milliseconds: 1000));

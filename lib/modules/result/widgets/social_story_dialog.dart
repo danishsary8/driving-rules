@@ -185,7 +185,7 @@ class _SocialStoryDialogState extends State<SocialStoryDialog> {
                           color: Colors.white,
                           fontSize: 22,
                           fontWeight: FontWeight.w900,
-                          letterSpacing: -0.3,
+                          letterSpacing: 0,
                         ),
                       ),
                       const SizedBox(height: 6),

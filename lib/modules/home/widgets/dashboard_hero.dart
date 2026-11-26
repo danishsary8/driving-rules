@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../app/themes/app_theme.dart';
+import '../../../app/themes/khmer_typography.dart';
 import '../../../shared/widgets/design_components.dart';
 
 /// A high contrast editorial hero with its own light illustration surface.
@@ -44,7 +45,7 @@ class DashboardHero extends StatelessWidget {
               color: const Color(0xFFFAFCF6),
               fontSize: wide ? 43 : 30,
               height: 1.3,
-              letterSpacing: -.4,
+              letterSpacing: KhmerTypography.tracking(context, -.4),
             ),
           ),
           const SizedBox(height: 16),

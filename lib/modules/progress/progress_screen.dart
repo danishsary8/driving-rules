@@ -80,10 +80,7 @@ class _ReadinessHeroCard extends StatelessWidget {
   final ExamReadiness readiness;
   final ProgressController controller;
 
-  const _ReadinessHeroCard({
-    required this.readiness,
-    required this.controller,
-  });
+  const _ReadinessHeroCard({required this.readiness, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +157,7 @@ class _ReadinessHeroCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Readiness',
+                          'readiness_label'.tr,
                           style: theme.textTheme.bodySmall?.copyWith(
                             fontSize: 10,
                             color: AppColors.mutedFor(theme.brightness),
@@ -172,40 +169,52 @@ class _ReadinessHeroCard extends StatelessWidget {
                 ),
               );
 
-              final metrics = Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                children: [
-                  _MetricPill(
-                    label: 'attempts_count'.tr,
-                    value: '${readiness.totalAttempts}',
-                    icon: Icons.history_rounded,
-                    color: const Color(0xFF3B82F6),
-                  ),
-                  _MetricPill(
-                    label: 'pass_rate'.tr,
-                    value: '${(readiness.passRate * 100).round()}%',
-                    icon: Icons.verified_rounded,
-                    color: const Color(0xFF10B981),
-                  ),
-                  _MetricPill(
-                    label: 'best_score'.tr,
-                    value: '${controller.bestScore}/45',
-                    icon: Icons.emoji_events_rounded,
-                    color: const Color(0xFFF59E0B),
-                  ),
-                ],
-              );
+              final pills = [
+                _MetricPill(
+                  label: 'attempts_count'.tr,
+                  value: '${readiness.totalAttempts}',
+                  icon: Icons.history_rounded,
+                  color: const Color(0xFF3B82F6),
+                ),
+                _MetricPill(
+                  label: 'pass_rate'.tr,
+                  value: '${(readiness.passRate * 100).round()}%',
+                  icon: Icons.verified_rounded,
+                  color: const Color(0xFF10B981),
+                ),
+                _MetricPill(
+                  label: 'best_score'.tr,
+                  value: '${controller.bestScore}/45',
+                  icon: Icons.emoji_events_rounded,
+                  color: const Color(0xFFF59E0B),
+                ),
+              ];
 
               if (isSmall) {
+                // Three equal-width tiles in one row, so they never wrap
+                // unevenly (2 + 1) on phones.
                 return Column(
                   children: [
                     gauge,
                     const SizedBox(height: 20),
-                    metrics,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var i = 0; i < pills.length; i++) ...[
+                          if (i > 0) const SizedBox(width: 10),
+                          Expanded(child: pills[i].stacked()),
+                        ],
+                      ],
+                    ),
                   ],
                 );
               }
+              final metrics = Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: pills,
+              );
+
               return Row(
                 children: [
                   gauge,
@@ -226,7 +235,11 @@ class _ReadinessHeroCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.lightbulb_outline_rounded, size: 20, color: tierColor),
+                Icon(
+                  Icons.lightbulb_outline_rounded,
+                  size: 20,
+                  color: tierColor,
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -243,21 +256,64 @@ class _ReadinessHeroCard extends StatelessWidget {
   }
 }
 
+/// Small tinted stat tile (icon, value, label). [stacked] lays the content out
+/// vertically so three tiles fit side by side on a phone.
 class _MetricPill extends StatelessWidget {
   final String label, value;
   final IconData icon;
   final Color color;
+  final bool isStacked;
 
   const _MetricPill({
     required this.label,
     required this.value,
     required this.icon,
     required this.color,
+    this.isStacked = false,
   });
+
+  /// A copy of this tile with its content stacked vertically.
+  _MetricPill stacked() => _MetricPill(
+    label: label,
+    value: value,
+    icon: icon,
+    color: color,
+    isStacked: true,
+  );
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    if (isStacked) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: color.withValues(alpha: 0.2)),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, size: 18, color: color),
+            const SizedBox(height: 6),
+            Text(
+              value,
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 15,
+                color: color,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodySmall?.copyWith(fontSize: 11.5),
+            ),
+          ],
+        ),
+      );
+    }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
@@ -312,11 +368,15 @@ class _ScoreHistoryChart extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SectionHeading(
-                'score_history_title'.tr,
-                subtitle: 'score_history_desc'.tr,
+              Expanded(
+                child: SectionHeading(
+                  'score_history_title'.tr,
+                  subtitle: 'score_history_desc'.tr,
+                ),
               ),
+              const SizedBox(width: 12),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
@@ -344,10 +404,7 @@ class _ScoreHistoryChart extends StatelessWidget {
                 for (var i = 0; i < recent.length; i++) ...[
                   if (i > 0) const SizedBox(width: 8),
                   Expanded(
-                    child: _ChartBar(
-                      result: recent[i],
-                      number: i + 1,
-                    ),
+                    child: _ChartBar(result: recent[i], number: i + 1),
                   ),
                 ],
               ],
@@ -390,7 +447,12 @@ class _ChartBar extends StatelessWidget {
     final color = passed ? const Color(0xFF10B981) : const Color(0xFFEF4444);
 
     return Tooltip(
-      message: 'progress_attempt_tip'.trParams({'n': '$number', 'c': '$correct', 't': '$total', 's': (passed ? 'progress_passed' : 'progress_failed').tr}),
+      message: 'progress_attempt_tip'.trParams({
+        'n': '$number',
+        'c': '$correct',
+        't': '$total',
+        's': (passed ? 'progress_passed' : 'progress_failed').tr,
+      }),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -405,10 +467,7 @@ class _ChartBar extends StatelessWidget {
           const SizedBox(height: 4),
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
-            child: Container(
-              height: 110 * fraction,
-              color: color,
-            ),
+            child: Container(height: 110 * fraction, color: color),
           ),
           const SizedBox(height: 6),
           Text(
@@ -445,8 +504,8 @@ class _CategoryMasterySection extends StatelessWidget {
                 final statusColor = item.accuracy >= 0.8
                     ? const Color(0xFF10B981)
                     : (item.accuracy >= 0.6
-                        ? const Color(0xFFF59E0B)
-                        : const Color(0xFFEF4444));
+                          ? const Color(0xFFF59E0B)
+                          : const Color(0xFFEF4444));
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
@@ -458,11 +517,17 @@ class _CategoryMasterySection extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(item.category.icon, size: 18, color: item.category.color),
+                              Icon(
+                                item.category.icon,
+                                size: 18,
+                                color: item.category.color,
+                              ),
                               const SizedBox(width: 8),
                               Text(
                                 item.category.navKey.tr,
-                                style: const TextStyle(fontWeight: FontWeight.w700),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ],
                           ),
@@ -476,10 +541,7 @@ class _CategoryMasterySection extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(width: 8),
-                              StatusChip(
-                                item.statusKey.tr,
-                                color: statusColor,
-                              ),
+                              StatusChip(item.statusKey.tr, color: statusColor),
                             ],
                           ),
                         ],
@@ -491,7 +553,9 @@ class _CategoryMasterySection extends StatelessWidget {
                           value: item.accuracy,
                           minHeight: 6,
                           backgroundColor: theme.dividerColor,
-                          valueColor: AlwaysStoppedAnimation<Color>(item.category.color),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            item.category.color,
+                          ),
                         ),
                       ),
                     ],
@@ -528,7 +592,8 @@ class _QuickActionHub extends StatelessWidget {
             count: controller.bookmarkCount,
             icon: Icons.bookmark_rounded,
             color: const Color(0xFFCA8A04),
-            onTap: () => Get.toNamed(AppRoutes.study, arguments: Category.general),
+            onTap: () =>
+                Get.toNamed(AppRoutes.study, arguments: Category.general),
           ),
           _HubActionCard(
             title: 'flashcards_title'.tr,
@@ -562,20 +627,28 @@ class _QuickActionHub extends StatelessWidget {
                 backgroundColor: AppColors.accentGreen,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
               ),
               onPressed: () {
                 AppHaptics.selection();
                 ExamRulesDialog.show(
                   context,
-                  onStart: () => Get.toNamed(AppRoutes.exam, arguments: {'skipRules': true}),
+                  onStart: () => Get.toNamed(
+                    AppRoutes.exam,
+                    arguments: {'skipRules': true},
+                  ),
                   isRevisit: false,
                 );
               },
               icon: const Icon(Icons.play_arrow_rounded, size: 22),
               label: Text(
                 'real_exam'.tr,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
           ],
@@ -656,12 +729,18 @@ class _EmptyHistoryCard extends StatelessWidget {
       padding: const EdgeInsets.all(28),
       child: Column(
         children: [
-          Icon(Icons.insights_rounded, size: 48, color: AppColors.mutedFor(theme.brightness)),
+          Icon(
+            Icons.insights_rounded,
+            size: 48,
+            color: AppColors.mutedFor(theme.brightness),
+          ),
           const SizedBox(height: 14),
           Text(
             'progress_empty'.tr,
             textAlign: TextAlign.center,
-            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
           ),
           const SizedBox(height: 8),
           Text(

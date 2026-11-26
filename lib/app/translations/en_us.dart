@@ -417,4 +417,5 @@ const Map<String, String> enUS = {
   'flash_tip': 'Tip: remember each sign’s shape and colour (red = prohibition/danger, blue = mandatory/information, yellow = caution).',
   'home_answered_count': '@n answered',
   'rules_pass_target': 'Target: 38 / 45 correct',
+  'readiness_label': 'Readiness',
 };

@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'app/bindings/initial_binding.dart';
 import 'app/routes/app_pages.dart';
 import 'app/themes/app_theme.dart';
+import 'app/themes/khmer_typography.dart';
 import 'app/translations/app_translations.dart';
 import 'core/services/storage_service.dart';
 import 'shared/app_scroll_behavior.dart';
@@ -53,6 +54,7 @@ class DrivingRulesApp extends StatelessWidget {
       title: 'Driving Rules',
       debugShowCheckedModeBanner: false,
       scrollBehavior: const AppScrollBehavior(),
+      builder: KhmerTypography.builder,
       translations: AppTranslations(),
       locale: initialLocale,
       fallbackLocale: const Locale('en', 'US'),
