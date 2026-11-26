@@ -210,7 +210,7 @@ const Map<String, String> enUS = {
   'practice_mode': 'Practice Mode',
   'practice_mode_desc':
       'Self-paced category learning without timer pressure or auto-fail',
-  'official_simulation': 'Official Simulation',
+  'official_simulation': 'Exam Simulation',
   'free_practice': 'Free Practice',
   'start_real_exam': 'Start Real Exam',
   'start_practice': 'Start Practice',
@@ -218,7 +218,7 @@ const Map<String, String> enUS = {
   'journey_exam_hint': 'Pass with 38+ and 100% priority.',
 
   // Exam Rules Modal & Reminders
-  'exam_rules_title': 'Official Theory Exam Rules',
+  'exam_rules_title': 'Theory Exam Rules',
   'exam_rules_subtitle':
       'Please read and remember the requirements before starting',
   'rule_pass_title': 'Passing Score: 38 / 45 (84%)',
@@ -229,7 +229,7 @@ const Map<String, String> enUS = {
       'Questions 25 to 29 test Right-of-Way. You cannot fail even ONE! A wrong or unanswered priority question triggers IMMEDIATE AUTO-FAIL and routes directly to Results.',
   'rule_time_title': 'Time Limit: 45 Minutes',
   'rule_time_desc':
-      'Official 45-minute countdown. When time expires, your exam will be automatically submitted.',
+      '45-minute countdown, matching the real exam. When time expires, your exam will be automatically submitted.',
   'rule_nav_title': 'Navigation & Review',
   'rule_nav_desc':
       'You can review and change your answers, but priority questions must be answered correctly before moving forward.',
@@ -306,21 +306,21 @@ const Map<String, String> enUS = {
   'attempts_count': 'Attempts',
   'pass_rate': 'Pass Rate',
 
-  // Official Driver Pass Certificate
-  'certificate_title': 'Driver Theory Pass Credential',
-  'certificate_subtitle': 'Official Theory Test Competency Certificate',
-  'certificate_pass_badge': 'OFFICIAL PASS',
+  // Practice pass certificate (not an official document)
+  'certificate_title': 'Practice Exam Pass Certificate',
+  'certificate_subtitle': 'Practice certificate · Not an official document',
+  'certificate_pass_badge': 'PRACTICE PASS',
   'certificate_score_label': 'Final Score',
   'certificate_priority_cleared': '100% Priority Right-of-Way Cleared',
-  'certificate_certified': 'Certified Competent in Traffic Rules & Safety',
+  'certificate_certified': 'Ready for the real theory exam',
   'certificate_serial': 'Credential ID',
   'certificate_date': 'Issue Date',
   'view_certificate': 'View Pass Certificate',
   'share_certificate': 'Share Credential',
   'certificate_copied': 'Credential ID copied to clipboard!',
-  'certificate_cambodia_header': 'KINGDOM OF CAMBODIA',
-  'certificate_cambodia_motto': 'Nation · Religion · King',
-  'certificate_theory_pass': 'Successfully Passed Road Traffic Theory Examination',
+  'certificate_cambodia_header': 'DRIVING RULES',
+  'certificate_cambodia_motto': 'Learn · Practice · Drive',
+  'certificate_theory_pass': 'Passed the Road Traffic Theory Practice Exam',
   'download_certificate': 'Download Credential (PNG)',
   'certificate_downloaded': 'Certificate image downloaded successfully!',
 

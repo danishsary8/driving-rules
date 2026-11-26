@@ -1,147 +1,146 @@
-# 🚗 Cambodia Driving Rules & Theory Exam Platform
+# 🚗 Driving Rules — Cambodia Theory Exam Practice
 
 <p align="center">
-  <a href="https://github.com/danishsary8/driving-rules/actions"><img src="https://github.com/danishsary8/driving-rules/actions/workflows/ci.yml/badge.svg" alt="CI Status" /></a>
-  <a href="https://flutter.dev"><img src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter" alt="Flutter" /></a>
-  <a href="https://dart.dev"><img src="https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart" alt="Dart" /></a>
-  <img src="https://img.shields.io/badge/Tests-37%20Passed-10B981?logo=checkmarx" alt="Tests" />
-  <img src="https://img.shields.io/badge/Platform-Web%20%7C%20iOS%20%7C%20Android-4B5563" alt="Platform" />
+  <a href="https://github.com/danishsary8/driving-rules/actions/workflows/ci.yml"><img src="https://github.com/danishsary8/driving-rules/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <img src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter" alt="Flutter" />
+  <img src="https://img.shields.io/badge/Dart-3.9-0175C2?logo=dart" alt="Dart" />
+  <img src="https://img.shields.io/badge/Platform-Web%20%7C%20Android%20%7C%20iOS-4B5563" alt="Platforms" />
   <img src="https://img.shields.io/badge/License-MIT-F59E0B" alt="License" />
 </p>
 
-An enterprise-grade, mobile-first driving theory exam simulation and learning platform for Cambodia. Built with **Flutter**, **GetX**, and an **Offline-First Reactive Architecture**.
+<p align="center">
+  A bilingual (English / Khmer), offline-first Flutter app for learning Cambodia's road rules<br/>
+  and practising the 45-question driving theory exam.
+</p>
+
+<p align="center">
+  <b><a href="https://danishsary8.github.io/driving-rules/">▶ Live web demo</a></b>
+</p>
+
+<p align="center">
+  <img src="design-preview/desktop.png" alt="Desktop dashboard" width="70%" />
+</p>
+<p align="center">
+  <img src="design-preview/mobile.png" alt="Home (mobile)" width="23%" />
+  <img src="design-preview/exam-mobile.png" alt="Exam in Khmer (mobile)" width="23%" />
+  <img src="design-preview/learning-signs-390.png" alt="Road signs (mobile)" width="23%" />
+  <img src="design-preview/results-mobile.png" alt="Results (mobile)" width="23%" />
+</p>
+
+> **Disclaimer:** This is an independent practice project. It is not affiliated with or endorsed by
+> the Cambodian Ministry of Public Works and Transport, and the in-app pass certificate is a
+> motivational practice badge — not an official document.
 
 ---
 
-## 🌟 Key Engineering & Product Features
+## ✨ Features
 
-### 1. 🛡️ Official Exam Simulation (Strict Auto-Fail Priority Rules)
-- **45 Questions · 45-Minute Official Countdown**: Conforms to the standard Cambodian driving theory curriculum.
-- **Strict Passing Threshold (38 / 45)**: Requires an 84% benchmark to pass.
-- **Critical Priority Auto-Fail Rule (Q25–Q29)**: Questions 25 through 29 test Right-of-Way. Zero errors allowed—a single incorrect or skipped answer triggers an immediate auto-fail and routes directly to the detailed disqualification report.
-- **In-Exam Reminders**: Clickable `[ ℹ️ Exam Rules ]` reminder pill and high-visibility priority warning banners keep learners informed throughout the test.
+| | Feature | What it does |
+|---|---|---|
+| 📝 | **Exam simulation** | 45 questions, 45-minute timer, pass at 38/45. Priority (right-of-way) questions 25–29 are zero-tolerance: one mistake fails the exam. |
+| 💾 | **Session recovery** | An in-progress exam is saved locally and can be resumed after a refresh or app restart. |
+| 📚 | **Lessons by category** | 249 questions across 5 categories: General, Signs, Priority, Technique, Emergency. |
+| 🪧 | **Road-sign flashcards** | Signs grouped by type (warning, prohibition, mandatory, information) with 3D flip cards. |
+| ⚡ | **Speed quiz** | 15 seconds per question, 3 lives, combo multipliers. |
+| 🧠 | **Mistakes bank** | Every wrong answer is collected; answer it correctly to clear it. Bookmarks for questions you want to revisit. |
+| 📊 | **Progress & readiness** | Readiness score (0–100%) from your last 5 exams, per-category mastery, attempt history. |
+| 🔍 | **Answer review** | Go through each exam question with your answer and the correct one. |
+| 🌐 | **English / Khmer** | Full translation with bundled Kanit + Noto Sans Khmer fonts; a test enforces key parity between languages. |
+| 🌗 | **Light / dark theme** | Persisted preference. |
+| 📱 | **Responsive** | Bottom navigation on phones, sidebar dashboard on desktop; tested from 320 px to 1920 px wide. |
+| ⌨️ | **Keyboard support** | Answer and navigate exams from the keyboard on desktop/web. |
 
-### 2. 🏆 Official Digital Pass Certificate & Shareable Credential
-- Unlocked when candidates score $\ge 38/45$ with zero priority violations.
-- Renders an official-style completion credential featuring a unique verification Serial ID, issue date, score breakdown, and security clearance seal.
-- One-tap credential ID copy and sharing actions.
-
-### 3. 🧠 Smart Mistakes Bank (Weak-Area Smart Retest)
-- Automatically captures questions missed across **Real Exams**, **Speed Quizzes**, or **Study Sessions**.
-- Dedicated drill mode allowing learners to train specifically on their personal blind spots.
-- Once answered correctly, questions graduate and clear from the bank with rewarding tactile feedback.
-
-### 4. ⚡ Gamified Speed Quiz Practice Challenge
-- **15-Second Timer per Question**: Fast-paced training for quick roadside decision-making.
-- **3 Hearts / Lives System**: Keeps players engaged while reinforcing accuracy.
-- **Combo Multipliers & Speed XP Bonuses**: Rewards rapid, correct streaks with dynamic score multipliers and pulse animations.
-
-### 5. 📊 Exam Readiness Score Engine (0–100%)
-- Predictive readiness score derived from the candidate's last 5 simulation attempts:
-  $$\text{Readiness} = 40\% \times \text{PassRate} + 35\% \times \text{ScoreRate} + 25\% \times \text{PriorityAccuracy} - \text{DisqualificationPenalty}$$
-- 4 qualitative readiness tiers (`Exam Ready`, `Moderate Progress`, `Needs Practice`, `Not Tested Yet`) paired with personalized coaching recommendations.
-- Category mastery breakdown for all 5 domains (*General, Signs, Priority, Technique, Emergency*).
-
-### 6. 📳 Tactile Haptic Vibration Feedback (`AppHaptics`)
-- Physics-based tactile sensation across option selections, warning zone transitions, speed combos, and error states.
-- Defensively engineered for cross-platform stability (Web, iOS, Android, Desktop).
-
-### 7. 🇰🇭 Full Bilingual Localization with Parity Enforcement
-- Complete English (`en_US`) and Khmer (`km_KH`) support with custom typography (`Kanit`, `NotoSansKhmer`).
-- Automated CI test enforces 100% key and translation parity.
-
-### 8. 📱 Responsive Adaptive UI (320px to 1920px)
-- Zero RenderFlex overflows across all device form factors:
-  - **Compact Phones** (320px–390px with 1.25x Khmer text scaling).
-  - **Tablets & Foldables** (768px–844px).
-  - **Desktop & Widescreen Displays** (1050px–1920px Bento Grid layout).
+Everything runs on-device — no backend, no account, no network calls after the app loads.
 
 ---
 
-## 🏛️ Architecture Overview
+## 🛠 Tech stack
 
-The application follows clean separation of concerns using reactive state management. For a comprehensive deep-dive into design decisions, state machine flow, and performance trade-offs, read the **[Full Architecture & System Design Document (ARCHITECTURE.md)](ARCHITECTURE.md)**.
+- **Flutter 3 / Dart 3.9**
+- **GetX** — state management, routing, dependency bindings, translations
+- **GetStorage** — local persistence (results, mistakes, bookmarks, settings, exam session)
+- **flutter_animate**, **shimmer**, **percent_indicator** — animation and UI polish
+- **GitHub Actions** — analyze + test on every push/PR, auto-deploy web build to GitHub Pages
 
-```mermaid
-flowchart TD
-    subgraph UI_Layer ["Presentation Layer (UI/UX)"]
-        HomeScreen["HomeScreen & Bento Dashboard"]
-        ExamScreen["ExamScreen & Timer HUD"]
-        QuizScreen["SpeedQuiz Practice Mode"]
-        MistakesScreen["Smart Mistakes Bank"]
-        ResultScreen["ResultScreen & Pass Certificate"]
-    end
+---
 
-    subgraph Controller_Layer ["Controllers & ViewModels (GetX)"]
-        HC["HomeController"]
-        EC["ExamController"]
-        QC["QuizPracticeController"]
-        MC["MistakesController"]
-        RC["ResultController"]
-    end
+## 🏗 Project structure
 
-    subgraph Service_Layer ["Core Services & Storage"]
-        DS["DataService (Bundled JSON Assets)"]
-        SS["StorageService (GetStorage Offline Cache)"]
-        EA["ExamAnalytics Engine"]
-        AH["AppHaptics Utility"]
-    end
+```
+lib/
+├── main.dart              # App entry: storage init, theme, locale, routes
+├── app/
+│   ├── bindings/          # GetX dependency bindings
+│   ├── routes/            # Route table
+│   ├── themes/            # Light / dark theme
+│   └── translations/      # en_US and km_KH strings
+├── core/
+│   ├── models/            # Question, ExamResult, analytics, sign categories
+│   ├── services/          # DataService (bundled JSON), StorageService (GetStorage)
+│   └── utils/             # Exam builder & scorer (pure logic)
+├── modules/               # One folder per screen: controller + screen + widgets
+│   ├── home/  study/  flashcards/  exam/  quiz_practice/
+│   └── mistakes/  result/  review/  progress/  splash/
+└── shared/widgets/        # App shell, navigation, reusable components
+driving_rules_data/        # Question JSON + road-sign images (bundled assets)
+test/                      # Unit, property-based and widget tests
+```
 
-    HomeScreen --> HC
-    ExamScreen --> EC
-    QuizScreen --> QC
-    MistakesScreen --> MC
-    ResultScreen --> RC
+More detail on design decisions is in **[ARCHITECTURE.md](ARCHITECTURE.md)**.
 
-    HC & EC & QC & MC & RC --> DS & SS & EA & AH
+---
+
+## 🚀 Getting started
+
+**Requirements:** Flutter SDK (stable, with Dart ≥ 3.9).
+
+```bash
+git clone https://github.com/danishsary8/driving-rules.git
+```
+
+```bash
+cd driving-rules && flutter pub get
+```
+
+```bash
+flutter run -d chrome
+```
+
+Build a release web bundle:
+
+```bash
+flutter build web --release
 ```
 
 ---
 
-## 🧪 Testing & Verification
+## 🧪 Testing
 
-The project enforces automated test coverage across business logic, models, controllers, and responsive layouts:
-
-```powershell
-# Run static analysis (0 warnings)
+```bash
 flutter analyze
+```
 
-# Run all 37+ unit, property-based, and widget tests
+```bash
 flutter test
+```
 
-# Run Telegram / Mobile in-app browser gesture suite
+```bash
 node --test test/web/mobile_scroll_test.cjs
 ```
 
-### Test Suites Included:
-- `test/widget_test.dart`: Multi-device responsive flows (320px to 1920px), Khmer font scaling, and translation parity.
-- `test/exam_analytics_test.dart`: Readiness algorithm weights, priority disqualification penalties, and category mastery.
-- `test/mistakes_test.dart`: Smart Mistakes Bank persistence and Driver Certificate rendering.
-- `test/quiz_practice_test.dart`: Speed Quiz timer mechanics, lives decrement, and combo multipliers.
-- `test/core/`: Property-based serialization round-trips and exam composition guarantees.
+The suite covers:
 
----
+- **Exam logic** — exam composition, scoring, the priority auto-fail rule (`test/core/`)
+- **Models** — property-based JSON round-trips for questions and results
+- **Analytics** — readiness score weights and category mastery
+- **Features** — speed quiz timer/lives/combos, mistakes bank, bookmarks, flashcards, session recovery
+- **UI** — responsive layouts from 320 px to 1920 px, Khmer text scaling, translation parity
+- **Web** — scroll behaviour inside in-app browsers (e.g. Telegram)
 
-## 🚀 Getting Started
-
-### Prerequisites
-- [Flutter SDK](https://flutter.dev/docs/get-started/install) (3.19+ recommended)
-- Dart SDK 3.x
-
-### Installation
-```bash
-# Clone the repository
-git clone https://github.com/danishsary8/driving-rules.git
-cd driving-rules
-
-# Install dependencies
-flutter pub get
-
-# Launch on Chrome / Edge
-flutter run -d chrome
-```
+CI runs analyze and tests on every push and pull request to `main`.
 
 ---
 
 ## 📄 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+[MIT](LICENSE)
