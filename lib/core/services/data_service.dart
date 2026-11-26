@@ -55,6 +55,9 @@ class DataService extends GetxService {
   final Map<String, Question> _byId = {};
   List<Question>? _cachedAllQuestions;
 
+  /// The load currently running, so concurrent callers share one load.
+  Future<void>? _inFlight;
+
   /// Questions loaded for [c] (empty when none/failed). Read-only.
   List<Question> questionsFor(Category c) =>
       List.unmodifiable(_byCategory[c] ?? const []);
@@ -63,8 +66,9 @@ class DataService extends GetxService {
   Map<Category, List<Question>> get all => Map.unmodifiable(_byCategory);
 
   /// Flat list of all loaded questions across all categories.
-  List<Question> get allQuestions =>
-      _cachedAllQuestions ??= _byCategory.values.expand((list) => list).toList();
+  List<Question> get allQuestions => _cachedAllQuestions ??= _byCategory.values
+      .expand((list) => list)
+      .toList();
 
   /// Finds a question by its unique [id], or `null` if not found.
   Question? findQuestionById(String id) => _byId[id];
@@ -75,7 +79,23 @@ class DataService extends GetxService {
   /// error, otherwise [DataStatus.error] with the affected categories recorded
   /// in [errors]. A failure on one category does not prevent the others from
   /// loading.
-  Future<void> loadAllCategories() async {
+  ///
+  /// Calls made while a load is already running return that same load.
+  Future<void> loadAllCategories() =>
+      _inFlight ??= _loadAll().whenComplete(() => _inFlight = null);
+
+  /// Completes once questions are available: immediately when already
+  /// loaded, otherwise by joining the running load (or starting one).
+  ///
+  /// Screens that can be opened directly by URL (e.g. a page refresh on
+  /// `/exam`) await this instead of assuming the startup load has finished.
+  /// After it completes, check [status] for [DataStatus.error].
+  Future<void> ensureLoaded() async {
+    if (status.value == DataStatus.ready) return;
+    await loadAllCategories();
+  }
+
+  Future<void> _loadAll() async {
     status.value = DataStatus.loading;
     errors.clear();
     excludedIds.clear();

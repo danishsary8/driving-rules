@@ -405,4 +405,5 @@ const Map<String, String> kmKH = {
   'home_answered_count': '@n ឆ្លើយរួច',
   'rules_pass_target': 'គោលដៅ៖ ត្រូវ ៣៨ / ៤៥ សំណួរ',
   'readiness_label': 'ភាពត្រៀមខ្លួន',
+  'exam_preparing': 'កំពុងរៀបចំការប្រឡង…',
 };

@@ -162,29 +162,20 @@ class _ExamScreenState extends State<ExamScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (controller.hasBuildError) {
-      return Scaffold(
-        appBar: AppBar(title: Text('practice_exam'.tr)),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.info_outline_rounded, size: 40),
-                const SizedBox(height: 16),
-                Text('error_body'.tr),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () => Get.offAllNamed(AppRoutes.home),
-                  child: Text('result_back_home'.tr),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
+    return Obx(() {
+      if (controller.isPreparing.value) {
+        return const _ExamPreparingView();
+      }
+      if (controller.hasBuildError) {
+        return const _ExamErrorView();
+      }
+      // Builder gives the session its own build scope, so only the reactive
+      // reads above (not the whole session UI) are tracked by this Obx.
+      return Builder(builder: _buildSession);
+    });
+  }
+
+  Widget _buildSession(BuildContext context) {
     return PopScope(
       canPop: _allowPop,
       onPopInvokedWithResult: (didPop, result) {
@@ -403,8 +394,9 @@ class _ExamScreenState extends State<ExamScreen> {
                                     : () {
                                         AppHaptics.light();
                                         controller.goBack();
-                                        if (_scroll.hasClients)
+                                        if (_scroll.hasClients) {
                                           _scroll.jumpTo(0);
+                                        }
                                       },
                                 icon: const Icon(
                                   Icons.arrow_back_rounded,
@@ -688,4 +680,56 @@ class _SessionMetric extends StatelessWidget {
       Text(label, style: Theme.of(context).textTheme.bodySmall),
     ],
   );
+}
+
+/// Shown while question data is still loading (e.g. after a page refresh).
+class _ExamPreparingView extends StatelessWidget {
+  const _ExamPreparingView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('practice_exam'.tr)),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 16),
+            Text('exam_preparing'.tr),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Shown when an exam could not be built (question data missing or invalid).
+class _ExamErrorView extends StatelessWidget {
+  const _ExamErrorView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('practice_exam'.tr)),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.info_outline_rounded, size: 40),
+              const SizedBox(height: 16),
+              Text('error_body'.tr, textAlign: TextAlign.center),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => Get.offAllNamed(AppRoutes.home),
+                child: Text('result_back_home'.tr),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

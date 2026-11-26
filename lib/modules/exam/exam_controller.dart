@@ -35,9 +35,13 @@ class ExamController extends GetxController {
   /// App-lifetime persistence for the last result and best score.
   final StorageService storage = Get.find();
 
-  /// The composed 45-question exam (fixed composition; Req 8). Empty when the
-  /// exam could not be built (see [buildError]).
-  late final List<Question> questions;
+  /// The composed 45-question exam (fixed composition; Req 8). Empty while
+  /// [isPreparing] and when the exam could not be built (see [buildError]).
+  List<Question> questions = const [];
+
+  /// True while question data is still loading (e.g. the exam was opened
+  /// directly by URL before the startup load finished).
+  final isPreparing = false.obs;
 
   /// Recorded answers: question index → chosen option index (Req 9.3, 9.4).
   final selectedAnswers = <int, int>{}.obs;
@@ -61,12 +65,33 @@ class ExamController extends GetxController {
   /// Whether the exam failed to build and the screen should show an error.
   bool get hasBuildError => buildError.value != null;
 
+  /// Route arguments captured at creation, since preparation may run later.
+  Object? _routeArgs;
+
   @override
   void onInit() {
     super.onInit();
+    _routeArgs = Get.arguments;
     bookmarkedIds.addAll(storage.readBookmarkIds());
+    if (data.status.value == DataStatus.ready) {
+      _prepareSession();
+    } else {
+      isPreparing.value = true;
+      _waitForDataThenPrepare();
+    }
+  }
 
-    final args = Get.arguments;
+  Future<void> _waitForDataThenPrepare() async {
+    await data.ensureLoaded();
+    if (isClosed) return;
+    _prepareSession();
+    isPreparing.value = false;
+  }
+
+  /// Builds a new exam, or restores the saved one when resuming, and starts
+  /// the timer. Requires question data to be loaded.
+  void _prepareSession() {
+    final args = _routeArgs;
     final isResume = args is Map && args['resume'] == true;
     if (isResume && storage.hasOngoingExam) {
       final session = storage.readOngoingExam();
@@ -79,10 +104,12 @@ class ExamController extends GetxController {
         }
         if (restoredQuestions.length == 45) {
           questions = restoredQuestions;
-          currentIndex.value =
-              (session['currentIndex'] as int? ?? 0).clamp(0, 44);
-          secondsLeft.value =
-              (session['remainingSeconds'] as int? ?? 2700).clamp(1, 2700);
+          currentIndex.value = (session['currentIndex'] as int? ?? 0).clamp(
+            0,
+            44,
+          );
+          secondsLeft.value = (session['remainingSeconds'] as int? ?? 2700)
+              .clamp(1, 2700);
           final answers = session['selectedAnswers'];
           if (answers is Map) {
             for (final entry in answers.entries) {

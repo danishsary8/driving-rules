@@ -418,4 +418,5 @@ const Map<String, String> enUS = {
   'home_answered_count': '@n answered',
   'rules_pass_target': 'Target: 38 / 45 correct',
   'readiness_label': 'Readiness',
+  'exam_preparing': 'Preparing your exam…',
 };
