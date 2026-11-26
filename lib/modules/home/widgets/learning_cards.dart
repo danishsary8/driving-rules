@@ -24,115 +24,187 @@ class LearningCategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
     return PremiumCard(
       onTap: () {
         AppHaptics.selection();
         onTap();
       },
       accentColor: category.color,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: category.color.withValues(alpha: isDark ? 0.22 : 0.12),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: category.color.withValues(alpha: 0.35),
-                  ),
-                ),
-                child: Icon(
-                  category.icon,
-                  size: 26,
-                  color: AppColors.contentColor(category.color, theme.brightness),
-                ),
-              ),
-              const Spacer(),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  number.toString().padLeft(2, '0'),
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+      // Phones get a one-row card; grid columns on tablets/desktop keep the
+      // full card even when a column is narrow.
+      child: MediaQuery.sizeOf(context).width < 600
+          ? _CompactCategoryContent(category: category, count: count)
+          : _buildFullContent(context),
+    );
+  }
+
+  Widget _buildFullContent(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: category.color.withValues(alpha: isDark ? 0.22 : 0.12),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: category.color.withValues(alpha: 0.35),
                 ),
               ),
-            ],
-          ),
-          const SizedBox(height: 18),
-          Text(
-            category.navKey.tr,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontFamily: 'Kanit',
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
+              child: Icon(
+                category.icon,
+                size: 26,
+                color: AppColors.contentColor(category.color, theme.brightness),
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'category_${category.fileStem}_description'.tr,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: AppColors.mutedFor(theme.brightness),
-              height: 1.5,
+            const Spacer(),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                number.toString().padLeft(2, '0'),
+                style: theme.textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
+          ],
+        ),
+        const SizedBox(height: 18),
+        Text(
+          category.navKey.tr,
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontFamily: 'Kanit',
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
           ),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '$count ${'study_question_count'.tr}',
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    color: AppColors.contentColor(category.color, theme.brightness),
-                    fontWeight: FontWeight.w600,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'category_${category.fileStem}_description'.tr,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: AppColors.mutedFor(theme.brightness),
+            height: 1.5,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                '$count ${'study_question_count'.tr}',
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: AppColors.contentColor(
+                    category.color,
+                    theme.brightness,
                   ),
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              Container(
-                width: 32,
-                height: 32,
-                decoration: BoxDecoration(
-                  color: category.color.withValues(alpha: 0.12),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.arrow_forward_rounded,
-                  size: 16,
-                  color: theme.colorScheme.onSurface,
-                ),
+            ),
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: category.color.withValues(alpha: 0.12),
+                shape: BoxShape.circle,
               ),
-            ],
-          ),
-        ],
-      ),
+              child: Icon(
+                Icons.arrow_forward_rounded,
+                size: 16,
+                color: theme.colorScheme.onSurface,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
 
-/// Official Real Exam Simulation Card with Gold/Amber styling, Shield icon,
+/// Phone layout of a category card: one row with the icon, the text, and an
+/// arrow, so five categories fit without long scrolling.
+class _CompactCategoryContent extends StatelessWidget {
+  const _CompactCategoryContent({required this.category, required this.count});
+
+  final Category category;
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final tint = AppColors.contentColor(category.color, theme.brightness);
+    return Row(
+      children: [
+        Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            color: category.color.withValues(alpha: isDark ? 0.22 : 0.12),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: category.color.withValues(alpha: 0.35)),
+          ),
+          child: Icon(category.icon, size: 26, color: tint),
+        ),
+        const SizedBox(width: 14),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                category.navKey.tr,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontFamily: 'Kanit',
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                'category_${category.fileStem}_description'.tr,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodySmall?.copyWith(height: 1.45),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                '$count ${'study_question_count'.tr}',
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: tint,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 10),
+        Icon(
+          Icons.chevron_right_rounded,
+          color: AppColors.mutedFor(theme.brightness),
+        ),
+      ],
+    );
+  }
+}
+
+/// Real Exam Simulation Card with Gold/Amber styling, Shield icon,
 /// pass criteria, and the critical auto-fail rule highlighted.
 class RealExamCard extends StatelessWidget {
   final bool enabled;
   final VoidCallback onTap;
 
-  const RealExamCard({
-    super.key,
-    required this.enabled,
-    required this.onTap,
-  });
+  const RealExamCard({super.key, required this.enabled, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -456,11 +528,7 @@ class PracticeModeCard extends StatelessWidget {
 
               if (isSmall) {
                 return Column(
-                  children: [
-                    gameBtn,
-                    const SizedBox(height: 8),
-                    studyBtn,
-                  ],
+                  children: [gameBtn, const SizedBox(height: 8), studyBtn],
                 );
               }
 
@@ -491,10 +559,8 @@ class PracticeExamCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => RealExamCard(
-    enabled: enabled,
-    onTap: onTap,
-  );
+  Widget build(BuildContext context) =>
+      RealExamCard(enabled: enabled, onTap: onTap);
 }
 
 class _FeatureChip extends StatelessWidget {
