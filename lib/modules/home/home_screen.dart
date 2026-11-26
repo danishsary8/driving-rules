@@ -534,7 +534,7 @@ class _ResumeExamBanner extends StatelessWidget {
                         ),
                         const SizedBox(height: 3),
                         Text(
-                          '${'exam_resume_desc'.tr} · ${'exam_question_progress'.tr} $currentQ/45 ($answersCount ឆ្លើយរួច)',
+                          '${'exam_resume_desc'.tr} · ${'exam_question_progress'.tr} $currentQ/45 (${'home_answered_count'.trParams({'n': '$answersCount'})})',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: AppColors.mutedFor(theme.brightness),
                             fontSize: 12,

@@ -37,7 +37,7 @@
 
 | | Feature | What it does |
 |---|---|---|
-| 📝 | **Exam simulation** | 45 questions, 45-minute timer, pass at 38/45. Priority (right-of-way) questions 25–29 are zero-tolerance: one mistake fails the exam. |
+| 📝 | **Exam simulation** | 45 questions, 45-minute timer, pass at 38/45. Priority (right-of-way) questions 26–30 are zero-tolerance: one mistake fails the exam. |
 | 💾 | **Session recovery** | An in-progress exam is saved locally and can be resumed after a refresh or app restart. |
 | 📚 | **Lessons by category** | 249 questions across 5 categories: General, Signs, Priority, Technique, Emergency. |
 | 🪧 | **Road-sign flashcards** | Signs grouped by type (warning, prohibition, mandatory, information) with 3D flip cards. |

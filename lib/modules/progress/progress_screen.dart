@@ -120,7 +120,7 @@ class _ReadinessHeroCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  '${readiness.score}% ត្រៀមរួចរាល់',
+                  'progress_ready_pct'.trParams({'pct': '${readiness.score}'}),
                   style: TextStyle(
                     color: tierColor,
                     fontWeight: FontWeight.w800,
@@ -323,8 +323,8 @@ class _ScoreHistoryChart extends StatelessWidget {
                   color: const Color(0xFF10B981).withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Text(
-                  'ជាប់ >= ៣៨',
+                child: Text(
+                  'progress_pass_line'.tr,
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
@@ -360,11 +360,11 @@ class _ScoreHistoryChart extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'ការប្រឡងដំបូង',
+                'progress_first_exam'.tr,
                 style: theme.textTheme.bodySmall?.copyWith(fontSize: 11),
               ),
               Text(
-                'ការប្រឡងថ្មីៗ',
+                'progress_latest_exam'.tr,
                 style: theme.textTheme.bodySmall?.copyWith(fontSize: 11),
               ),
             ],
@@ -390,7 +390,7 @@ class _ChartBar extends StatelessWidget {
     final color = passed ? const Color(0xFF10B981) : const Color(0xFFEF4444);
 
     return Tooltip(
-      message: 'លើកទី $number: $correct/$total (${passed ? 'ជាប់' : 'ធ្លាក់'})',
+      message: 'progress_attempt_tip'.trParams({'n': '$number', 'c': '$correct', 't': '$total', 's': (passed ? 'progress_passed' : 'progress_failed').tr}),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -634,7 +634,7 @@ class _HubActionCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    '$count ធាតុ',
+                    'progress_items'.trParams({'n': '$count'}),
                     style: const TextStyle(fontSize: 11, color: Colors.grey),
                   ),
                 ],

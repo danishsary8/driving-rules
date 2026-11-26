@@ -101,9 +101,9 @@ class _ExamRulesDialogState extends State<ExamRulesDialog> {
       _RuleSlideData(
         icon: Icons.warning_amber_rounded,
         accentColor: AppColors.accentRed,
-        badgeText: 'STRICT · ហាមខុសដាច់ខាត',
+        badgeText: 'rules_badge_strict'.tr,
         title: 'rule_priority_title'.tr,
-        highlightText: 'សំណួរទី ២៥ ដល់ ២៩ (៥ សំណួរ)',
+        highlightText: 'rules_hl_priority'.tr,
         description: 'rule_priority_desc'.tr,
         tipText: 'exam_rules_tip_priority'.tr,
         isStrict: true,
@@ -113,9 +113,9 @@ class _ExamRulesDialogState extends State<ExamRulesDialog> {
       _RuleSlideData(
         icon: Icons.verified_rounded,
         accentColor: AppColors.accentGreen,
-        badgeText: 'លក្ខខណ្ឌជាប់ជាស្ថាពរ',
+        badgeText: 'rules_badge_pass'.tr,
         title: 'rule_pass_title'.tr,
-        highlightText: 'យ៉ាងតិច ៣៨ / ៤៥ សំណួរ (៨៤%)',
+        highlightText: 'rules_hl_pass'.tr,
         description: 'rule_pass_desc'.tr,
         tipText: 'exam_rules_tip_pass'.tr,
         visualGraphic: _buildPassGraphic(theme, isDark),
@@ -124,9 +124,9 @@ class _ExamRulesDialogState extends State<ExamRulesDialog> {
       _RuleSlideData(
         icon: Icons.timer_outlined,
         accentColor: const Color(0xFF2563EB),
-        badgeText: 'ថិរវេលា និងការគ្រប់គ្រងពេល',
+        badgeText: 'rules_badge_time'.tr,
         title: 'rule_time_title'.tr,
-        highlightText: '៤៥ នាទី · ជាមធ្យម ១ នាទី / ១ សំណួរ',
+        highlightText: 'rules_hl_time'.tr,
         description: 'rule_time_desc'.tr,
         tipText: 'exam_rules_tip_time'.tr,
         visualGraphic: _buildTimeGraphic(isDark),
@@ -135,9 +135,9 @@ class _ExamRulesDialogState extends State<ExamRulesDialog> {
       _RuleSlideData(
         icon: Icons.swap_horiz_rounded,
         accentColor: const Color(0xFF8B5CF6),
-        badgeText: 'ការផ្ទៀងផ្ទាត់ និងកែប្រែ',
+        badgeText: 'rules_badge_review'.tr,
         title: 'rule_nav_title'.tr,
-        highlightText: 'អាចថយក្រោយ & ប្ដូរចម្លើយមុនបញ្ចប់',
+        highlightText: 'rules_hl_review'.tr,
         description: 'rule_nav_desc'.tr,
         tipText: 'exam_rules_tip_nav'.tr,
         visualGraphic: _buildNavGraphic(theme, isDark),
@@ -460,7 +460,7 @@ class _ExamRulesDialogState extends State<ExamRulesDialog> {
     );
   }
 
-  // Visual Graphic: Priority 25-29 Pill
+  // Visual Graphic: Priority 26-30 Pill (1-based, as displayed)
   Widget _buildPriorityGraphic(bool isDark) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -476,7 +476,7 @@ class _ExamRulesDialogState extends State<ExamRulesDialog> {
         runSpacing: 4,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          for (final q in ['25', '26', '27', '28', '29'])
+          for (final q in ['26', '27', '28', '29', '30'])
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.5),
               decoration: BoxDecoration(
@@ -493,8 +493,8 @@ class _ExamRulesDialogState extends State<ExamRulesDialog> {
               ),
             ),
           const SizedBox(width: 4),
-          const Text(
-            '⚠️ 100% ហាមខុស',
+          Text(
+            'rules_zero_mistakes'.tr,
             style: TextStyle(
               color: AppColors.accentRed,
               fontWeight: FontWeight.w700,
@@ -560,13 +560,13 @@ class _ExamRulesDialogState extends State<ExamRulesDialog> {
           color: const Color(0xFF2563EB).withValues(alpha: 0.3),
         ),
       ),
-      child: const Wrap(
+      child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          Icon(Icons.access_time_rounded, color: Color(0xFF2563EB), size: 14),
+          const Icon(Icons.access_time_rounded, color: Color(0xFF2563EB), size: 14),
           SizedBox(width: 5),
           Text(
-            '៤៥:០០ នាទី • រាប់ថយក្រោយ',
+            'rules_countdown'.tr,
             style: TextStyle(
               color: Color(0xFF2563EB),
               fontWeight: FontWeight.w700,
@@ -584,9 +584,9 @@ class _ExamRulesDialogState extends State<ExamRulesDialog> {
       spacing: 6,
       runSpacing: 6,
       children: [
-        _buildMiniBadge(Icons.arrow_back_rounded, 'ថយក្រោយ', theme, isDark),
-        _buildMiniBadge(Icons.edit_note_rounded, 'ប្ដូរចម្លើយ', theme, isDark),
-        _buildMiniBadge(Icons.done_all_rounded, 'ពិនិត្យឡើងវិញ', theme, isDark),
+        _buildMiniBadge(Icons.arrow_back_rounded, 'rules_mini_back'.tr, theme, isDark),
+        _buildMiniBadge(Icons.edit_note_rounded, 'rules_mini_change'.tr, theme, isDark),
+        _buildMiniBadge(Icons.done_all_rounded, 'rules_mini_review'.tr, theme, isDark),
       ],
     );
   }

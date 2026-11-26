@@ -226,7 +226,7 @@ const Map<String, String> enUS = {
       'You must correctly answer at least 38 out of 45 questions to pass the exam.',
   'rule_priority_title': 'CRITICAL: Priority Questions (Zero Tolerance)',
   'rule_priority_desc':
-      'Questions 25 to 29 test Right-of-Way. You cannot fail even ONE! A wrong or unanswered priority question triggers IMMEDIATE AUTO-FAIL and routes directly to Results.',
+      'Questions 26 to 30 test Right-of-Way. You cannot fail even ONE! A wrong or unanswered priority question triggers IMMEDIATE AUTO-FAIL and routes directly to Results.',
   'rule_time_title': 'Time Limit: 45 Minutes',
   'rule_time_desc':
       '45-minute countdown, matching the real exam. When time expires, your exam will be automatically submitted.',
@@ -246,7 +246,7 @@ const Map<String, String> enUS = {
   'priority_warning_banner':
       'PRIORITY QUESTION: Zero error allowed! 1 wrong answer = Immediate Auto-Fail.',
   'fail_reason_priority_detail':
-      'Disqualified due to an incorrect or skipped Priority question (Q25–Q29 require 100% accuracy).',
+      'Disqualified due to an incorrect or skipped Priority question (Q26–Q30 require 100% accuracy).',
 
   // Quiz Game Mode
   'quiz_game_title': 'Speed Quiz Challenge',
@@ -387,4 +387,33 @@ const Map<String, String> enUS = {
   'explanation_title': 'Explanation & Regulation',
   'explanation_rule_tip': 'Traffic Rule Context',
   'jump_to_question': 'Jump to Question #',
+
+  // UI labels moved out of widgets
+  'rules_badge_strict': 'STRICT · Zero mistakes',
+  'rules_hl_priority': 'Questions 26 to 30 (5 questions)',
+  'rules_badge_pass': 'Pass requirement',
+  'rules_hl_pass': 'At least 38 / 45 correct (84%)',
+  'rules_badge_time': 'Duration & time management',
+  'rules_hl_time': '45 minutes · about 1 minute per question',
+  'rules_badge_review': 'Review & edit',
+  'rules_hl_review': 'Go back & change answers before submitting',
+  'rules_zero_mistakes': '⚠️ 100% — no mistakes',
+  'rules_countdown': '45:00 min • countdown',
+  'rules_mini_back': 'Go back',
+  'rules_mini_change': 'Change answer',
+  'rules_mini_review': 'Review',
+  'progress_ready_pct': '@pct% ready',
+  'progress_pass_line': 'Pass ≥ 38',
+  'progress_first_exam': 'First exam',
+  'progress_latest_exam': 'Latest exam',
+  'progress_attempt_tip': 'Attempt @n: @c/@t (@s)',
+  'progress_passed': 'passed',
+  'progress_failed': 'failed',
+  'progress_items': '@n items',
+  'flash_tap_flip': 'Tap to flip',
+  'flash_what_mean': 'What does this sign mean?',
+  'flash_meaning': 'Meaning',
+  'flash_correct_answer': 'Correct answer',
+  'flash_tip': 'Tip: remember each sign’s shape and colour (red = prohibition/danger, blue = mandatory/information, yellow = caution).',
+  'home_answered_count': '@n answered',
 };

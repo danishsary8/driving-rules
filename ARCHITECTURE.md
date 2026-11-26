@@ -1,22 +1,24 @@
 # 🏗️ System Architecture & Engineering Rationale
 
-This document provides a comprehensive technical breakdown of the architecture, design patterns, algorithmic models, and engineering decisions implemented in the **Cambodia Driving Rules & Theory Exam Platform**.
+This document explains the architecture, design patterns, scoring logic and main engineering decisions behind **Driving Rules**, a practice app for Cambodia's driving theory exam.
+
+> Independent project — not affiliated with or endorsed by the Ministry of Public Works and Transport (MPWT).
 
 ---
 
 ## 1. Architectural Philosophy & Constraints
 
-The application is engineered around four non-negotiable principles:
-1. **Offline-First & Zero Backend Dependency**: All 249+ official theory questions, high-resolution road sign illustrations, and vector assets are bundled directly with the application.
-2. **Deterministic Cambodian Licensing Engine**: Faithfully implements the official Ministry of Public Works and Transport (MPWT) driving theory test rules, including the **38/45 passing threshold** and the **zero-tolerance Right-of-Way priority auto-fail rule**.
-3. **Mobile-First Khmer Script Optimization**: Engineered specifically for Khmer typography, accommodating 1.25x text scaling factors, subscript vowels, and diacritic marks without layout overflows.
-4. **Universal Responsive Surface**: A unified codebase delivering pixel-perfect performance across compact mobile viewports (320px–390px), tablets (768px–844px), and desktop widescreen monitors (1050px–1920px).
+The app is built around four principles:
+1. **Offline-first, no backend**: All 249 practice questions and road-sign images are bundled with the app, so it works without a network connection after loading.
+2. **Exam rules modelled on the real test**: The simulation follows the publicly known format of Cambodia's theory exam — 45 questions, a **38/45 pass mark**, and a **zero-tolerance rule on the right-of-way (priority) questions**.
+3. **Mobile-first Khmer typography**: Layouts leave room for Khmer stacked consonants and vowels, and are tested at 1.25× text scale for overflows.
+4. **One responsive codebase**: The same UI adapts from small phones (320–390 px) through tablets (768–844 px) to desktop (1050–1920 px).
 
 ---
 
-## 2. Architecture Pattern: Reactive MVC with Scoped Route Bindings
+## 2. Architecture Pattern: GetX MVC with Route Bindings
 
-The application uses an event-driven **MVC (Model-View-Controller)** pattern powered by **GetX**:
+The app uses an **MVC (Model-View-Controller)** pattern with **GetX**:
 
 ```mermaid
 flowchart LR
@@ -42,34 +44,35 @@ flowchart LR
     C -->|Read / Write| DS & SS & EA
 ```
 
-### Why GetX over Bloc / Riverpod for this Scope?
-- **Scoped Memory Lifecycle**: Each module registers its controller using `Bindings` (e.g. `ExamBinding`, `QuizPracticeBinding`, `MistakesBinding`). When the route pops, the controller and all associated timers are instantly disposed, preventing memory leaks during intensive exam sessions.
-- **Micro-Rebuild Efficiency**: Rather than rebuilding entire widget trees, `Obx()` selectively repaints only the affected counter, timer bar, or score badge.
-- **Zero Boilerplate**: Avoids event/state union classes, allowing rapid iteration on game loops (e.g. 15-second countdown ticker in Speed Quiz).
+### Why GetX for this project?
+- **Scoped Memory Lifecycle**: Each module registers its controller using `Bindings` (e.g. `ExamBinding`, `QuizPracticeBinding`, `MistakesBinding`). When the route is removed, GetX disposes the controller, and its `onClose()` cancels any timers.
+- **Narrow rebuilds**: `Obx()` wraps only the widgets that depend on a value (timer, counter, score badge), so a timer tick doesn't rebuild the whole screen.
+- **Low boilerplate**: No event/state classes to write, which kept iteration fast for features like the 15-second Speed Quiz timer.
+- **Trade-off**: GetX couples routing, DI and state into one library and makes controllers harder to unit-test in isolation than Riverpod or Bloc would. For a small, single-developer app this was an acceptable trade.
 
 ---
 
-## 3. Official Exam Simulation State Machine & Priority Auto-Fail
+## 3. Exam Simulation State Machine & Priority Auto-Fail
 
-The Cambodian theory test features a unique safety constraint: **Questions 25 through 29 test Right-of-Way (Priority)**. Making a single mistake on these questions results in immediate disqualification, regardless of the overall score.
+The Cambodian theory test features a unique safety constraint: **five Right-of-Way (Priority) questions — questions 26–30 in this app (indexes 25–29 in code)**. Making a single mistake on these questions results in immediate disqualification, regardless of the overall score.
 
 ```mermaid
 stateDiagram-v2
     [*] --> ExamSession: Start Exam (Q1)
     
-    ExamSession --> QuestionStep: Navigate Q1 to Q24 (General & Signs)
+    ExamSession --> QuestionStep: Navigate Q1 to Q25 (General & Signs)
     QuestionStep --> QuestionStep: Select Answer / Review
     
-    QuestionStep --> PriorityZone: Advance to Q25 (Warning Triggered)
+    QuestionStep --> PriorityZone: Advance to Q26 (Warning Triggered)
     
     state PriorityZone {
-        [*] --> EvaluatingQ25_Q29
-        EvaluatingQ25_Q29 --> CorrectPriority: 100% Accuracy
-        EvaluatingQ25_Q29 --> PriorityError: 1 Wrong or Skipped
+        [*] --> EvaluatingQ26_Q30
+        EvaluatingQ26_Q30 --> CorrectPriority: 100% Accuracy
+        EvaluatingQ26_Q30 --> PriorityError: 1 Wrong or Skipped
     }
     
     PriorityError --> AutoFailResult: Immediate Disqualification (FinishReason.priorityFail)
-    CorrectPriority --> FinalQuestions: Advance to Q30 to Q45
+    CorrectPriority --> FinalQuestions: Advance to Q31 to Q45
     FinalQuestions --> ScoredResult: Submit Exam
     
     ScoredResult --> PassCertificate: Score >= 38 & Priority 100%
@@ -79,25 +82,24 @@ stateDiagram-v2
 
 ---
 
-## 4. Khmer Localization & Complex Typography Engine
+## 4. Khmer Localization & Typography
 
 ### Dual Font Strategy
 - **`Kanit`**: Modern geometric sans-serif used for numeric displays, timers, and Latin headers.
-- **`NotoSansKhmer`**: Google Fonts variable font bundled locally for Khmer script, ensuring zero "tofu" (missing glyph) errors even on devices without native Khmer firmware.
+- **`NotoSansKhmer`**: Variable font bundled with the app, so Khmer renders correctly even on devices with no Khmer system font.
 
-### Text-Scale Invariance
-In Flutter, Khmer script naturally requires 20–25% greater vertical line-height due to stacked consonants (*Chhoeng*) and upper/lower vowels. 
-All containers, cards, and option buttons utilize:
+### Handling Khmer line height
+Khmer text needs noticeably more line height than Latin text because of stacked consonants (*Chhoeng*) and upper/lower vowels. Cards and option buttons therefore use:
 - Adaptive padding rather than fixed heights.
 - Flexible column layouts wrapping `ConstrainedBox` bounds.
-- Automated CI tests validating zero `RenderFlex` overflow at 390px with a **1.25x text scaling factor**.
+- Widget tests that fail on any `RenderFlex` overflow at 390 px with **1.25× text scale**.
 
 ---
 
 ## 5. Algorithmic Models & Business Logic
 
-### A. Dynamic Exam Readiness Formula (0–100%)
-The readiness score predicts a learner's probability of passing the official MPWT examination based on a weighted window of their last 5 simulations:
+### A. Exam Readiness Score (0–100%)
+The readiness score is a simple heuristic (not a statistical prediction) that summarises a learner's last 5 practice exams:
 
 $$\text{Readiness} = (R_{\text{pass}} \times 40) + (R_{\text{score}} \times 35) + (R_{\text{priority}} \times 25) - P_{\text{disqualification}}$$
 
@@ -105,24 +107,24 @@ Where:
 - $R_{\text{pass}}$: Ratio of passed exams in sample ($\ge 38/45$).
 - $R_{\text{score}}$: Cumulative correct answers over total questions ($\frac{\sum \text{Correct}}{5 \times 45}$).
 - $R_{\text{priority}}$: Accuracy rate across Right-of-Way questions ($\frac{\sum \text{PriorityCorrect}}{5 \times 5}$).
-- $P_{\text{disqualification}}$: A **15-point safety deduction** applied if the most recent attempt suffered an instant priority disqualification.
+- $P_{\text{disqualification}}$: A **15-point deduction** if the most recent attempt failed on a priority question.
 
-### B. Smart Mistakes Bank (Spaced Retesting)
+### B. Mistakes Bank
 - **Data Structure**: `Set<String>` stored in local key-value persistence.
 - **Deduplication**: When an exam finishes, `ResultController` scans `ExamReviewData` and batches all failed question IDs into `StorageService.addMistakeIds()`.
-- **Mastery Resolution**: Once a learner drills and masters a question in the Mistakes Bank screen, it is purged from the set with immediate haptic and visual feedback.
+- **Mastery Resolution**: When a learner answers a question correctly in the Mistakes Bank, it is removed from the set, with haptic and visual feedback.
 
 ---
 
-## 6. High-DPI Credential Generation & Cross-Platform Download
+## 6. Practice Certificate Image Export
 
-When candidates achieve $\ge 38/45$ with zero priority violations, the app unlocks the **Driver Theory Pass Credential**:
+When a learner scores $\ge 38/45$ with no priority mistakes, the app shows a **practice pass certificate** (clearly labelled as not an official document) that can be saved as an image:
 
 ```
 [ Widget Tree: RepaintBoundary ]
        │
        ▼  (boundary.toImage with pixelRatio: 3.0)
-[ ui.Image: 300 DPI Ultra Sharp ]
+[ ui.Image at 3× resolution      ]
        │
        ▼  (toByteData ImageByteFormat.png)
 [ Uint8List: PNG Byte Stream ]
@@ -133,22 +135,22 @@ When candidates achieve $\ge 38/45$ with zero priority violations, the app unloc
 Web: HTML Blob + Anchor Download      Native: Clipboard ID + Local Cache
 ```
 
-- Uses a conditional platform stub (`file_download_stub.dart` vs `file_download_web.dart`) ensuring web downloads trigger cleanly without breaking compilation on iOS, Android, or desktop targets.
+- Uses a conditional platform stub (`file_download_stub.dart` vs `file_download_web.dart`) so the web download code compiles away on iOS, Android and desktop.
 
 ---
 
 ## 7. Telegram In-App Browser Gesture Bridge
 
-When embedded inside Telegram's webview, Flutter web's CanvasKit renderer often conflicts with Telegram's pull-to-dismiss sheet gesture. 
+Inside Telegram's in-app browser, vertical drags on the Flutter canvas can be captured by Telegram's swipe-to-close gesture.
 
-`web/mobile-scroll.js` bridges native Telegram events:
+`web/mobile-scroll.js` works around this:
 - Injects Android's `allowScroll` event to lock gestures inside the canvas.
 - Binds iOS's `cancellingTouch` event to prevent sheet dismissal while dragging answer lists.
-- Completely passive listeners that preserve standard selection, tapping, and pinch-to-zoom.
+- Uses passive listeners, so normal tapping and scrolling are unaffected.
 
 ---
 
-## 8. Quality Assurance & Automated Testing Matrix
+## 8. Automated Tests
 
 | Test Suite | File | What It Enforces |
 | :--- | :--- | :--- |
@@ -158,4 +160,4 @@ When embedded inside Telegram's webview, Flutter web's CanvasKit renderer often 
 | **Exam Analytics** | `test/exam_analytics_test.dart` | Mathematical correctness of readiness scores and penalty deductions. |
 | **Mistakes Bank** | `test/mistakes_test.dart` | Question retrieval, batch insertion, and removal logic. |
 | **Speed Quiz Loop** | `test/quiz_practice_test.dart` | 15s timer mechanics, heart depletion, and combo streaks. |
-| **Property Tests** | `test/core/` | Question model serialization invariants and partitioning guarantees. |
+| **Property Tests** | `test/core/` | Property-based checks of question serialization and exam composition. |

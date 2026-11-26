@@ -384,7 +384,7 @@ class _FrontCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      'ចុចបង្វិល',
+                      'flash_tap_flip'.tr,
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
@@ -426,7 +426,7 @@ class _FrontCard extends StatelessWidget {
           const SizedBox(height: 18),
           Center(
             child: Text(
-              'តើស្លាកសញ្ញានេះមានអត្ថន័យដូចម្តេច?',
+              'flash_what_mean'.tr,
               textAlign: TextAlign.center,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
@@ -461,8 +461,8 @@ class _BackCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const StatusChip(
-                'អត្ថន័យផ្លូវការ',
+              StatusChip(
+                'flash_meaning'.tr,
                 icon: Icons.verified_rounded,
                 color: Color(0xFF16A34A),
               ),
@@ -482,7 +482,7 @@ class _BackCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      'ចុចបង្វិល',
+                      'flash_tap_flip'.tr,
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
@@ -516,7 +516,7 @@ class _BackCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'ចម្លើយត្រឹមត្រូវ',
+                      'flash_correct_answer'.tr,
                       style: AppTextStyles.body2.copyWith(
                         color: const Color(0xFF16A34A),
                         fontWeight: FontWeight.w800,
@@ -553,7 +553,7 @@ class _BackCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'គន្លឹះ៖ ចងចាំរូបរាង និងពណ៌នៃសញ្ញា (ក្រហម=ហាមឃាត់/គ្រោះថ្នាក់, ខៀវ=បញ្ជា/ផ្តល់ដំណឹង, លឿង=ប្រុងប្រយ័ត្ន)។',
+                    'flash_tip'.tr,
                     style: theme.textTheme.bodySmall?.copyWith(height: 1.45),
                   ),
                 ),
