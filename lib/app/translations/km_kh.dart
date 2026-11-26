@@ -408,4 +408,10 @@ const Map<String, String> kmKH = {
   'exam_preparing': 'កំពុងរៀបចំការប្រឡង…',
   'result_passed_line': 'អ្នកបានជាប់ដោយឆ្លើយត្រូវ @n សំណួរ',
   'result_needed_line': 'ត្រូវឆ្លើយត្រូវបន្ថែម @n សំណួរទៀតដើម្បីជាប់',
+  'mode_chip_time': '៤៥ នាទី · ៤៥ សំណួរ',
+  'mode_chip_pass': 'ជាប់ពី ៣៨ ឡើងទៅ',
+  'mode_chip_priority': 'អាទិភាព៖ មិនត្រូវខុស',
+  'mode_chip_untimed': 'គ្មានកំណត់ម៉ោង',
+  'mode_chip_answers': 'បង្ហាញចម្លើយភ្លាម',
+  'mode_chip_no_fail': 'មិនធ្លាក់ស្វ័យប្រវត្តិ',
 };

@@ -421,4 +421,10 @@ const Map<String, String> enUS = {
   'exam_preparing': 'Preparing your exam…',
   'result_passed_line': 'You passed with @n correct answers',
   'result_needed_line': '@n more correct answers needed to pass',
+  'mode_chip_time': '45 min · 45 questions',
+  'mode_chip_pass': '38+ to pass',
+  'mode_chip_priority': 'No priority mistakes',
+  'mode_chip_untimed': 'No timer',
+  'mode_chip_answers': 'Answers shown',
+  'mode_chip_no_fail': 'No auto-fail',
 };

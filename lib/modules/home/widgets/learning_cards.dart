@@ -233,17 +233,17 @@ class RealExamCard extends StatelessWidget {
             children: [
               _FeatureChip(
                 icon: Icons.timer_outlined,
-                label: '45 Mins · 45 Qs',
+                label: 'mode_chip_time'.tr,
                 color: const Color(0xFF286AA8),
               ),
               _FeatureChip(
                 icon: Icons.check_circle_outline,
-                label: '38+ to Pass',
+                label: 'mode_chip_pass'.tr,
                 color: AppColors.accentGreen,
               ),
               _FeatureChip(
                 icon: Icons.warning_amber_rounded,
-                label: 'Priority: 0 Error',
+                label: 'mode_chip_priority'.tr,
                 color: AppColors.accentRed,
                 highlight: true,
               ),
@@ -389,17 +389,17 @@ class PracticeModeCard extends StatelessWidget {
             children: [
               _FeatureChip(
                 icon: Icons.all_inclusive_rounded,
-                label: 'Untimed',
+                label: 'mode_chip_untimed'.tr,
                 color: AppColors.accentGreen,
               ),
               _FeatureChip(
                 icon: Icons.lightbulb_outline_rounded,
-                label: 'Direct Answers',
+                label: 'mode_chip_answers'.tr,
                 color: const Color(0xFFB58316),
               ),
               _FeatureChip(
                 icon: Icons.security_rounded,
-                label: 'No Auto-Fail',
+                label: 'mode_chip_no_fail'.tr,
                 color: AppColors.accentGreen,
               ),
             ],

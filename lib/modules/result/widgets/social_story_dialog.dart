@@ -138,7 +138,7 @@ class _SocialStoryDialogState extends State<SocialStoryDialog> {
                                 ),
                                 SizedBox(width: 6),
                                 Text(
-                                  'OFFICIAL THEORY PASS',
+                                  'PRACTICE EXAM PASS',
                                   style: TextStyle(
                                     color: Color(0xFFF59E0B),
                                     fontSize: 10,
@@ -190,7 +190,7 @@ class _SocialStoryDialogState extends State<SocialStoryDialog> {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        'ការប្រឡងទ្រឹស្ដីច្បាប់ចរាចរណ៍ផ្លូវគោកកម្ពុជា',
+                        'ការប្រឡងសាកល្បងទ្រឹស្ដីច្បាប់ចរាចរណ៍',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.75),
@@ -225,7 +225,7 @@ class _SocialStoryDialogState extends State<SocialStoryDialog> {
                               ),
                             ),
                             Text(
-                              'ពិន្ទុ ${((widget.result.totalCorrect / widget.result.total) * 100).round()}% (ជាប់ជាស្ថាពរ)',
+                              'ពិន្ទុ ${((widget.result.totalCorrect / widget.result.total) * 100).round()}% (ជាប់ការប្រឡងសាកល្បង)',
                               style: TextStyle(
                                 color: Colors.white.withValues(alpha: 0.85),
                                 fontSize: 13,
