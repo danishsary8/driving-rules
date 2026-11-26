@@ -77,6 +77,15 @@ class ResultController extends GetxController {
   /// Whether the session is a pass (Req 12.2, 12.3).
   bool get passed => result.passed;
 
+  /// Correct answers needed to pass the exam.
+  static const passMark = 38;
+
+  /// How many more correct answers this attempt needed to reach [passMark];
+  /// `0` when passed or when the score was high enough but a priority
+  /// question failed the exam.
+  int get answersShortOfPass =>
+      passed ? 0 : (passMark - result.totalCorrect).clamp(0, passMark);
+
   /// The bilingual fail-reason translation key, or `null` when [passed].
   ///
   /// Maps the [FinishReason] to its message key (Req 12.6, 12.7, 12.8):

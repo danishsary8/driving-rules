@@ -144,8 +144,8 @@ const Map<String, String> kmKH = {
   'exam_leave_no': 'នៅបន្ត',
 
   // Result
-  'result_passed': 'ជាប់ ✓',
-  'result_failed': 'ធ្លាក់ ✗',
+  'result_passed': 'ជាប់',
+  'result_failed': 'មិនទាន់ជាប់',
   'result_score': 'ពិន្ទុ',
   'result_score_out_of': 'លើ',
   'result_breakdown_title': 'លម្អិតពិន្ទុ',
@@ -406,4 +406,6 @@ const Map<String, String> kmKH = {
   'rules_pass_target': 'គោលដៅ៖ ត្រូវ ៣៨ / ៤៥ សំណួរ',
   'readiness_label': 'ភាពត្រៀមខ្លួន',
   'exam_preparing': 'កំពុងរៀបចំការប្រឡង…',
+  'result_passed_line': 'អ្នកបានជាប់ដោយឆ្លើយត្រូវ @n សំណួរ',
+  'result_needed_line': 'ត្រូវឆ្លើយត្រូវបន្ថែម @n សំណួរទៀតដើម្បីជាប់',
 };

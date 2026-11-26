@@ -59,8 +59,10 @@ class ResultScreen extends GetView<ResultController> {
                           .tr,
                       icon: controller.passed
                           ? Icons.verified_outlined
-                          : Icons.school_outlined,
-                      color: color,
+                          : Icons.cancel_outlined,
+                      color: controller.passed
+                          ? AppColors.accentGreen
+                          : AppColors.accentRed,
                     ),
                     const SizedBox(height: 30),
                     SizedBox(
@@ -109,11 +111,8 @@ class ResultScreen extends GetView<ResultController> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 28),
-                    Text(
-                      'result_score'.tr,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
+                    const SizedBox(height: 24),
+                    _ScoreVerdict(controller: controller),
                     if (controller.failReasonKey != null) ...[
                       const SizedBox(height: 14),
                       if (result.finishReason == FinishReason.priorityFail)
@@ -281,9 +280,7 @@ class ResultScreen extends GetView<ResultController> {
                   subtitle: 'result_review_hint'.tr,
                 ),
                 const SizedBox(height: 22),
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 12,
+                _ResultActions(
                   children: [
                     if (controller.passed) ...[
                       ElevatedButton.icon(
@@ -380,4 +377,63 @@ class _ResultMetric extends StatelessWidget {
       Text(label, style: Theme.of(context).textTheme.bodySmall),
     ],
   );
+}
+
+/// One line under the score ring saying what the score means: how far from
+/// the pass mark, or that the learner passed.
+class _ScoreVerdict extends StatelessWidget {
+  const _ScoreVerdict({required this.controller});
+
+  final ResultController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final String text;
+    if (controller.passed) {
+      text = 'result_passed_line'.trParams({
+        'n': '${controller.result.totalCorrect}',
+      });
+    } else if (controller.answersShortOfPass > 0) {
+      text = 'result_needed_line'.trParams({
+        'n': '${controller.answersShortOfPass}',
+      });
+    } else {
+      // Enough correct answers, but a priority question failed the exam;
+      // the red callout below explains why.
+      return const SizedBox.shrink();
+    }
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: Theme.of(context).textTheme.titleMedium,
+    );
+  }
+}
+
+/// Result actions: full-width stacked buttons on phones (no ragged wrap),
+/// a wrapping row on wider screens.
+class _ResultActions extends StatelessWidget {
+  const _ResultActions({required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth >= 520) {
+          return Wrap(spacing: 12, runSpacing: 12, children: children);
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (var i = 0; i < children.length; i++) ...[
+              if (i > 0) const SizedBox(height: 10),
+              children[i],
+            ],
+          ],
+        );
+      },
+    );
+  }
 }

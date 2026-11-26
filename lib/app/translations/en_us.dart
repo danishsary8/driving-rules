@@ -157,8 +157,8 @@ const Map<String, String> enUS = {
   'exam_leave_no': 'Stay',
 
   // Result
-  'result_passed': 'PASSED ✓',
-  'result_failed': 'FAILED ✗',
+  'result_passed': 'Passed',
+  'result_failed': 'Not passed',
   'result_score': 'Score',
   'result_score_out_of': 'out of',
   'result_breakdown_title': 'Score breakdown',
@@ -419,4 +419,6 @@ const Map<String, String> enUS = {
   'rules_pass_target': 'Target: 38 / 45 correct',
   'readiness_label': 'Readiness',
   'exam_preparing': 'Preparing your exam…',
+  'result_passed_line': 'You passed with @n correct answers',
+  'result_needed_line': '@n more correct answers needed to pass',
 };
