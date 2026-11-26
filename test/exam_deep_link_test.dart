@@ -1,9 +1,12 @@
-// Opening the exam directly by URL (e.g. refreshing the page on /#/exam)
-// creates the exam before the startup data load has finished. These tests pin
-// down that the exam waits for the data instead of showing an error.
+// Opening a screen directly by URL (e.g. refreshing the page on /#/exam)
+// creates its controller before the startup data load has finished. These
+// tests pin down that such screens wait for the data instead of showing an
+// error or spinning forever.
 import 'package:driving_rule/core/services/data_service.dart';
 import 'package:driving_rule/core/services/storage_service.dart';
 import 'package:driving_rule/modules/exam/exam_controller.dart';
+import 'package:driving_rule/modules/flashcards/flashcards_controller.dart';
+import 'package:driving_rule/modules/quiz_practice/quiz_practice_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 
@@ -77,5 +80,29 @@ void main() {
     expect(exam.isPreparing.value, isFalse);
     expect(exam.questions.length, 45);
     Get.delete<ExamController>();
+  });
+
+  test('flashcards opened before data is ready fill in once loaded', () async {
+    Get.put<StorageService>(_FakeStorage());
+    final data = Get.put(DataService());
+    final cards = Get.put(FlashcardsController());
+    expect(cards.questions, isEmpty);
+
+    await data.ensureLoaded();
+    await Future<void>.delayed(Duration.zero);
+    expect(cards.questions, isNotEmpty);
+    Get.delete<FlashcardsController>();
+  });
+
+  test('speed quiz opened before data is ready starts once loaded', () async {
+    Get.put<StorageService>(_FakeStorage());
+    final data = Get.put(DataService());
+    final quiz = Get.put(QuizPracticeController());
+    expect(quiz.questions, isEmpty);
+
+    await data.ensureLoaded();
+    await Future<void>.delayed(Duration.zero);
+    expect(quiz.questions.length, 10);
+    Get.delete<QuizPracticeController>();
   });
 }

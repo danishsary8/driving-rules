@@ -69,7 +69,8 @@ class QuizPracticeController extends GetxController {
 
   bool get hasImage => currentQuestion.isImagePrompt;
 
-  double get timerProgress => (secondsLeft.value / kQuestionDuration).clamp(0.0, 1.0);
+  double get timerProgress =>
+      (secondsLeft.value / kQuestionDuration).clamp(0.0, 1.0);
 
   @override
   void onInit() {
@@ -80,15 +81,25 @@ class QuizPracticeController extends GetxController {
     } else if (args is Category) {
       filterCategory = args;
     }
-    _setupRound();
+    if (_customPool != null || dataService.status.value == DataStatus.ready) {
+      _setupRound();
+    } else {
+      // Opened directly by URL before the startup load finished.
+      _setupRoundWhenReady();
+    }
+  }
+
+  Future<void> _setupRoundWhenReady() async {
+    await dataService.ensureLoaded();
+    if (!isClosed) _setupRound();
   }
 
   void _setupRound() {
     final pool = _customPool != null && _customPool!.isNotEmpty
         ? _customPool!
         : (filterCategory != null
-            ? dataService.questionsFor(filterCategory!)
-            : dataService.all.values.expand((list) => list).toList());
+              ? dataService.questionsFor(filterCategory!)
+              : dataService.all.values.expand((list) => list).toList());
 
     if (pool.isEmpty) return;
 

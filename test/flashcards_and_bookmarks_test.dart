@@ -6,6 +6,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 
 class _MockDataService extends DataService {
+  /// Mock questions are available immediately, like a finished load.
+  _MockDataService() {
+    status.value = DataStatus.ready;
+  }
+
   @override
   List<Question> questionsFor(Category category) {
     if (category == Category.sign) {

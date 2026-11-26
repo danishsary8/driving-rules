@@ -20,8 +20,9 @@ import '../../core/services/storage_service.dart';
 class ResultController extends GetxController {
   final StorageService storage = Get.find();
 
-  /// The result being displayed. Populated from `Get.arguments` in [onInit],
-  /// falling back to a safe empty result when no arguments were supplied.
+  /// The result being displayed. Populated from `Get.arguments` in [onInit];
+  /// when opened without arguments (e.g. a page refresh) the last saved
+  /// result is shown, and with none saved the user is sent home.
   late final ExamResult result;
 
   /// Full question/answer review payload when the result came from a just
@@ -38,15 +39,25 @@ class ResultController extends GetxController {
       _recordMistakes(args);
       return;
     }
-    result = args is ExamResult
-        ? args
-        : const ExamResult(
-            totalCorrect: 0,
-            total: 45,
-            categoryBreakdown: {},
-            finishReason: FinishReason.completed,
-            passed: false,
-          );
+    final fallback = args is ExamResult ? args : storage.readLastResult();
+    _hasResult = fallback != null;
+    result =
+        fallback ??
+        const ExamResult(
+          totalCorrect: 0,
+          total: 45,
+          categoryBreakdown: {},
+          finishReason: FinishReason.completed,
+          passed: false,
+        );
+  }
+
+  bool _hasResult = true;
+
+  @override
+  void onReady() {
+    super.onReady();
+    if (!_hasResult) Get.offAllNamed(AppRoutes.home);
   }
 
   void _recordMistakes(ExamReviewData data) {
@@ -81,7 +92,8 @@ class ResultController extends GetxController {
   }
 
   /// Starts a fresh exam, replacing the result screen (Req 12.12).
-  void tryAgain() => Get.offNamed(AppRoutes.exam, arguments: {'skipRules': true});
+  void tryAgain() =>
+      Get.offNamed(AppRoutes.exam, arguments: {'skipRules': true});
 
   /// Opens the question-by-question answer review when full review data exists.
   void reviewAnswers() {

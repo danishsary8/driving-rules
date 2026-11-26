@@ -38,10 +38,24 @@ class FlashcardsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final signs = data.questionsFor(Category.sign);
-    allSignQuestions.addAll(signs);
-    questions.assignAll(signs);
     bookmarkedIds.assignAll(storage.readBookmarkIds());
+    if (data.status.value == DataStatus.ready) {
+      _loadDeck();
+    } else {
+      // Opened directly by URL before the startup load finished.
+      _loadDeckWhenReady();
+    }
+  }
+
+  Future<void> _loadDeckWhenReady() async {
+    await data.ensureLoaded();
+    if (!isClosed) _loadDeck();
+  }
+
+  void _loadDeck() {
+    final signs = data.questionsFor(Category.sign);
+    allSignQuestions.assignAll(signs);
+    questions.assignAll(signs);
   }
 
   /// Filters flashcards by road sign sub-type.

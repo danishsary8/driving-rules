@@ -14,6 +14,11 @@ class _MockStorageService extends StorageService {
 }
 
 class _MockDataService extends DataService {
+  /// Mock questions are available immediately, like a finished load.
+  _MockDataService() {
+    status.value = DataStatus.ready;
+  }
+
   @override
   List<Question> questionsFor(Category c) => List.generate(
         15,

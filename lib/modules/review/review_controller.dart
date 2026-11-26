@@ -3,6 +3,8 @@ library;
 
 import 'package:get/get.dart';
 
+import '../../app/routes/app_routes.dart';
+
 import '../../core/models/exam_result_model.dart';
 import '../../core/models/exam_review_model.dart';
 import '../../core/models/question_model.dart';
@@ -16,6 +18,7 @@ class ReviewController extends GetxController {
   void onInit() {
     super.onInit();
     final args = Get.arguments;
+    _hasData = args is ExamReviewData;
     data = args is ExamReviewData
         ? args
         : ExamReviewData(
@@ -29,6 +32,16 @@ class ReviewController extends GetxController {
             questions: const [],
             selectedAnswers: const {},
           );
+  }
+
+  bool _hasData = true;
+
+  /// Review needs the full answer sheet, which only exists right after an
+  /// exam; opened without it (e.g. a page refresh) the user is sent home.
+  @override
+  void onReady() {
+    super.onReady();
+    if (!_hasData) Get.offAllNamed(AppRoutes.home);
   }
 
   /// Questions in the original exam order.
