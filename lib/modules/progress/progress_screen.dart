@@ -98,8 +98,12 @@ class _ReadinessHeroCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // Wrap (not Row) so the two chips stack on very narrow phones
+          // instead of the second one being clipped.
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: 8,
+            runSpacing: 8,
             children: [
               StatusChip(
                 readiness.level.labelKey.tr,
