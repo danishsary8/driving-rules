@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../core/models/exam_result_model.dart';
 
 import '../../app/routes/app_routes.dart';
 import '../../app/themes/app_theme.dart';
@@ -354,7 +355,7 @@ class _MetricPill extends StatelessWidget {
 }
 
 class _ScoreHistoryChart extends StatelessWidget {
-  final List<dynamic> history;
+  final List<ExamResult> history;
   const _ScoreHistoryChart({required this.history});
 
   @override
@@ -436,16 +437,16 @@ class _ScoreHistoryChart extends StatelessWidget {
 }
 
 class _ChartBar extends StatelessWidget {
-  final dynamic result;
+  final ExamResult result;
   final int number;
 
   const _ChartBar({required this.result, required this.number});
 
   @override
   Widget build(BuildContext context) {
-    final correct = result.totalCorrect as int;
-    final total = result.total as int;
-    final passed = result.passed as bool;
+    final correct = result.totalCorrect;
+    final total = result.total;
+    final passed = result.passed;
     final fraction = (correct / total).clamp(0.0, 1.0);
     final color = passed ? const Color(0xFF10B981) : const Color(0xFFEF4444);
 

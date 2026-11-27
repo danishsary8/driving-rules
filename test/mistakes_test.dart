@@ -4,7 +4,10 @@ import 'package:driving_rule/core/models/exam_result_model.dart';
 import 'package:driving_rule/core/models/question_model.dart';
 import 'package:driving_rule/core/services/data_service.dart';
 import 'package:driving_rule/core/services/storage_service.dart';
+import 'package:driving_rule/app/themes/theme_controller.dart';
+import 'package:driving_rule/app/translations/app_translations.dart';
 import 'package:driving_rule/modules/mistakes/mistakes_controller.dart';
+import 'package:driving_rule/modules/mistakes/mistakes_screen.dart';
 import 'package:driving_rule/modules/result/widgets/driver_certificate_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -55,6 +58,12 @@ class _MockStorageService extends StorageService {
 
   @override
   int get mistakeCount => _mistakes.length;
+
+  @override
+  ThemeMode? readThemeMode() => ThemeMode.light;
+
+  @override
+  Locale? readLocale() => const Locale('en', 'US');
 }
 
 void main() {
@@ -128,5 +137,36 @@ void main() {
       expect(find.text('42 / 45'), findsOneWidget);
       expect(find.text('93%'), findsOneWidget);
     });
+  });
+
+  testWidgets('MistakesScreen renders a card for each saved mistake', (
+    tester,
+  ) async {
+    // Regression: the card's question was typed `dynamic`, so the category
+    // extension getters threw and every card rendered as a grey error box.
+    Get.reset(); // drop the group setUp's services; this test brings its own
+    Get.testMode = true;
+    final storage = _MockStorageService();
+    await storage.addMistakeIds(['test-q-1']);
+    Get.put<StorageService>(storage);
+    final data = _MockDataService()..status.value = DataStatus.ready;
+    Get.put<DataService>(data);
+    Get.put(ThemeController());
+    Get.put(LocaleController());
+    Get.put(MistakesController());
+
+    await tester.pumpWidget(
+      GetMaterialApp(
+        translations: AppTranslations(),
+        locale: const Locale('en', 'US'),
+        home: const MistakesScreen(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('Prompt 1'), findsOneWidget);
+    expect(find.text('A'), findsOneWidget); // the correct answer is shown
+    Get.reset();
   });
 }

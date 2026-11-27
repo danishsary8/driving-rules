@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../core/models/question_model.dart';
 import '../../app/routes/app_routes.dart';
 import '../../app/themes/app_theme.dart';
 import '../../core/utils/app_haptics.dart';
@@ -192,8 +193,13 @@ class MistakesScreen extends GetView<MistakesController> {
   }
 }
 
+/// One saved mistake: category, prompt and the correct answer.
+///
+/// [question] is typed (it used to be `dynamic`): the category's `navKey` and
+/// `icon` are extension getters, which Dart cannot resolve on a `dynamic`
+/// value, so every card threw at runtime and rendered as a grey box.
 class _MistakeCard extends StatelessWidget {
-  final dynamic question;
+  final Question question;
   final int index;
   final bool isDark;
   final VoidCallback onMastered;
