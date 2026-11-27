@@ -38,8 +38,13 @@ void main() {
           final reason = 'seed=$seed iteration=$i raw=$raw';
           final q = Question.fromJson(raw, category);
 
-          // id / prompt / options preserved verbatim (including unicode).
-          expect(q.id, raw['id'], reason: 'id mismatch: $reason');
+          // id is qualified by category; prompt / options preserved verbatim
+          // (including unicode).
+          expect(
+            q.id,
+            Question.qualifiedId(category, raw['id'] as String),
+            reason: 'id mismatch: $reason',
+          );
           expect(q.prompt, raw['question'], reason: 'prompt mismatch: $reason');
           expect(
             q.options,

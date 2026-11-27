@@ -39,7 +39,7 @@ void main() {
             if (makeValid) {
               final answer = '${rng.nextInt(3)}'; // "0"|"1"|"2"
               rawList.add(makeRawJson(id: id, answer: answer, rng: rng));
-              expectedValidIds.add(id);
+              expectedValidIds.add(Question.qualifiedId(category, id));
             } else {
               rawList.add(makeRawJson(id: id, answer: invalidAnswer(rng), rng: rng));
               expectedInvalidIds.add(id);
@@ -71,7 +71,9 @@ void main() {
 
           // No overlap between valid and excluded id sets.
           final validSet = returnedIds.toSet();
-          final excludedSet = result.excludedIds.toSet();
+          final excludedSet = result.excludedIds
+              .map((raw) => Question.qualifiedId(category, raw))
+              .toSet();
           expect(
             validSet.intersection(excludedSet),
             isEmpty,
@@ -79,8 +81,14 @@ void main() {
           );
 
           // None lost: valid + excluded == all ids.
-          final allIds = rawList.map((m) => m['id'] as String).toList()..sort();
-          final combined = <String>[...returnedIds, ...result.excludedIds]..sort();
+          // Returned ids are category-qualified; excluded ids stay raw (audit).
+          String q(String raw) => Question.qualifiedId(category, raw);
+          final allIds =
+              rawList.map((m) => q(m['id'] as String)).toList()..sort();
+          final combined = <String>[
+            ...returnedIds,
+            ...result.excludedIds.map(q),
+          ]..sort();
           expect(
             combined,
             allIds,

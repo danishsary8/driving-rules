@@ -130,7 +130,18 @@ class Question {
   static bool isValidAnswer(Object? answerRaw) =>
       answerRaw == '0' || answerRaw == '1' || answerRaw == '2';
 
-  /// Parses one JSON object for [category].
+  /// App-wide unique id for the question numbered [rawId] in [category]'s
+  /// data file, e.g. `sign-12`.
+  ///
+  /// Each data file numbers its questions from 1, so the raw `id` repeats
+  /// across categories (general #1, sign #1, ...). Bookmarks, mistakes and
+  /// saved exam sessions store this qualified id so they always point at the
+  /// right question.
+  static String qualifiedId(Category category, String rawId) =>
+      '${category.fileStem}-$rawId';
+
+  /// Parses one JSON object for [category]. The `id` becomes a
+  /// [qualifiedId], unique across categories.
   ///
   /// Throws naturally (e.g. a [FormatException] from [int.parse] or a cast
   /// error) if a required key is missing or wrong-typed. Answer-range validity
@@ -138,7 +149,7 @@ class Question {
   /// (rather than crash on) out-of-range answers.
   factory Question.fromJson(Map<String, dynamic> json, Category category) {
     return Question(
-      id: json['id'] as String,
+      id: qualifiedId(category, json['id'] as String),
       prompt: json['question'] as String,
       options: [json['0'] as String, json['1'] as String, json['2'] as String],
       correctIndex: int.parse(json['answer'] as String),
