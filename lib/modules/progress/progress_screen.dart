@@ -85,7 +85,6 @@ class _ReadinessHeroCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     Color tierColor = switch (readiness.level) {
       ReadinessLevel.ready => const Color(0xFF10B981),
@@ -229,7 +228,7 @@ class _ReadinessHeroCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
+              color: theme.colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(14),
             ),
             child: Row(
