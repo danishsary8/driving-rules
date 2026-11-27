@@ -23,7 +23,7 @@
 <p align="center">
   <img src="design-preview/mobile.png" alt="Home (mobile)" width="23%" />
   <img src="design-preview/exam-mobile.png" alt="Exam in Khmer (mobile)" width="23%" />
-  <img src="design-preview/learning-signs-390.png" alt="Road signs (mobile)" width="23%" />
+  <img src="design-preview/learning-signs-390.png" alt="Road-sign flashcards (mobile)" width="23%" />
   <img src="design-preview/results-mobile.png" alt="Results (mobile)" width="23%" />
 </p>
 
@@ -45,7 +45,7 @@
 | 🧠 | **Mistakes bank** | Every wrong answer is collected; answer it correctly to clear it. Bookmarks for questions you want to revisit. |
 | 📊 | **Progress & readiness** | Readiness score (0–100%) from your last 5 exams, per-category mastery, attempt history. |
 | 🔍 | **Answer review** | Go through each exam question with your answer and the correct one. |
-| 🌐 | **English / Khmer** | Full translation with bundled Kanit + Noto Sans Khmer fonts; a test enforces key parity between languages. |
+| 🌐 | **English / Khmer** | Full translation with bundled Kanit + Noto Sans Khmer fonts; a test enforces key parity between languages. In Khmer, small text is enlarged and letter-spacing is relaxed so stacked vowels and subscripts stay readable. |
 | 🌗 | **Light / dark theme** | Persisted preference. |
 | 📱 | **Responsive** | Bottom navigation on phones, sidebar dashboard on desktop; tested from 320 px to 1920 px wide. |
 | ⌨️ | **Keyboard support** | Answer and navigate exams from the keyboard on desktop/web. |
