@@ -44,6 +44,9 @@ flowchart LR
     C -->|Read / Write| DS & SS & EA
 ```
 
+### Loading question data
+`DataService.loadAllCategories()` starts at app launch (`InitialBinding`) and parses the bundled JSON. Concurrent calls share one in-flight load. Screens that read questions in `onInit` (exam, flashcards, speed quiz) build immediately when data is ready, and otherwise await `DataService.ensureLoaded()` and show a loading state. This matters on the web, where a refresh on `/#/exam` creates the screen before the startup load finishes. Result and review screens opened without their route arguments fall back to the last saved result or return home rather than showing an empty or fake result.
+
 ### Why GetX for this project?
 - **Scoped Memory Lifecycle**: Each module registers its controller using `Bindings` (e.g. `ExamBinding`, `QuizPracticeBinding`, `MistakesBinding`). When the route is removed, GetX disposes the controller, and its `onClose()` cancels any timers.
 - **Narrow rebuilds**: `Obx()` wraps only the widgets that depend on a value (timer, counter, score badge), so a timer tick doesn't rebuild the whole screen.
@@ -93,6 +96,13 @@ Khmer text needs noticeably more line height than Latin text because of stacked 
 - Adaptive padding rather than fixed heights.
 - Flexible column layouts wrapping `ConstrainedBox` bounds.
 - Widget tests that fail on any `RenderFlex` overflow at 390 px with **1.25× text scale**.
+
+### Readable small text (`KhmerTypography`)
+Small labels that look fine in Latin script (10–12 px) blur in Khmer, and the negative letter-spacing used on Latin headings pushes stacked marks into each other. `lib/app/themes/khmer_typography.dart` is installed as the app's `builder` and, **only when the UI language is Khmer**:
+- wraps the platform text scaler in a `ReadableTextScaler`, which lifts sizes below 14 px towards a 12 px floor (10 → ~12.4, 12 → ~13.2) while leaving body text and headings unchanged. The mapping is monotonic, so label hierarchy is kept, and the user's own text-size setting still applies on top;
+- resets letter-spacing to 0 in the text theme (`KhmerTypography.tracking()` does the same for the few hand-written styles).
+
+The active language is read from GetX (`Get.locale`), not `Localizations`: the app ships its own translations and does not register Khmer with Flutter's delegates, so `Localizations.localeOf` always reports English. The widget-test matrix runs through the same builder, so the 1.25× Khmer overflow check covers these adjustments.
 
 ---
 
@@ -161,3 +171,6 @@ Inside Telegram's in-app browser, vertical drags on the Flutter canvas can be ca
 | **Mistakes Bank** | `test/mistakes_test.dart` | Question retrieval, batch insertion, and removal logic. |
 | **Speed Quiz Loop** | `test/quiz_practice_test.dart` | 15s timer mechanics, heart depletion, and combo streaks. |
 | **Property Tests** | `test/core/` | Property-based checks of question serialization and exam composition. |
+| **Khmer Typography** | `test/khmer_typography_test.dart` | Scaler mapping, monotonicity, platform scale, Khmer-only activation. |
+| **Direct Links / Refresh** | `test/exam_deep_link_test.dart` | Shared data load; exam, flashcards and speed quiz wait for data instead of failing. |
+| **Result Verdict** | `test/result_verdict_test.dart` | "N more answers needed" logic, including priority-fail edge cases. |
