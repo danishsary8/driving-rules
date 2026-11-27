@@ -191,7 +191,7 @@ const Map<String, String> kmKH = {
   'language_toggle_tooltip': 'ប្ដូរភាសា',
 
   // Exam modes: Practice vs Real Exam
-  'real_exam': 'ការប្រឡងទ្រឹស្ដីផ្លូវការ',
+  'real_exam': 'ការប្រឡងដូចពិត',
   'real_exam_desc':
       '៤៥ សំណួរ · ៤៥ នាទី · ជាប់ ៣៨ ឡើង · ច្បាប់អាទិភាពដាច់ខាត',
   'practice_mode': 'ការហាត់សាកល្បង',
@@ -199,9 +199,9 @@ const Map<String, String> kmKH = {
       'រៀនតាមសម្រួលតាមប្រភេទមេរៀន គ្មានសម្ពាធម៉ោង និងមិនធ្លាក់ភ្លាមៗ',
   'official_simulation': 'ការប្រឡងសាកល្បង',
   'free_practice': 'ការហាត់សាកល្បង',
-  'start_real_exam': 'ចាប់ផ្ដើមប្រឡងផ្លូវការ',
+  'start_real_exam': 'ចាប់ផ្ដើមប្រឡងដូចពិត',
   'start_practice': 'ចាប់ផ្ដើមហាត់រៀន',
-  'journey_exam': 'ប្រឡងផ្លូវការ',
+  'journey_exam': 'ប្រឡងដូចពិត',
   'journey_exam_hint': 'ជាប់ ៣៨+ និងអាទិភាព ១០០%។',
 
   // Exam Rules Modal & Reminders
@@ -399,7 +399,7 @@ const Map<String, String> kmKH = {
   'progress_items': '@n ធាតុ',
   'flash_tap_flip': 'ចុចបង្វិល',
   'flash_what_mean': 'តើស្លាកសញ្ញានេះមានអត្ថន័យដូចម្តេច?',
-  'flash_meaning': 'អត្ថន័យផ្លូវការ',
+  'flash_meaning': 'អត្ថន័យ',
   'flash_correct_answer': 'ចម្លើយត្រឹមត្រូវ',
   'flash_tip': 'គន្លឹះ៖ ចងចាំរូបរាង និងពណ៌នៃសញ្ញា (ក្រហម=ហាមឃាត់/គ្រោះថ្នាក់, ខៀវ=បញ្ជា/ផ្តល់ដំណឹង, លឿង=ប្រុងប្រយ័ត្ន)។',
   'home_answered_count': '@n ឆ្លើយរួច',
