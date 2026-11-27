@@ -150,11 +150,11 @@ class MistakesScreen extends GetView<MistakesController> {
                               actions: [
                                 TextButton(
                                   onPressed: () => Get.back(result: false),
-                                  child: Text('exam_leave_no'.tr),
+                                  child: Text('cancel'.tr),
                                 ),
                                 ElevatedButton(
                                   onPressed: () => Get.back(result: true),
-                                  child: Text('exam_leave_yes'.tr),
+                                  child: Text('clear_all_mistakes'.tr),
                                 ),
                               ],
                             ),

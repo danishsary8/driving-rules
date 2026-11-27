@@ -414,4 +414,5 @@ const Map<String, String> kmKH = {
   'mode_chip_untimed': 'គ្មានកំណត់ម៉ោង',
   'mode_chip_answers': 'បង្ហាញចម្លើយភ្លាម',
   'mode_chip_no_fail': 'មិនធ្លាក់ស្វ័យប្រវត្តិ',
+  'cancel': 'បោះបង់',
 };

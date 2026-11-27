@@ -474,7 +474,7 @@ class _DriverCertificateDialogState extends State<DriverCertificateDialog> {
                             AppHaptics.light();
                             Get.back();
                           },
-                          child: Text('exam_leave_no'.tr),
+                          child: Text('close'.tr),
                         ),
                       ),
                     ],

@@ -427,4 +427,5 @@ const Map<String, String> enUS = {
   'mode_chip_untimed': 'No timer',
   'mode_chip_answers': 'Answers shown',
   'mode_chip_no_fail': 'No auto-fail',
+  'cancel': 'Cancel',
 };
