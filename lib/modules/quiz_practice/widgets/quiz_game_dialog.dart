@@ -151,7 +151,11 @@ class QuizGameDialog extends StatelessWidget {
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            const Text('🔥', style: TextStyle(fontSize: 14)),
+                            const Icon(
+                              Icons.local_fire_department_rounded,
+                              size: 16,
+                              color: Color(0xFFE8590C),
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               '$bestStreak',

@@ -384,7 +384,7 @@ const Map<String, String> kmKH = {
   'rules_hl_time': '៤៥ នាទី · ជាមធ្យម ១ នាទី / ១ សំណួរ',
   'rules_badge_review': 'ការផ្ទៀងផ្ទាត់ និងកែប្រែ',
   'rules_hl_review': 'អាចថយក្រោយ & ប្ដូរចម្លើយមុនបញ្ចប់',
-  'rules_zero_mistakes': '⚠️ 100% ហាមខុស',
+  'rules_zero_mistakes': '100% ហាមខុស',
   'rules_countdown': '៤៥:០០ នាទី • រាប់ថយក្រោយ',
   'rules_mini_back': 'ថយក្រោយ',
   'rules_mini_change': 'ប្ដូរចម្លើយ',

@@ -59,8 +59,13 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
+      # The rendering engine is bundled (no CDN) so the installed app can start
+      # offline; then the offline cache (sw.js) is stamped with this build's files.
       - name: Build Web Release
-        run: flutter build web --release --base-href "/driving-rules/"
+        run: flutter build web --release --no-web-resources-cdn --base-href "/driving-rules/"
+
+      - name: Prepare Offline Cache
+        run: dart run tool/build_service_worker.dart build/web
 
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v3

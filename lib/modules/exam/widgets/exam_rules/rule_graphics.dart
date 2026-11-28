@@ -38,6 +38,14 @@ class PriorityRuleGraphic extends StatelessWidget {
               ),
             ),
           const SizedBox(width: 4),
+          // An icon, not an emoji: emoji need a font downloaded at runtime,
+          // which the installed app can't do offline.
+          const Icon(
+            Icons.warning_amber_rounded,
+            size: 14,
+            color: AppColors.accentRed,
+          ),
+          const SizedBox(width: 3),
           Text(
             'rules_zero_mistakes'.tr,
             style: TextStyle(

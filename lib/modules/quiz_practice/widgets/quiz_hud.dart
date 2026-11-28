@@ -149,9 +149,12 @@ class QuizHud extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text(
-                          '🔥',
-                          style: TextStyle(fontSize: 10),
+                        // Icon rather than an emoji, which would need a font
+                        // downloaded at runtime (not available offline).
+                        const Icon(
+                          Icons.local_fire_department_rounded,
+                          size: 12,
+                          color: Color(0xFFE8590C),
                         ),
                         const SizedBox(width: 3),
                         Text(

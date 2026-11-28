@@ -48,6 +48,21 @@ you got wrong.
 
 ---
 
+## 📲 Install on your phone
+
+Open the [live demo](https://danishsary8.github.io/driving-rules/) on your phone and add it
+to your home screen. It opens full screen like an app and, **after this first visit, works
+with no internet**.
+
+| Android (Chrome) | iPhone (Safari) |
+|---|---|
+| Tap **⋮** → **Install app** (or **Add to Home screen**) | Tap **Share** → **Add to Home Screen** |
+
+Your progress stays on the phone. On iPhone, the home-screen app keeps its own progress,
+separate from Safari.
+
+---
+
 ## 📚 Learn
 
 <table>
@@ -144,7 +159,7 @@ Questions **26–30** test right of way, and a single wrong answer there ends th
 | 🌐 **English / ខ្មែរ** | Full translation with Khmer readability tuning |
 | 🌗 **Light & dark** | Your choice is remembered |
 | 📱 **Responsive** | Phone first, with a sidebar layout on tablets and desktop |
-| 📴 **Offline** | No account, no server: questions are bundled and progress stays on the device |
+| 📴 **Offline** | Install it to your home screen and it works with no internet; no account, no server |
 
 ---
 
